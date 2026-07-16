@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Flowers — Flowers Etc.</title>
+  <meta name="description" content="Browse fresh arrangements from Flowers Etc. — everyday bouquets, sympathy flowers, wedding designs, and seasonal favorites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="shop">
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <h1>Shop Our Flowers</h1>
+    <p>Every arrangement is designed by hand in our shop. See something you love?
+    Order online or give us a call — we're happy to customize anything you see.</p>
+  </section>
+
+  <section class="block">
+    <div class="container">
+      <div class="filter-bar" id="filter-bar"></div>
+      <div class="product-grid" id="product-grid"></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h2>Don't See Quite What You Want?</h2>
+    <p>Tell us the occasion, your favorite colors, and your budget — custom orders are our specialty.</p>
+    <a class="btn btn-outline" data-shop-tel href="#"></a>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    renderShop(document.getElementById("product-grid"), document.getElementById("filter-bar"));
+  </script>
+</body>
+</html>

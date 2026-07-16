@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowers Etc. — Fresh Flowers &amp; Arrangements</title>
+  <meta name="description" content="Flowers Etc. is your hometown florist — fresh arrangements for every occasion, hand-designed and delivered locally.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+  <div id="site-header"></div>
+
+  <!-- ————— Hero ————— -->
+  <section class="hero">
+    <div class="flourish">✿ ✿ ✿</div>
+    <h1>Flowers Etc.</h1>
+    <p class="lead">Fresh flowers, arranged with love by your hometown florist.
+    Every stem hand-picked, every arrangement made just for you.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="shop.html">Shop Arrangements</a>
+      <a class="btn btn-outline" data-shop-tel href="#">📞 Call to Order</a>
+    </div>
+  </section>
+
+  <!-- ————— Trust strip ————— -->
+  <div class="trust-strip">
+    <div class="container">
+      <div class="trust-item">
+        <div class="t-icon">🌷</div>
+        <h3>Fresh Daily</h3>
+        <p>Flowers arrive fresh and are arranged the day you order.</p>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">🚚</div>
+        <h3>Local Delivery</h3>
+        <p>Hand-delivered to <span data-shop="deliveryArea"></span>.</p>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">💐</div>
+        <h3>Designed by Hand</h3>
+        <p>No two arrangements alike — each one made with care.</p>
+      </div>
+      <div class="trust-item">
+        <div class="t-icon">🏡</div>
+        <h3>Family Owned</h3>
+        <p>Proudly serving our neighbors since <span data-shop="established"></span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ————— Categories ————— -->
+  <section class="block">
+    <div class="container">
+      <div class="section-head">
+        <div class="flourish">Browse</div>
+        <h2>Flowers for Every Occasion</h2>
+        <p>From a simple "thinking of you" to the biggest days of your life.</p>
+      </div>
+      <div class="cat-grid" id="home-categories"></div>
+    </div>
+  </section>
+
+  <!-- ————— Why local ————— -->
+  <section class="block" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="container">
+      <div class="feature-row">
+        <div class="f-media">
+          <div class="ph tall"><span class="ph-icon">✿</span><span>Shop photo coming soon</span></div>
+        </div>
+        <div class="f-text">
+          <h3>Your Neighbor, Your Florist</h3>
+          <p>When you order from Flowers Etc., you're not talking to a call center —
+          you're talking to <span data-shop="ownerName"></span>, who has been designing
+          flowers for the families of this community for years.</p>
+          <p>We know the difference a hand-tied bow and a hand-written card make.
+          We know the church, the funeral home, and probably your grandmother.
+          That's the kind of florist we are.</p>
+          <a class="btn btn-primary" href="about.html">Our Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— Testimonials ————— -->
+  <section class="block">
+    <div class="container">
+      <div class="section-head">
+        <div class="flourish">Kind Words</div>
+        <h2>What Our Neighbors Say</h2>
+      </div>
+      <div class="testimonial-grid">
+        <!-- PLACEHOLDER TESTIMONIALS — replace with real ones (Facebook/Google reviews are a great source) -->
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"[Real customer review goes here — pull from Facebook or Google reviews.]"</p>
+          <div class="who">— Happy Customer</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"[Real customer review goes here.]"</p>
+          <div class="who">— Happy Customer</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"[Real customer review goes here.]"</p>
+          <div class="who">— Happy Customer</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— CTA ————— -->
+  <section class="cta-band">
+    <h2>Need Flowers Today?</h2>
+    <p>Call us — same-day arrangements are usually no problem, and we love a challenge.</p>
+    <a class="btn btn-outline" data-shop-tel href="#"></a>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Category cards on the home page, built from CATEGORIES in data.js
+    document.getElementById("home-categories").innerHTML = CATEGORIES.map(c => `
+      <a class="cat-card" href="shop.html?cat=${c.id}">
+        <div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>
+        <div class="cat-body">
+          <h3>${c.name}</h3>
+          <p>${c.blurb}</p>
+          <div class="cat-link">Browse ${c.name} →</div>
+        </div>
+      </a>`).join("");
+  </script>
+</body>
+</html>

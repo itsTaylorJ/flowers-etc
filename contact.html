@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Flowers Etc.</title>
+  <meta name="description" content="Contact Flowers Etc. — hours, location, phone, and an easy inquiry form.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="contact">
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <h1>Contact Us</h1>
+    <p>Call, stop by, or send us a note — whatever's easiest for you.</p>
+  </section>
+
+  <section class="block">
+    <div class="container">
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="i-icon">📞</div>
+          <h3>Call Us</h3>
+          <p>The fastest way to order:<br>
+          <a data-shop-tel href="#"></a></p>
+        </div>
+        <div class="info-card">
+          <div class="i-icon">📍</div>
+          <h3>Visit Us</h3>
+          <p><span data-shop="address"></span><br>
+          <span data-shop="cityStateZip"></span></p>
+        </div>
+        <div class="info-card">
+          <div class="i-icon">🕰️</div>
+          <h3>Hours</h3>
+          <ul class="hours-list" id="hours-list"></ul>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="flourish">Write to us</div>
+        <h2>Send an Inquiry</h2>
+        <p>Perfect for wedding consultations, custom orders, or any questions.
+        We'll get back to you within one business day.</p>
+      </div>
+
+      <!-- FORM SETUP NOTE:
+           This form uses Formspree (free tier: 50 messages/month).
+           1. Go to formspree.io, sign up with the shop's email
+           2. Create a form and copy its endpoint URL
+           3. Replace YOUR_FORM_ID in the action below
+           Until then, the form falls back to opening the user's email app. -->
+      <div class="form-card">
+        <form id="inquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form-grid">
+            <div>
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email">
+            </div>
+            <div>
+              <label for="date">Date Needed</label>
+              <input type="date" id="date" name="date_needed">
+            </div>
+            <div class="full">
+              <label for="arrangement">What are you interested in?</label>
+              <input type="text" id="arrangement" name="arrangement" placeholder="e.g. Wedding flowers, a birthday arrangement, a standing spray...">
+            </div>
+            <div class="full">
+              <label for="message">Tell us more</label>
+              <textarea id="message" name="message" placeholder="Occasion, colors you love, budget, delivery details — anything that helps!"></textarea>
+            </div>
+            <div class="full">
+              <button type="submit" class="btn btn-primary" style="width:100%;">Send Inquiry</button>
+            </div>
+          </div>
+          <p class="form-note">Need flowers today? Please call us instead — it's faster! <a data-shop-tel href="#"></a></p>
+        </form>
+      </div>
+
+      <!-- MAP SETUP NOTE:
+           To add a Google Map: search the shop address on Google Maps → Share →
+           Embed a map → copy the iframe code and paste it below, replacing this block. -->
+      <div style="margin-top:56px; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);">
+        <div class="ph" style="aspect-ratio: 16/6;">
+          <span class="ph-icon">🗺️</span>
+          <span>Google Map goes here — see the note in this file's HTML</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Hours list from data.js
+    document.getElementById("hours-list").innerHTML = SHOP.hours
+      .map(h => `<li><span class="d">${h.days}</span><span>${h.time}</span></li>`)
+      .join("");
+
+    // Prefill from ?arrangement= links
+    initContactForm();
+
+    // Until Formspree is configured, fall back to opening an email draft
+    document.getElementById("inquiry-form").addEventListener("submit", function (e) {
+      if (this.action.includes("YOUR_FORM_ID")) {
+        e.preventDefault();
+        const f = new FormData(this);
+        const body = encodeURIComponent(
+          `Name: ${f.get("name")}\nPhone: ${f.get("phone")}\nEmail: ${f.get("email") || "-"}\n` +
+          `Date needed: ${f.get("date_needed") || "-"}\nInterested in: ${f.get("arrangement") || "-"}\n\n${f.get("message") || ""}`
+        );
+        location.href = `mailto:${SHOP.email}?subject=${encodeURIComponent("Website inquiry from " + f.get("name"))}&body=${body}`;
+      }
+    });
+  </script>
+</body>
+</html>
