@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flowers-etc",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/tjlan/OneDrive/Desktop/FlowersEtc/.claude/serve.js"],
+      "port": 8765
+    }
+  ]
+}
