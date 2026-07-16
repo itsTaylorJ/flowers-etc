@@ -6,12 +6,12 @@
 
 const SHOP = {
   name: "Flowers Etc.",
-  tagline: "Fresh flowers, arranged with love, right here in town.",
-  phone: "[PHONE NUMBER]",            // e.g. "(555) 123-4567"
-  phoneHref: "[PHONE-DIGITS]",        // e.g. "5551234567" — used for tap-to-call links
+  tagline: "Fresh & silk flowers for weddings, funerals & special occasions.",
+  phone: "(903) 567-7045",
+  phoneHref: "9035677045",            // digits only — used for tap-to-call links
   email: "[EMAIL ADDRESS]",
-  address: "[STREET ADDRESS]",
-  cityStateZip: "[CITY, STATE ZIP]",
+  address: "1200 S Trade Days Blvd, Ste 150",
+  cityStateZip: "Canton, TX 75103",
   hours: [
     { days: "Monday – Friday", time: "9:00 AM – 5:30 PM" },
     { days: "Saturday",        time: "9:00 AM – 1:00 PM" },
@@ -20,7 +20,7 @@ const SHOP = {
   // Shown on the home page — edit freely
   established: "[YEAR]",              // e.g. "1998"
   ownerName: "[OWNER NAME]",
-  deliveryArea: "[TOWN NAME] and surrounding communities",
+  deliveryArea: "Canton and surrounding communities",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
 };

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flowers Etc. — Fresh Flowers &amp; Arrangements</title>
-  <meta name="description" content="Flowers Etc. is your hometown florist — fresh arrangements for every occasion, hand-designed and delivered locally.">
+  <title>Flowers Etc. — Florist in Canton, TX | Fresh &amp; Silk Flowers</title>
+  <meta name="description" content="Flowers Etc. in Canton, Texas — fresh &amp; silk flowers for weddings, funerals &amp; special occasions. Call (903) 567-7045 to order.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="home">
@@ -15,12 +15,103 @@
 
   <!-- ————— Hero ————— -->
   <section class="hero">
-    <div class="flourish">✿ ✿ ✿</div>
-    <h1>Flowers Etc.</h1>
-    <p class="lead">Fresh flowers, arranged with love by your hometown florist.
-    Every stem hand-picked, every arrangement made just for you.</p>
+    <h1 class="sr-only">Flowers Etc. — Fresh &amp; Silk Flowers in Canton, Texas</h1>
+
+    <!-- SVG recreation of the shop's logo. To use the original image instead,
+         save it as images/logo.png and replace this <svg> with:
+         <img class="logo-svg" src="images/logo.png" alt="Flowers Etc"> -->
+    <svg class="logo-svg" viewBox="0 0 660 320" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Flowers Etc — Fresh and Silk Flowers, Canton, Texas">
+      <defs>
+        <g id="bell">
+          <path d="M0 0 C-6 2.5 -8 10 -4.5 14 L4.5 14 C8 10 6 2.5 0 0 Z" fill="#F4A9BC" stroke="#E4778F" stroke-width="0.6"/>
+          <path d="M-4.5 14 q2.25 3 4.5 1 q2.25 3 4.5 -1" fill="none" stroke="#E4778F" stroke-width="0.8"/>
+        </g>
+        <g id="petal5">
+          <g fill="#F09CB0" stroke="#E4778F" stroke-width="0.5">
+            <ellipse cx="0" cy="-7" rx="3.4" ry="7"/>
+            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(288)"/>
+          </g>
+          <circle r="2.6" fill="#F3BE5E"/>
+        </g>
+        <path id="scroll" d="M0 0 C-16 0 -24 -12 -16 -19 C-10 -24 -1 -20 -3 -13 C-4.5 -8.5 -11 -9 -11 -13"
+              fill="none" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
+        <path id="leaf" d="M0 0 C10 -14 26 -18 38 -12 C30 2 12 6 0 0 Z" fill="#5FA097"/>
+      </defs>
+
+      <!-- top rule with scroll ends -->
+      <path d="M64 120 H596" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
+      <use href="#scroll" transform="translate(64 120)"/>
+      <use href="#scroll" transform="translate(596 120) scale(-1 1)"/>
+
+      <!-- central flower cluster -->
+      <g transform="translate(330 0)">
+        <path d="M-30 60 C-90 28 -150 34 -205 78" fill="none" stroke="#8CBF7E" stroke-width="2"/>
+        <path d="M30 60 C90 28 150 34 205 78" fill="none" stroke="#8CBF7E" stroke-width="2"/>
+        <use href="#bell" transform="translate(-95 42)"/>
+        <use href="#bell" transform="translate(-130 44)"/>
+        <use href="#bell" transform="translate(-165 52)"/>
+        <use href="#bell" transform="translate(-198 66)"/>
+        <use href="#bell" transform="translate(95 42)"/>
+        <use href="#bell" transform="translate(130 44)"/>
+        <use href="#bell" transform="translate(165 52)"/>
+        <use href="#bell" transform="translate(198 66)"/>
+
+        <use href="#petal5" transform="translate(-243 96) scale(1.7)"/>
+        <use href="#petal5" transform="translate(243 96) scale(1.7)"/>
+
+        <use href="#leaf" transform="translate(-40 106) scale(-1.5 1.5)"/>
+        <use href="#leaf" transform="translate(40 106) scale(1.5 1.5)"/>
+
+        <!-- peach fan petals -->
+        <g fill="#F2CFA6" stroke="#DFAF77" stroke-width="0.8">
+          <path d="M-16 96 C-30 70 -56 58 -82 62 C-78 88 -52 104 -16 96 Z"/>
+          <path d="M16 96 C30 70 56 58 82 62 C78 88 52 104 16 96 Z"/>
+        </g>
+
+        <!-- main flower -->
+        <g transform="translate(0 78)">
+          <g fill="#F09CB0" stroke="#E4778F" stroke-width="0.8">
+            <ellipse cx="0" cy="-22" rx="9" ry="22"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(30)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(60)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(90)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(120)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(150)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(180)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(210)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(240)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(270)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(300)"/>
+            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(330)"/>
+          </g>
+          <circle r="15" fill="#F6C874" stroke="#E8A94C" stroke-width="1.5"/>
+          <circle r="4" fill="#E4778F"/>
+        </g>
+      </g>
+
+      <!-- shop name -->
+      <text x="330" y="208" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif"
+            font-size="67" letter-spacing="7" fill="#3E7C74">FLOWERS ETC</text>
+
+      <!-- script subline -->
+      <text x="330" y="254" text-anchor="middle" font-family="'Parisienne', cursive"
+            font-size="28" fill="#D96A8B">Fresh &amp; Silk Flowers  ~  Canton, Texas</text>
+
+      <!-- bottom rule -->
+      <path d="M110 288 H550" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
+      <use href="#scroll" transform="translate(110 288) scale(1 -1)"/>
+      <use href="#scroll" transform="translate(550 288) scale(-1 -1)"/>
+      <use href="#petal5" transform="translate(330 288) scale(2)"/>
+    </svg>
+
+    <p class="lead">We specialize in fresh &amp; silk flowers for weddings, funerals
+    &amp; special occasions — every arrangement designed by hand, with love.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="shop.html">Shop Arrangements</a>
+      <a class="btn btn-blush" href="shop.html">Shop Arrangements</a>
       <a class="btn btn-outline" data-shop-tel href="#">📞 Call to Order</a>
     </div>
   </section>

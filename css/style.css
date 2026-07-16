@@ -5,20 +5,22 @@
    ============================================================ */
 
 :root {
-  /* Palette — tweak these to re-theme the whole site */
-  --cream:      #FAF6F0;   /* page background */
+  /* Palette — matched to the Flowers Etc. logo (teal + pinks).
+     Tweak these to re-theme the whole site. */
+  --cream:      #FDF8F6;   /* page background — warm pink-tinged ivory */
   --ivory:      #FFFFFF;   /* cards */
-  --ink:        #33403A;   /* main text — deep green-gray */
-  --forest:     #3E5641;   /* headings, buttons */
-  --forest-dk:  #2E4231;   /* hover */
-  --sage:       #8FA58B;   /* soft accents */
-  --blush:      #D9A5A5;   /* highlight accent */
-  --blush-soft: #F3E3E0;   /* light accent backgrounds */
-  --gold:       #B99659;   /* fine lines & small flourishes */
-  --line:       #E7DFD3;   /* borders */
+  --ink:        #3C4A47;   /* main text — deep teal-gray */
+  --forest:     #3E7C74;   /* headings, buttons — logo teal */
+  --forest-dk:  #2F6159;   /* hover */
+  --sage:       #7FB3AC;   /* soft teal accents */
+  --blush:      #E48AA8;   /* pink highlight — logo bell-flowers */
+  --blush-soft: #FBE9EF;   /* light pink backgrounds */
+  --gold:       #DCA24E;   /* logo flower center — small flourishes */
+  --line:       #F0E0E2;   /* borders — soft pink */
 
   --font-head: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-body: "Nunito Sans", "Segoe UI", Tahoma, sans-serif;
+  --font-script: "Parisienne", "Brush Script MT", cursive;
 
   --radius: 10px;
   --shadow: 0 2px 14px rgba(62, 86, 65, 0.10);
@@ -27,6 +29,16 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 html { scroll-behavior: smooth; }
 
@@ -152,17 +164,31 @@ nav.main-nav a.active { color: var(--forest); border-bottom-color: var(--gold); 
 /* ————— Hero ————— */
 .hero {
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(217,165,165,0.18), transparent 55%),
-    radial-gradient(ellipse at 85% 80%, rgba(143,165,139,0.20), transparent 55%),
-    linear-gradient(160deg, #F7F1E7 0%, var(--cream) 60%, #F2EDE3 100%);
+    radial-gradient(ellipse at 12% 15%, rgba(228,138,168,0.20), transparent 50%),
+    radial-gradient(ellipse at 88% 85%, rgba(127,179,172,0.22), transparent 50%),
+    radial-gradient(ellipse at 85% 10%, rgba(244,200,115,0.14), transparent 45%),
+    linear-gradient(160deg, #FCF2EE 0%, var(--cream) 55%, #F7EDEA 100%);
   text-align: center;
-  padding: 84px 22px 92px;
+  padding: 64px 22px 84px;
   border-bottom: 1px solid var(--line);
 }
 .hero .flourish { color: var(--gold); font-size: 1.3rem; letter-spacing: 0.5em; margin-bottom: 14px; }
 .hero h1 {
   font-size: clamp(2.6rem, 6vw, 4.2rem);
   margin-bottom: 16px;
+}
+.hero .logo-svg {
+  width: min(560px, 92%);
+  height: auto;
+  margin: 0 auto 8px;
+  display: block;
+}
+.script-accent {
+  font-family: var(--font-script);
+  color: var(--blush);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  line-height: 1.2;
+  margin-bottom: 6px;
 }
 .hero p.lead {
   font-size: 1.22rem;
@@ -191,7 +217,12 @@ nav.main-nav a.active { color: var(--forest); border-bottom-color: var(--gold); 
 /* ————— Sections ————— */
 section.block { padding: 68px 0; }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
-.section-head .flourish { color: var(--gold); letter-spacing: 0.45em; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px; }
+.section-head .flourish {
+  font-family: var(--font-script);
+  color: var(--blush);
+  font-size: 1.7rem;
+  margin-bottom: 6px;
+}
 .section-head h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); margin-bottom: 12px; }
 .section-head p { color: #5A665F; }
 
@@ -342,7 +373,7 @@ section.block { padding: 68px 0; }
 
 /* ————— CTA band ————— */
 .cta-band {
-  background: linear-gradient(140deg, var(--forest) 0%, #4A6A4E 100%);
+  background: linear-gradient(140deg, var(--forest) 0%, #55978D 70%, #6FA89B 100%);
   color: #F4F1E9;
   text-align: center;
   padding: 64px 22px;
@@ -454,8 +485,8 @@ textarea { resize: vertical; min-height: 110px; }
 
 /* ————— Footer ————— */
 footer.site {
-  background: #2E3B33;
-  color: #C9D2CB;
+  background: #2C5750;
+  color: #CCE0DC;
   padding: 54px 0 26px;
   margin-top: 0;
 }
@@ -472,7 +503,7 @@ footer.site h4 {
 }
 footer.site p, footer.site li { font-size: 0.93rem; }
 footer.site ul { list-style: none; }
-footer.site a { color: #C9D2CB; text-decoration: none; }
+footer.site a { color: #CCE0DC; text-decoration: none; }
 footer.site a:hover { color: #fff; text-decoration: underline; }
 footer.site li { margin-bottom: 7px; }
 .footer-bottom {
@@ -480,15 +511,18 @@ footer.site li { margin-bottom: 7px; }
   padding-top: 20px;
   text-align: center;
   font-size: 0.83rem;
-  color: #93A198;
+  color: #9DBDB7;
 }
 
 /* ————— Page hero (interior pages) ————— */
 .page-hero {
-  background: linear-gradient(160deg, #F7F1E7, #F0EBDF);
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(228,138,168,0.16), transparent 50%),
+    radial-gradient(ellipse at 90% 80%, rgba(127,179,172,0.18), transparent 50%),
+    linear-gradient(160deg, #FCF2EE, #F7EDEA);
   border-bottom: 1px solid var(--line);
   text-align: center;
-  padding: 56px 22px;
+  padding: 52px 22px;
 }
 .page-hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 10px; }
 .page-hero p { color: #5A665F; max-width: 560px; margin: 0 auto; }
