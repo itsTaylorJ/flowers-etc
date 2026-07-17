@@ -1,0 +1,11 @@
+# Windows / OneDrive clutter
+Thumbs.db
+desktop.ini
+~$*
+
+# macOS clutter (in case the site is ever edited on a Mac)
+.DS_Store
+
+# Editor scratch files
+*.swp
+*.tmp
