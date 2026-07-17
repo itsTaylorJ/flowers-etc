@@ -23,6 +23,10 @@ const SHOP = {
   deliveryArea: "Canton and surrounding communities",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
+
+  // Announcement banner — shows at the very top of every page when not "".
+  // Great for holidays: "Order early for Valentine's Day — call today!"
+  announcement: "",
 };
 
 /* ------------------------------------------------------------
@@ -173,4 +177,24 @@ const PRODUCTS = [
     order: "custom",
     buyLink: "",
   },
+];
+
+/* ------------------------------------------------------------
+   GALLERY — the "Our Work" page.
+   Add one entry per photo:
+     image   — filename inside /images ("" shows a placeholder card)
+     caption — short line under the photo
+     tag     — small label, e.g. "Wedding", "Sympathy", "Everyday"
+   Add or remove entries freely; the page lays itself out.
+   ------------------------------------------------------------ */
+const GALLERY = [
+  { image: "", caption: "Bridal bouquet in blush and ivory", tag: "Wedding" },
+  { image: "", caption: "Standing spray with roses and lilies", tag: "Sympathy" },
+  { image: "", caption: "Birthday brights in a glass vase", tag: "Everyday" },
+  { image: "", caption: "Reception centerpieces", tag: "Wedding" },
+  { image: "", caption: "Fall porch arrangement", tag: "Seasonal" },
+  { image: "", caption: "Prom corsage and boutonniere set", tag: "Prom" },
+  { image: "", caption: "Casket spray in soft pastels", tag: "Sympathy" },
+  { image: "", caption: "Silk arrangement keepsake", tag: "Silk" },
+  { image: "", caption: "Just-because wildflower bundle", tag: "Everyday" },
 ];

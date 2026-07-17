@@ -68,6 +68,16 @@ a { color: var(--forest); }
 }
 
 /* ————— Header ————— */
+.announce {
+  background: linear-gradient(90deg, var(--blush), #EFA9C0);
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 9px 16px;
+  letter-spacing: 0.02em;
+}
+
 .topbar {
   background: var(--forest);
   color: #F6F3EC;
@@ -353,6 +363,76 @@ section.block { padding: 68px 0; }
 .f-text p { color: #5A665F; margin-bottom: 12px; }
 .f-text ul { margin: 0 0 14px 20px; color: #5A665F; }
 .f-text li { margin-bottom: 6px; }
+
+/* ————— Gallery (Our Work) ————— */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+.gallery-card {
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.16s, box-shadow 0.16s;
+}
+.gallery-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.gallery-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+.gallery-card .ph { aspect-ratio: 1 / 1; }
+.gallery-card figcaption {
+  padding: 14px 18px 18px;
+  font-size: 0.93rem;
+  color: #5A665F;
+}
+.g-tag {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--blush);
+  margin-bottom: 3px;
+}
+
+/* ————— FAQ accordion ————— */
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-list details {
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.faq-list summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 22px;
+  font-weight: 700;
+  color: var(--forest);
+  font-size: 1.02rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after {
+  content: "+";
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  color: var(--blush);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+.faq-list details p {
+  padding: 0 22px 18px;
+  color: #5A665F;
+  font-size: 0.96rem;
+}
 
 /* ————— Testimonials ————— */
 .testimonial-grid {

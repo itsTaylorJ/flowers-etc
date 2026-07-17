@@ -3,34 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Flowers — Flowers Etc.</title>
-  <meta name="description" content="Browse fresh arrangements from Flowers Etc. — everyday bouquets, sympathy flowers, wedding designs, and seasonal favorites.">
+  <title>Our Work — Flowers Etc.</title>
+  <meta name="description" content="A gallery of arrangements designed by Flowers Etc. in Canton, TX — weddings, sympathy pieces, everyday bouquets, and more.">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="shop">
+<body data-page="gallery">
   <div id="site-header"></div>
 
   <section class="page-hero">
-    <div class="script-accent">Hand-designed with love</div>
-    <h1>Shop Our Flowers</h1>
-    <p>Every arrangement is designed by hand in our shop. See something you love?
-    Order online or give us a call — we're happy to customize anything you see.</p>
+    <div class="script-accent">A little of what we do</div>
+    <h1>Our Work</h1>
+    <p>Every arrangement that leaves our shop is one of a kind. Here are a few
+    favorites — and if something catches your eye, we can make one just for you.</p>
   </section>
 
   <section class="block">
     <div class="container">
-      <div class="filter-bar" id="filter-bar"></div>
-      <div class="product-grid" id="product-grid"></div>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </div>
   </section>
 
   <section class="cta-band">
-    <h2>Don't See Quite What You Want?</h2>
-    <p>Tell us the occasion, your favorite colors, and your budget — custom orders are our specialty.</p>
+    <h2>Love What You See?</h2>
+    <p>Tell us which one caught your eye and we'll design something in the same spirit — or something all your own.</p>
     <a class="btn btn-outline" data-shop-tel href="#"></a>
   </section>
 
@@ -39,7 +38,7 @@
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script>
-    renderShop(document.getElementById("product-grid"), document.getElementById("filter-bar"));
+    renderGallery(document.getElementById("gallery-grid"));
   </script>
 </body>
 </html>

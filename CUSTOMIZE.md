@@ -16,6 +16,9 @@ Almost everything the shop owner will ask you to change lives in **one file**:
 | "Different fonts" | Same `:root` block (`--font-head`, `--font-body`) + the Google Fonts `<link>` in each page's `<head>` |
 | "Change the wording on the home page" | `index.html` — the text is plain HTML |
 | "Update our story" | `about.html` — look for the PLACEHOLDER STORY comment |
+| "Put a holiday banner on the site" | `SHOP.announcement` in `js/data.js` — set text to show it, `""` to hide |
+| "Add a photo to Our Work" | `GALLERY` at the bottom of `js/data.js` — one entry per photo |
+| "Change the FAQ answers" | `services.html` — the FAQ section is plain HTML |
 
 ## Adding her photos
 

@@ -8,7 +8,12 @@
   /* ---------- Header & footer (rendered once, used on every page) ---------- */
   const page = document.body.dataset.page || "";
 
+  const announcementHTML = SHOP.announcement
+    ? `<div class="announce">🌸 ${SHOP.announcement}</div>`
+    : "";
+
   const headerHTML = `
+    ${announcementHTML}
     <div class="topbar">
       🌸 Call us to order: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>
       &nbsp;·&nbsp; Local delivery to ${SHOP.deliveryArea}
@@ -23,6 +28,7 @@
         <nav class="main-nav">
           <a href="index.html"    data-nav="home">Home</a>
           <a href="shop.html"     data-nav="shop">Shop Flowers</a>
+          <a href="gallery.html"  data-nav="gallery">Our Work</a>
           <a href="services.html" data-nav="services">Services</a>
           <a href="about.html"    data-nav="about">About Us</a>
           <a href="contact.html"  data-nav="contact">Contact</a>
@@ -49,6 +55,7 @@
             <h4>Visit</h4>
             <ul>
               <li><a href="shop.html">Shop Flowers</a></li>
+              <li><a href="gallery.html">Our Work</a></li>
               <li><a href="services.html">Our Services</a></li>
               <li><a href="about.html">About Us</a></li>
               <li><a href="contact.html">Contact</a></li>
@@ -197,6 +204,22 @@ function openOrderModal(p) {
 
   backdrop.querySelector(".m-close").addEventListener("click", () => backdrop.classList.remove("open"));
   backdrop.classList.add("open");
+}
+
+/* ============================================================
+   GALLERY GRID (Our Work page)
+   ============================================================ */
+function renderGallery(gridEl) {
+  gridEl.innerHTML = GALLERY.map(g => `
+    <figure class="gallery-card">
+      ${g.image
+        ? `<img src="images/${g.image}" alt="${g.caption}" loading="lazy">`
+        : `<div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`}
+      <figcaption>
+        <span class="g-tag">${g.tag}</span>
+        ${g.caption}
+      </figcaption>
+    </figure>`).join("");
 }
 
 /* ============================================================
