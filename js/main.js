@@ -216,6 +216,10 @@ function openOrderModal(p) {
              call or text us and we'll take your order in just a minute or two.</div>`
       }
       ${addonsHTML}
+      <div class="m-photos">📸 Have a photo of something you love — a Pinterest find, a past
+        arrangement, the dress? <a href="sms:${SHOP.phoneHref}">Text it to us</a> or
+        <a href="mailto:${SHOP.email}?subject=Reference photos for my order">email it</a>
+        and we'll design from it.</div>
       <div class="m-actions">
         ${canBuyOnline ? `<a class="btn btn-primary" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
         <a class="btn ${canBuyOnline ? "btn-outline" : "btn-primary"}" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>

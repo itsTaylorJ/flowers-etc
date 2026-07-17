@@ -18,8 +18,8 @@ const SHOP = {
     { days: "Sunday",          time: "Closed" },
   ],
   // Shown on the home page — edit freely
-  established: "[YEAR]",              // e.g. "1998"
-  ownerName: "[OWNER NAME]",
+  established: "",                    // optional year, e.g. "1998" — currently unused (site avoids dates)
+  ownerName: "Lisa Thompson",
   deliveryArea: "Canton and surrounding communities",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
