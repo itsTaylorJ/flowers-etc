@@ -12,6 +12,8 @@ Almost everything the shop owner will ask you to change lives in **one file**:
 | "Add a new arrangement" | Copy any product block in `PRODUCTS`, paste, edit |
 | "Remove an arrangement" | Delete its block from `PRODUCTS` |
 | "Add / rename a category" | `CATEGORIES` in `js/data.js` (product `category` must match the `id`) |
+| "Add color choices to a product" | Add `colors: ["Red", "Pastels", ...]` to that product in `js/data.js` — they show in the order popup |
+| "Change the add-ons (bears, ribbons, balloons...)" | `ADDONS` at the bottom of `js/data.js` — shown in every order popup |
 | "I don't like the colors" | The `:root` block at the top of `css/style.css` — change the hex codes |
 | "Different fonts" | Same `:root` block (`--font-head`, `--font-body`) + the Google Fonts `<link>` in each page's `<head>` |
 | "Change the wording on the home page" | `index.html` — the text is plain HTML |

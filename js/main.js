@@ -15,7 +15,7 @@
   const headerHTML = `
     ${announcementHTML}
     <div class="topbar">
-      🌸 Call us to order: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>
+      🌸 Call or text to order: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>
       &nbsp;·&nbsp; Local delivery to ${SHOP.deliveryArea}
     </div>
     <header class="site">
@@ -49,7 +49,8 @@
             <h4>${SHOP.name}</h4>
             <p>${SHOP.tagline}</p>
             <p style="margin-top:10px;">${SHOP.address}<br>${SHOP.cityStateZip}<br>
-            <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a></p>
+            Call or text: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a><br>
+            <a href="mailto:${SHOP.email}">${SHOP.email}</a></p>
           </div>
           <div>
             <h4>Visit</h4>
@@ -96,6 +97,14 @@
   document.querySelectorAll("[data-shop-tel]").forEach(el => {
     el.setAttribute("href", "tel:" + SHOP.phoneHref);
     if (!el.textContent.trim()) el.textContent = SHOP.phone;
+  });
+  document.querySelectorAll("[data-shop-sms]").forEach(el => {
+    el.setAttribute("href", "sms:" + SHOP.phoneHref);
+    if (!el.textContent.trim()) el.textContent = "Text " + SHOP.phone;
+  });
+  document.querySelectorAll("[data-shop-mail]").forEach(el => {
+    el.setAttribute("href", "mailto:" + SHOP.email);
+    if (!el.textContent.trim()) el.textContent = SHOP.email;
   });
 
   /* ---------- Helpers ---------- */
@@ -180,24 +189,37 @@ function openOrderModal(p) {
   const canBuyOnline = p.order === "buy" && p.buyLink;
   const inquiryHref = `contact.html?arrangement=${encodeURIComponent(p.name)}`;
 
+  const colorsHTML = p.colors && p.colors.length
+    ? `<div class="m-colors"><strong>Color options:</strong><br>
+       ${p.colors.map(c => `<span class="chip">${c}</span>`).join("")}</div>`
+    : "";
+
+  const addonsHTML = typeof ADDONS !== "undefined" && ADDONS.length
+    ? `<div class="m-addons"><strong>Popular add-ons — just ask when you order:</strong>
+       ${ADDONS.map(a => `${a.name} <em>(${a.price})</em>`).join(" · ")}</div>`
+    : "";
+
   backdrop.innerHTML = `
     <div class="modal">
       <button class="m-close" aria-label="Close">✕</button>
       <h3>${p.name}</h3>
       <div class="m-price">${formatPrice(p.price)}</div>
       <p>${p.desc}</p>
+      ${colorsHTML}
       ${
         p.order === "custom"
-          ? `<div class="m-phone-note">This arrangement is made to order. Give us a quick call so we can
+          ? `<div class="m-phone-note">This one is made to order. Call or text us so we can
              talk through colors, sizing, and delivery — we love getting the details just right.</div>`
           : canBuyOnline
           ? ""
           : `<div class="m-phone-note">Online checkout for this arrangement is coming soon — for now,
-             call us and we'll take your order over the phone in just a minute or two.</div>`
+             call or text us and we'll take your order in just a minute or two.</div>`
       }
+      ${addonsHTML}
       <div class="m-actions">
         ${canBuyOnline ? `<a class="btn btn-primary" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
         <a class="btn ${canBuyOnline ? "btn-outline" : "btn-primary"}" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
+        <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
         <a class="btn btn-outline" href="${inquiryHref}">Send an Inquiry Instead</a>
       </div>
     </div>`;

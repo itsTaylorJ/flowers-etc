@@ -8,8 +8,8 @@ const SHOP = {
   name: "Flowers Etc.",
   tagline: "Fresh & silk flowers for weddings, funerals & special occasions.",
   phone: "(903) 567-7045",
-  phoneHref: "9035677045",            // digits only — used for tap-to-call links
-  email: "[EMAIL ADDRESS]",
+  phoneHref: "9035677045",            // digits only — used for tap-to-call and text links
+  email: "cantontxflowersetc@gmail.com",
   address: "1200 S Trade Days Blvd, Ste 150",
   cityStateZip: "Canton, TX 75103",
   hours: [
@@ -54,6 +54,11 @@ const CATEGORIES = [
     name: "Seasonal & Holiday",
     blurb: "Fresh designs for every season and celebration on the calendar.",
   },
+  {
+    id: "extras",
+    name: "Gifts & Extras",
+    blurb: "Gift baskets, stuffed animals, vases, and keepsakes to make it extra special.",
+  },
 ];
 
 /* ------------------------------------------------------------
@@ -69,6 +74,9 @@ const CATEGORIES = [
      buyLink   — Stripe/Square payment link URL (only for order: "buy";
                  leave "" until the payment account is set up — the button
                  will show "Call to Order" as a fallback automatically)
+   Optional:
+     colors    — list of color options, shown in the order popup,
+                 e.g. colors: ["Red & white", "Soft pastels", "You choose"]
    ------------------------------------------------------------ */
 const PRODUCTS = [
   // ——— Everyday & Just Because ———
@@ -89,6 +97,7 @@ const PRODUCTS = [
     image: "",
     order: "buy",
     buyLink: "",
+    colors: ["Classic red", "Blush & ivory", "Bright mix"],
   },
   {
     name: "Get Well Soon",
@@ -136,6 +145,37 @@ const PRODUCTS = [
     image: "",
     order: "custom",
     buyLink: "",
+    colors: ["White & ivory", "Soft pastels", "Red & white", "Family's choice"],
+  },
+  {
+    name: "Sympathy Wreath",
+    category: "sympathy",
+    price: "From $95",   // PRICE PLACEHOLDER — confirm with owner
+    desc: "A classic circular tribute in fresh or silk flowers, on an easel stand or sized for a door or headstone.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+    colors: ["White & ivory", "Soft pastels", "Fall tones", "Family's choice"],
+  },
+  {
+    name: "Memory Heart",
+    category: "sympathy",
+    price: "From $85",   // PRICE PLACEHOLDER — confirm with owner
+    desc: "A flower heart the family keeps in remembrance — often designed in silk so it lasts for years. Beautiful for funerals, anniversaries of loss, or memorial days.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+    colors: ["White & ivory", "Soft pastels", "Red", "Family's choice"],
+  },
+  {
+    name: "Memory Cross",
+    category: "sympathy",
+    price: "From $85",   // PRICE PLACEHOLDER — confirm with owner
+    desc: "A standing or keepsake cross of flowers, made to honor a loved one's faith. Available in fresh or lasting silk.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+    colors: ["White & ivory", "Soft pastels", "Family's choice"],
   },
 
   // ——— Weddings & Events ———
@@ -177,6 +217,49 @@ const PRODUCTS = [
     order: "custom",
     buyLink: "",
   },
+
+  // ——— Gifts & Extras ———
+  {
+    name: "Gift Basket",
+    category: "extras",
+    price: "From $40",   // PRICE PLACEHOLDER — confirm with owner
+    desc: "Snacks, sweets, and little luxuries arranged in a keepsake basket. Tell us the occasion and your budget — we'll fill it beautifully.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Stuffed Animals",
+    category: "extras",
+    price: "From $15",   // PRICE PLACEHOLDER — confirm with owner
+    desc: "Bears and friends in different sizes and styles — adorable on their own or riding along with an arrangement.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Vase Collection",
+    category: "extras",
+    price: "Varies",
+    desc: "From bud vases to statement pieces, we match the vase to the size and style of your arrangement. Keepsake and premium styles available — just ask.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+];
+
+/* ------------------------------------------------------------
+   ADD-ONS — shown inside the order popup on every arrangement
+   ("Popular add-ons — just ask when you order").
+   When online payments are set up, these become real checkbox
+   add-ons at checkout. Prices are placeholders — confirm with owner.
+   ------------------------------------------------------------ */
+const ADDONS = [
+  { name: "Hand-written card message", price: "Free" },
+  { name: "Custom ribbon — your colors & wording", price: "From $5" },
+  { name: "Stuffed animal", price: "From $15" },
+  { name: "Mylar balloon", price: "From $6" },
+  { name: "Upgraded keepsake vase", price: "Ask us" },
 ];
 
 /* ------------------------------------------------------------
