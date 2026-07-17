@@ -13,8 +13,8 @@ const SHOP = {
   address: "1200 S Trade Days Blvd, Ste 150",
   cityStateZip: "Canton, TX 75103",
   hours: [
-    { days: "Monday – Friday", time: "9:00 AM – 5:30 PM" },
-    { days: "Saturday",        time: "9:00 AM – 1:00 PM" },
+    { days: "Monday – Friday", time: "8:00 AM – 5:00 PM" },
+    { days: "Saturday",        time: "8:00 AM – 12:00 PM" },
     { days: "Sunday",          time: "Closed" },
   ],
   // Shown on the home page — edit freely

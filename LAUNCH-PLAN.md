@@ -10,14 +10,13 @@ is ordered — finish a phase before starting the next.
 
 These are things only the owner knows. Wrong info live is worse than no website.
 
-- [ ] **Store hours** — current hours are accepted as temporary; have Lisa
-      confirm them before launch (`SHOP.hours` in `js/data.js`).
+- [x] **Store hours** — confirmed: Mon–Fri 8–5, Sat 8–12, Sun closed (done)
 - [ ] **Every price** — placeholder prices are live by design for the review
       phase. Lisa corrects them before launch (marked `PRICE PLACEHOLDER` in `js/data.js`).
 - [ ] **Delivery fees & area** — confirm the FAQ answer on the Services page.
 - [x] Owner name — Lisa Thompson (done)
 - [x] Her story (About page — written; have Lisa read and approve it)
-- [ ] 2–3 real reviews from her Facebook page (home page testimonials).
+- [x] Real reviews — 3 Google reviews live on the home page (done)
 - [ ] FAQ answers read aloud to her — she'll want her own wording somewhere.
 
 ## Phase 2 — Photos (the site's biggest upgrade)
