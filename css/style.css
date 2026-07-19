@@ -216,9 +216,15 @@ nav.main-nav a.active { color: var(--forest); border-bottom-color: var(--gold); 
 }
 .trust-strip .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   text-align: center;
+}
+@media (max-width: 900px) {
+  .trust-strip .container { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .trust-strip .container { grid-template-columns: 1fr; }
 }
 .trust-item .t-icon { font-size: 1.6rem; margin-bottom: 6px; }
 .trust-item h3 { font-size: 1.15rem; margin-bottom: 3px; }
@@ -237,10 +243,18 @@ section.block { padding: 68px 0; }
 .section-head p { color: #5A665F; }
 
 /* ————— Category cards ————— */
+/* Flex with centered wrapping: however many categories exist, a partial
+   last row centers itself instead of hugging the left edge. */
 .cat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
+}
+.cat-grid .cat-card {
+  flex: 1 1 240px;
+  max-width: 320px;
+  min-width: 240px;
 }
 .cat-card {
   background: var(--ivory);
@@ -437,8 +451,11 @@ section.block { padding: 68px 0; }
 /* ————— Testimonials ————— */
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
+@media (max-width: 980px) {
+  .testimonial-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
 }
 .testimonial {
   background: var(--ivory);
@@ -466,9 +483,15 @@ section.block { padding: 68px 0; }
 /* ————— Info cards (contact page) ————— */
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-bottom: 56px;
+}
+@media (max-width: 1080px) {
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .info-grid { grid-template-columns: 1fr; }
 }
 .info-card {
   background: var(--ivory);

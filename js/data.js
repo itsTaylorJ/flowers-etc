@@ -20,7 +20,7 @@ const SHOP = {
   // Shown on the home page — edit freely
   established: "",                    // optional year, e.g. "1998" — currently unused (site avoids dates)
   ownerName: "Lisa Thompson",
-  deliveryArea: "Canton and surrounding communities",
+  deliveryArea: "Canton and surrounding towns — up to 30 miles",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
 
@@ -177,6 +177,51 @@ const PRODUCTS = [
     buyLink: "",
     colors: ["White & ivory", "Soft pastels", "Family's choice"],
   },
+  {
+    name: "Standing Wooden Cross",
+    category: "sympathy",
+    price: 50,
+    desc: "A handsome wooden cross on a stand, dressed with flowers — a lasting tribute the family can keep.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Memorial Wind Chimes",
+    category: "sympathy",
+    price: 40,
+    desc: "A soothing keepsake the family will hear for years to come — a gentle way to remember.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Wall Crosses & Keepsakes",
+    category: "sympathy",
+    price: "From $20",
+    desc: "Wall crosses and other memorial keepsakes for the home — small remembrances that mean the world.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Silk Cemetery Arrangement",
+    category: "sympathy",
+    price: 60,
+    desc: "Lasting silk florals designed for the cemetery — beautiful through every season, rain or shine.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Cemetery Subscription",
+    category: "sympathy",
+    price: "By subscription",
+    desc: "You pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you know it's been done.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
 
   // ——— Weddings & Events ———
   {
@@ -220,10 +265,28 @@ const PRODUCTS = [
 
   // ——— Gifts & Extras ———
   {
-    name: "Gift Basket",
+    name: "Fruit Basket",
     category: "extras",
-    price: "From $40",   // PRICE PLACEHOLDER — confirm with owner
-    desc: "Snacks, sweets, and little luxuries arranged in a keepsake basket. Tell us the occasion and your budget — we'll fill it beautifully.",
+    price: "From $125",
+    desc: "A generous basket of fresh fruit and goodies, customized to the recipient's tastes — and we happily work around any allergies.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Coffee Basket",
+    category: "extras",
+    price: "From $100",
+    desc: "For the coffee lover — brews, treats, and cozy extras, put together just for them.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Candy Basket",
+    category: "extras",
+    price: "From $75",
+    desc: "Sweets galore, customized to what they love — allergies happily accommodated.",
     image: "",
     order: "custom",
     buyLink: "",
@@ -231,8 +294,17 @@ const PRODUCTS = [
   {
     name: "Stuffed Animals",
     category: "extras",
-    price: "From $15",   // PRICE PLACEHOLDER — confirm with owner
-    desc: "Bears and friends in different sizes and styles — adorable on their own or riding along with an arrangement.",
+    price: "From $15",
+    desc: "Stuffed bears from $15 and rabbits from $20 — adorable on their own or riding along with an arrangement.",
+    image: "",
+    order: "custom",
+    buyLink: "",
+  },
+  {
+    name: "Friendship Gifts",
+    category: "extras",
+    price: "From $20",
+    desc: "Little just-because gifts for a friend who needs a smile — we'll help you pick the perfect one.",
     image: "",
     order: "custom",
     buyLink: "",
@@ -256,9 +328,10 @@ const PRODUCTS = [
    ------------------------------------------------------------ */
 const ADDONS = [
   { name: "Hand-written card message", price: "Free" },
-  { name: "Custom ribbon — your colors & wording", price: "From $5" },
-  { name: "Stuffed animal", price: "From $15" },
-  { name: "Mylar balloon", price: "From $6" },
+  { name: "Personalized ribbon — your colors & wording", price: "$5" },
+  { name: "Stuffed bear", price: "From $15" },
+  { name: "Stuffed rabbit", price: "From $20" },
+  { name: "Mylar balloon", price: "From $6" },   // PRICE PLACEHOLDER — confirm with owner
   { name: "Upgraded keepsake vase", price: "Ask us" },
 ];
 

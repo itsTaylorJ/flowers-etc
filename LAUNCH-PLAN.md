@@ -13,7 +13,11 @@ These are things only the owner knows. Wrong info live is worse than no website.
 - [x] **Store hours** — confirmed: Mon–Fri 8–5, Sat 8–12, Sun closed (done)
 - [ ] **Every price** — placeholder prices are live by design for the review
       phase. Lisa corrects them before launch (marked `PRICE PLACEHOLDER` in `js/data.js`).
-- [ ] **Delivery fees & area** — confirm the FAQ answer on the Services page.
+- [x] **Delivery fees & area** — $5 Canton / $10 out of town / $15 extended towns,
+      30-mile radius, 2:30 PM same-day cutoff (done)
+- [x] Payment methods — cash, check, debit/credit, Zelle (done)
+- [x] Wedding terms — 2 months ahead, 50% retainer, balance 2 weeks prior (done)
+- [x] Funeral homes list + cemetery subscription service (done)
 - [x] Owner name — Lisa Thompson (done)
 - [x] Her story (About page — written; have Lisa read and approve it)
 - [x] Real reviews — 3 Google reviews live on the home page (done)
