@@ -182,7 +182,8 @@ function renderCartPage(rootEl) {
           </div>
           <p class="cart-reassure">💐 <strong>Nothing is charged online.</strong> We'll call or text to
           confirm every detail — and take payment — before we make a single stem. Cash, check,
-          debit &amp; credit cards, and Zelle accepted.</p>
+          debit &amp; credit cards, and Zelle accepted. Tips for our delivery drivers are always
+          welcome, never expected.</p>
           <p class="cart-alt">Customer needs change — if you'd rather finish this order with a person,
             <a href="tel:${SHOP.phoneHref}">call</a> or <a href="sms:${SHOP.phoneHref}">text us</a>
             at ${SHOP.phone}, or <a href="contact.html">send an inquiry</a> instead. We're easy.</p>
@@ -207,10 +208,7 @@ function renderCartPage(rootEl) {
               <label for="co-method">Pickup or Delivery? *</label>
               <select id="co-method" required>
                 <option value="Pickup at the shop (free)">Pickup at the shop — free</option>
-                <option value="Delivery in Canton (+$5)" data-fee="5">Delivery in Canton — $5</option>
-                <option value="Delivery just out of town (+$10)" data-fee="10">Delivery just out of town — $10</option>
-                <option value="Delivery to Wills Point / Grand Saline / Van / Mabank / Martins Mill / Ben Wheeler (+$15)" data-fee="15">Wills Point, Grand Saline, Van, Mabank, Martins Mill &amp; Ben Wheeler — $15</option>
-                <option value="Not sure — call me">Not sure — we'll figure it out on the call</option>
+                <option value="Delivery">Delivery — fee calculated from your address</option>
               </select>
             </div>
             <div class="full co-delivery" style="display:none;">
@@ -218,16 +216,31 @@ function renderCartPage(rootEl) {
               <input type="text" id="co-recipient">
             </div>
             <div class="full co-delivery" style="display:none;">
-              <label for="co-address">Delivery address</label>
+              <label for="co-address">Delivery address *</label>
               <input type="text" id="co-address" placeholder="Street address, town — funeral home or church name works too">
             </div>
+            <div class="co-delivery" style="display:none;">
+              <label for="co-zip">ZIP code *</label>
+              <input type="text" id="co-zip" inputmode="numeric" maxlength="5" placeholder="75103">
+              <div class="co-help" id="co-fee-help"></div>
+            </div>
+            <div class="co-delivery" style="display:none;">
+              <label for="co-time">Preferred delivery time *</label>
+              <input type="time" id="co-time" min="08:00" max="17:00" step="900">
+              <div class="co-help" id="co-time-help"></div>
+            </div>
             <div>
-              <label for="co-date">Date needed</label>
+              <label for="co-date">Date needed *</label>
               <input type="date" id="co-date">
+              <div class="co-help" id="co-date-help"></div>
             </div>
             <div>
               <label for="co-occasion">Occasion</label>
               <input type="text" id="co-occasion" placeholder="Birthday, sympathy, just because...">
+            </div>
+            <div class="full co-delivery" style="display:none;">
+              <label for="co-tip">Add a tip for your delivery driver? (optional)</label>
+              <input type="number" id="co-tip" min="0" step="1" placeholder="0">
             </div>
             <div class="full">
               <label for="co-card">Card message (free, hand-written)</label>
@@ -241,6 +254,7 @@ function renderCartPage(rootEl) {
               <label for="co-notes">Anything else? Colors, substitutions, special requests...</label>
               <textarea id="co-notes"></textarea>
             </div>
+            <div class="full co-errors" id="co-errors" style="display:none;"></div>
             <div class="full">
               <button type="submit" class="btn btn-primary" style="width:100%;">Place My Order</button>
             </div>
@@ -260,26 +274,122 @@ function renderCartPage(rootEl) {
     })
   );
 
-  /* delivery fee → estimated total */
-  const methodSel = rootEl.querySelector("#co-method");
-  const updateFee = () => {
-    const opt = methodSel.selectedOptions[0];
-    const fee = opt ? +(opt.getAttribute("data-fee") || 0) : 0;
-    const isDelivery = opt && opt.value.startsWith("Delivery");
-    rootEl.querySelectorAll(".co-delivery").forEach(d => (d.style.display = isDelivery ? "" : "none"));
-    const row = rootEl.querySelector("#cart-delivery-row");
-    row.style.display = fee ? "flex" : "none";
-    rootEl.querySelector("#cart-delivery-fee").textContent = "$" + fee;
-    rootEl.querySelector("#cart-grand").textContent = "$" + (subtotal + fee) + (hasQuoted ? " + custom items" : "");
+  /* ---------- delivery fee from ZIP / address ---------- */
+  // $5 in town · $10 just outside city limits · $15 to the listed towns · up to 35 miles
+  const ZONE15 = {
+    "75147": "Mabank", "75140": "Grand Saline", "75169": "Wills Point",
+    "75790": "Van", "75754": "Martins Mill / Ben Wheeler",
   };
-  methodSel.addEventListener("change", updateFee);
-  updateFee();
+  function zipFee(zip) {
+    if (zip === "75103")
+      return { fee: 5, help: "Canton — $5 in town, $10 just outside city limits (we'll confirm which on the call)." };
+    if (ZONE15[zip])
+      return { fee: 15, help: ZONE15[zip] + " — $15 delivery." };
+    if (/^\d{5}$/.test(zip))
+      return { fee: null, help: "We deliver up to 35 miles — we'll confirm your exact fee when we call." };
+    return { fee: null, help: "" };
+  }
+
+  /* ---------- delivery time windows ----------
+     Mon–Fri: deliveries 8:00 AM – 5:00 PM, same-day orders by 2:30 PM.
+     Saturday: deliveries 8:00 AM – 12:00 PM, same-day orders by 10:00 AM.
+     Sunday: closed. Earliest delivery is always 8:00 AM.            */
+  function deliveryWindow(dateStr) {
+    if (!dateStr) return undefined;
+    const day = new Date(dateStr + "T12:00:00").getDay();
+    if (day === 0) return null; // Sunday
+    if (day === 6) return { min: "08:00", max: "12:00", cutoff: "10:00 AM",
+      label: "Saturday deliveries run 8:00 AM – 12:00 PM (same-day orders by 10:00 AM)." };
+    return { min: "08:00", max: "17:00", cutoff: "2:30 PM",
+      label: "Deliveries run 8:00 AM – 5:00 PM (same-day orders by 2:30 PM)." };
+  }
+
+  const methodSel = rootEl.querySelector("#co-method");
+  const zipEl = rootEl.querySelector("#co-zip");
+  const dateEl = rootEl.querySelector("#co-date");
+  const timeEl = rootEl.querySelector("#co-time");
+  const tipEl = rootEl.querySelector("#co-tip");
+  const isDelivery = () => methodSel.value === "Delivery";
+  let currentFee = 0;
+
+  const updateTotals = () => {
+    const tip = isDelivery() ? Math.max(0, +tipEl.value || 0) : 0;
+    const row = rootEl.querySelector("#cart-delivery-row");
+    row.style.display = isDelivery() && currentFee ? "flex" : "none";
+    rootEl.querySelector("#cart-delivery-fee").textContent = "$" + currentFee;
+    const grand = subtotal + (isDelivery() ? currentFee : 0) + tip;
+    rootEl.querySelector("#cart-grand").textContent =
+      "$" + grand + (tip ? " (incl. $" + tip + " tip)" : "") + (hasQuoted ? " + custom items" : "");
+  };
+
+  const updateDelivery = () => {
+    rootEl.querySelectorAll(".co-delivery").forEach(d => (d.style.display = isDelivery() ? "" : "none"));
+    const z = zipFee(zipEl.value.trim());
+    currentFee = z.fee || 0;
+    rootEl.querySelector("#co-fee-help").textContent = isDelivery() ? z.help : "";
+    const w = deliveryWindow(dateEl.value);
+    const timeHelp = rootEl.querySelector("#co-time-help");
+    const dateHelp = rootEl.querySelector("#co-date-help");
+    if (w === null) {
+      dateHelp.textContent = "We're closed Sundays — pick another day and we'll make it beautiful.";
+      timeHelp.textContent = "";
+    } else if (w) {
+      timeEl.min = w.min; timeEl.max = w.max;
+      timeHelp.textContent = isDelivery() ? w.label : "";
+      // same-day cutoff heads-up (soft — we never block, we call)
+      const today = new Date(); const pad = n => String(n).padStart(2, "0");
+      const todayStr = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
+      dateHelp.textContent =
+        dateEl.value === todayStr
+          ? "Heads up: same-day orders need to be in by " + w.cutoff + " — if we're past that, we'll call you with the soonest we can do."
+          : "";
+    } else { dateHelp.textContent = ""; timeHelp.textContent = ""; }
+    updateTotals();
+  };
+
+  methodSel.addEventListener("change", updateDelivery);
+  zipEl.addEventListener("input", updateDelivery);
+  dateEl.addEventListener("change", updateDelivery);
+  tipEl.addEventListener("input", updateTotals);
+  updateDelivery();
 
   /* submit */
   rootEl.querySelector("#checkout-form").addEventListener("submit", async e => {
     e.preventDefault();
     const v = id => (rootEl.querySelector("#" + id) || {}).value || "";
+
+    /* friendly validation for delivery orders */
+    const errBox = rootEl.querySelector("#co-errors");
+    const errors = [];
+    if (isDelivery()) {
+      if (!v("co-address").trim() && !/^\d{5}$/.test(v("co-zip").trim()))
+        errors.push("For delivery we need the full address or at least the ZIP code, so we can figure your delivery fee.");
+      if (!v("co-date")) errors.push("Please pick a delivery date.");
+      else if (deliveryWindow(v("co-date")) === null)
+        errors.push("We're closed Sundays — please pick another delivery day.");
+      if (!v("co-time")) errors.push("Please pick a preferred delivery time.");
+      else {
+        const w = deliveryWindow(v("co-date"));
+        if (w && (v("co-time") < w.min || v("co-time") > w.max))
+          errors.push("On that day we deliver between " + w.min.replace("08:00", "8:00 AM") +
+            " and " + (w.max === "12:00" ? "12:00 PM" : "5:00 PM") + " — please pick a time in that window.");
+      }
+    }
+    errBox.textContent = "";
+    if (errors.length) {
+      errors.forEach(msg => {
+        const d = document.createElement("div");
+        d.textContent = "• " + msg;
+        errBox.appendChild(d);
+      });
+      errBox.style.display = "block";
+      errBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    errBox.style.display = "none";
+
     const addons = [...rootEl.querySelectorAll('input[name="addon"]:checked')].map(a => a.value);
+    const tip = isDelivery() ? Math.max(0, +v("co-tip") || 0) : 0;
     const orderLines = cartItems().map(i => {
       const pr = cartLinePrice(i);
       return `• ${i.qty} × ${i.name}${i.size ? " (" + i.size + ")" : ""} — ${pr !== null ? "$" + pr * i.qty : "price TBD"}`;
@@ -289,6 +399,8 @@ function renderCartPage(rootEl) {
       "",
       "ITEMS:", ...orderLines,
       "Items subtotal: $" + subtotal + (hasQuoted ? " (plus custom-priced items)" : ""),
+      "Estimated delivery fee: " + (isDelivery() ? (currentFee ? "$" + currentFee : "TBD — confirm by ZIP/address") : "n/a (pickup)"),
+      "Driver tip: " + (tip ? "$" + tip : "—"),
       "",
       "CUSTOMER: " + v("co-name"),
       "Phone: " + v("co-phone"),
@@ -296,7 +408,9 @@ function renderCartPage(rootEl) {
       "Method: " + v("co-method"),
       "Recipient: " + (v("co-recipient") || "—"),
       "Address: " + (v("co-address") || "—"),
+      "ZIP: " + (v("co-zip") || "—"),
       "Date needed: " + (v("co-date") || "—"),
+      "Preferred delivery time: " + (v("co-time") || "—"),
       "Occasion: " + (v("co-occasion") || "—"),
       "Card message: " + (v("co-card") || "—"),
       "Add-ons: " + (addons.length ? addons.join("; ") : "none"),

@@ -20,7 +20,7 @@ const SHOP = {
   // Shown on the home page — edit freely
   established: "",                    // optional year, e.g. "1998" — currently unused (site avoids dates)
   ownerName: "Lisa Thompson",
-  deliveryArea: "Canton and surrounding towns — up to 30 miles",
+  deliveryArea: "Canton and surrounding towns — up to 35 miles",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
 
@@ -242,7 +242,7 @@ const PRODUCTS = [
     name: "Cemetery Flowers & Subscriptions",
     category: "sympathy",
     price: 50,
-    desc: "Lasting silk arrangements designed for cemetery vases — beautiful through every Texas season, in any colors you'd like. And with our cemetery subscription, you pick the months, how often, and the flowers: you pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you know it's been done.",
+    desc: "Lasting silk arrangements designed for cemetery vases — and every one is finished with a weather-guard treatment, so it stands up to the Texas sun and rain and stays beautiful visit after visit. With our cemetery subscription, you pick the months, how often, and the flowers: you pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you know it's been done.",
     flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
     image: "silk-cemetery-arrangement.jpg",
     photos: ["cemetery-subscription.jpg", "cemetery-vase-flowers.jpg"],
