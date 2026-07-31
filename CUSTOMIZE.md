@@ -80,6 +80,21 @@ keep files under ~500 KB so pages load fast (resize at squoosh.app if needed).
 
 Products meant to stay phone-only (casket sprays, weddings) keep `order: "custom"` — they never show a buy button.
 
+## Online ordering (the cart)
+
+Customers can add any product to the cart (🛒 in the header) and check out at
+`cart.html` — items, sizes, quantity, pickup/delivery with fees, card message,
+add-ons, and notes. **Nothing is charged online**: the order arrives by email
+and Lisa calls/texts to confirm and take payment.
+
+- To receive orders by email: create a Formspree form (same account as the
+  contact form) and paste its URL into `ORDER_FORM_ACTION` at the top of
+  `js/cart.js`. Until then, checkout opens the customer's email app with the
+  full order written out.
+- When Lisa picks Stripe or Square, online card payment plugs into this same
+  checkout — no rebuild.
+- Call, text, and inquiry options stay available everywhere alongside the cart.
+
 ## Making the contact form actually send
 
 The form currently falls back to opening the visitor's email app. For real

@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flowers Etc. — Canton, TX</title>
-  <meta name="description" content="Hand-designed arrangements from Flowers Etc. in Canton, Texas.">
+  <title>Your Order — Flowers Etc.</title>
+  <meta name="description" content="Review and place your order online with Flowers Etc. in Canton, TX.">
+  <meta name="robots" content="noindex">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="shop">
+<body data-page="cart">
   <div id="site-header"></div>
 
-  <main class="pd-page" id="product-root"></main>
+  <main class="block" id="cart-root" style="padding-top:40px;"></main>
 
   <div id="site-footer"></div>
 
@@ -22,7 +23,7 @@
   <script src="js/main.js"></script>
   <script src="js/cart.js"></script>
   <script>
-    renderProductPage(document.getElementById("product-root"));
+    renderCartPage(document.getElementById("cart-root"));
   </script>
 </body>
 </html>

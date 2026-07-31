@@ -24,6 +24,7 @@
           <span class="brand-flower">✿</span>
           <span class="brand-name">${SHOP.name}</span>
         </a>
+        <a class="cart-btn" href="cart.html" aria-label="Your order">🛒<span id="cart-count"></span></a>
         <button class="nav-toggle" aria-label="Open menu">☰</button>
         <nav class="main-nav">
           <a href="index.html"    data-nav="home">Home</a>
@@ -247,10 +248,8 @@ function renderShop(gridEl, filterEl) {
             ${p.order === "custom" ? `<span class="badge-custom">Custom — call to order</span>` : ""}
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
-              <a class="btn btn-primary btn-sm" href="${productUrl(p)}">View Details</a>
-              <button class="btn btn-outline btn-sm" data-order="${PRODUCTS.indexOf(p)}">
-                ${p.order === "buy" && p.buyLink ? "Buy Now" : "Quick Order"}
-              </button>
+              <button class="btn btn-primary btn-sm" data-cart-add="${p.name}">🛒 Add to Cart</button>
+              <a class="btn btn-outline btn-sm" href="${productUrl(p)}">Details</a>
             </div>
           </div>
         </article>`)
@@ -320,8 +319,9 @@ function openOrderModal(p) {
         <a href="mailto:${SHOP.email}?subject=Reference photos for my order">email it</a>
         and we'll design from it.</div>
       <div class="m-actions">
-        ${canBuyOnline ? `<a class="btn btn-primary" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
-        <a class="btn ${canBuyOnline ? "btn-outline" : "btn-primary"}" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
+        <button class="btn btn-primary" data-cart-add="${p.name}">🛒 Add to Cart — Order Online</button>
+        ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
+        <a class="btn btn-outline" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
         <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
         <a class="btn btn-outline" href="${inquiryHref}">Send an Inquiry Instead</a>
       </div>
@@ -483,9 +483,10 @@ function renderProductPage(rootEl) {
           ${colorsHTML}
 
           <div class="pd-actions">
-            ${canBuyOnline ? `<a class="btn btn-primary" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
-            <a class="btn ${canBuyOnline ? "btn-outline" : "btn-primary"}" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
-            <a class="btn btn-blush" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
+            <button class="btn btn-primary" data-cart-add="${p.name}">🛒 Add to Cart — Order Online</button>
+            ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
+            <a class="btn btn-blush" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
+            <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
             <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send an Inquiry</a>
           </div>
 

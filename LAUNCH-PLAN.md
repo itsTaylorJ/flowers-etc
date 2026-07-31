@@ -46,12 +46,16 @@ Still needs photos (currently showing placeholders):
 - [ ] Optional: add a "Plants & Dish Gardens" product (Lisa sent several nice
       dish-garden photos with no matching product yet: IMG_0367/0012/0504)
 
-## Phase 3 — Make the contact form real (15 minutes)
+## Phase 3 — Make the forms real (20 minutes)
 
 - [ ] Sign up at formspree.io with cantontxflowersetc@gmail.com (free tier)
-- [ ] Create a form, copy the endpoint, replace `YOUR_FORM_ID` in `contact.html`
-- [ ] Send a test inquiry; confirm it lands in the Gmail inbox
-- [ ] Add the Google Maps embed to `contact.html` (instructions in the file)
+- [ ] Create a form, copy the endpoint, replace `YOUR_FORM_ID` in BOTH
+      `contact.html` (inquiries) and `js/cart.js` → `ORDER_FORM_ACTION` (orders)
+- [ ] Send a test inquiry AND a test cart order; confirm both land in Gmail
+- [x] Google Maps embed on the contact page (done)
+- [x] Full online ordering: cart + checkout at cart.html — order placed online,
+      payment taken on Lisa's confirmation call (done). Online CARD payment
+      still comes with the Phase 4 Stripe/Square decision.
 
 ## Phase 4 — Payments decision (owner researching — no rush)
 
