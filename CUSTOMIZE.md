@@ -12,8 +12,43 @@ Almost everything the shop owner will ask you to change lives in **one file**:
 | "Add a new arrangement" | Copy any product block in `PRODUCTS`, paste, edit |
 | "Remove an arrangement" | Delete its block from `PRODUCTS` |
 | "Add / rename a category" | `CATEGORIES` in `js/data.js` (product `category` must match the `id`) |
-| "Add color choices to a product" | Add `colors: ["Red", "Pastels", ...]` to that product in `js/data.js` — they show in the order popup |
-| "Change the add-ons (bears, ribbons, balloons...)" | `ADDONS` at the bottom of `js/data.js` — shown in every order popup |
+| "Add color choices to a product" | Add `colors: ["Red", "Pastels", ...]` to that product in `js/data.js` |
+| "Change the add-ons (bears, ribbons, balloons...)" | `ADDONS` in `js/data.js` — shown on every product page |
+| "List the flowers in an arrangement" | Add `flowers: ["Roses", "Lilies", ...]` to that product |
+| "Offer sizes (half dozen / dozen)" | Add `sizes: [{label:"Dozen", price:75}, ...]` to that product |
+| "Put something on sale right now" | Add `salePrice: 55` (and optional `saleNote: "Spring Special"`) to that product. Delete the line to end the sale. |
+| "Raise rose prices for Valentine's" | Already automatic — see `SEASONS` in `js/data.js` |
+
+## Seasonal pricing (the `SEASONS` list in `js/data.js`)
+
+Seasons hold date ranges written as `MM-DD`. They turn themselves **on and off
+every year** — so holiday prices can never get stuck on in July.
+
+```js
+{
+  name: "Valentine's Day",
+  start: "02-01", end: "02-15",
+  enabled: true,
+  banner: "Valentine's Day orders are open — call early!",
+  prices: {
+    "Rose Bouquet": { "Half Dozen": 60, "Dozen": 95, "Two Dozen": 175 },
+    "Garden Romance": 85,
+  },
+}
+```
+
+- `banner` shows a pink bar at the top of every page during that window.
+- `prices` overrides only the products you list; everything else stays normal.
+- For a product with sizes, give a price per size label. Otherwise just a number.
+- Set `enabled: false` to switch a season off without deleting it.
+- A manual `salePrice` on a product always beats the seasonal price.
+
+## Product detail pages
+
+Every product automatically gets its own page — no file to create. The link is
+`product.html?p=<product-name-in-dashes>`, e.g. `product.html?p=rose-bouquet`.
+Rename a product and its link changes to match. These pages are shareable
+(Lisa can text one to a customer) and Google can index each one.
 | "I don't like the colors" | The `:root` block at the top of `css/style.css` — change the hex codes |
 | "Different fonts" | Same `:root` block (`--font-head`, `--font-body`) + the Google Fonts `<link>` in each page's `<head>` |
 | "Change the wording on the home page" | `index.html` — the text is plain HTML |

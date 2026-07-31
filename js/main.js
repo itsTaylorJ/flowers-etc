@@ -114,6 +114,96 @@
     p.image
       ? `<img class="p-photo" src="images/${p.image}" alt="${p.name}">`
       : `<div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
+
+  // URL-friendly id for a product, e.g. "Casket Spray" -> "casket-spray"
+  window.slugify = s =>
+    s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  window.productBySlug = slug => PRODUCTS.find(p => slugify(p.name) === slug);
+  window.productUrl = p => `product.html?p=${slugify(p.name)}`;
+
+  /* ---------- Seasonal pricing engine ----------
+     Seasons are date ranges in data.js that switch themselves on and off.
+     Price priority:  salePrice (manual)  >  season override  >  base price
+  ------------------------------------------------------------------- */
+  function todayMMDD() {
+    const d = new Date();
+    return String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  window.activeSeason = function () {
+    if (typeof SEASONS === "undefined") return null;
+    const t = todayMMDD();
+    return (
+      SEASONS.find(s => {
+        if (s.enabled === false) return false;
+        // normal range, or one that wraps the new year (e.g. 12-20 → 01-05)
+        return s.start <= s.end ? t >= s.start && t <= s.end : t >= s.start || t <= s.end;
+      }) || null
+    );
+  };
+
+  // Returns { price, was, badge, sizes } — `was` is the struck-through old price
+  window.resolvePrice = function (p) {
+    const season = activeSeason();
+    const override = season && season.prices ? season.prices[p.name] : undefined;
+
+    // Products with size tiers
+    if (p.sizes && p.sizes.length) {
+      const sizes = p.sizes.map(s => {
+        const seasonal = override && typeof override === "object" ? override[s.label] : undefined;
+        const price = seasonal !== undefined ? seasonal : s.price;
+        return { label: s.label, price, was: seasonal !== undefined && seasonal !== s.price ? s.price : null };
+      });
+      const low = Math.min(...sizes.map(s => s.price));
+      return {
+        price: "From $" + low,
+        was: null,
+        badge: override ? season.name + " pricing" : null,
+        sizes,
+      };
+    }
+
+    // Manual sale wins over everything
+    if (p.salePrice !== undefined && p.salePrice !== null) {
+      return {
+        price: formatPrice(p.salePrice),
+        was: formatPrice(p.price),
+        badge: p.saleNote || "Sale",
+        sizes: null,
+      };
+    }
+
+    if (override !== undefined && typeof override !== "object") {
+      return {
+        price: formatPrice(override),
+        was: override !== p.price ? formatPrice(p.price) : null,
+        badge: season.name + " pricing",
+        sizes: null,
+      };
+    }
+
+    return { price: formatPrice(p.price), was: null, badge: null, sizes: null };
+  };
+
+  // Price block markup shared by cards and the detail page
+  window.priceHTML = function (p) {
+    const r = resolvePrice(p);
+    return (
+      `<span class="price-now">${r.price}</span>` +
+      (r.was ? ` <span class="price-was">${r.was}</span>` : "") +
+      (r.badge ? ` <span class="price-badge">${r.badge}</span>` : "")
+    );
+  };
+
+  /* ---------- Seasonal banner (fills in when no manual announcement) ---------- */
+  const season = activeSeason();
+  if (!SHOP.announcement && season && season.banner) {
+    const bar = document.querySelector(".announce");
+    const html = `<div class="announce">🌸 ${season.banner}</div>`;
+    if (bar) bar.outerHTML = html;
+    else document.getElementById("site-header").insertAdjacentHTML("afterbegin", html);
+  }
 })();
 
 /* ============================================================
@@ -144,16 +234,19 @@ function renderShop(gridEl, filterEl) {
     gridEl.innerHTML = items
       .map((p, i) => `
         <article class="product-card">
-          ${productMedia(p)}
+          <a class="p-media-link" href="${productUrl(p)}" aria-label="${p.name} details">
+            ${productMedia(p)}
+          </a>
           <div class="p-body">
             <div class="p-cat">${catName(p.category)}</div>
-            <h3>${p.name}</h3>
-            <div class="p-price">${formatPrice(p.price)}</div>
+            <h3><a class="p-title-link" href="${productUrl(p)}">${p.name}</a></h3>
+            <div class="p-price">${priceHTML(p)}</div>
             ${p.order === "custom" ? `<span class="badge-custom">Custom — call to order</span>` : ""}
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
-              <button class="btn btn-primary btn-sm" data-order="${PRODUCTS.indexOf(p)}">
-                ${p.order === "buy" && p.buyLink ? "Buy Now" : p.order === "buy" ? "Order This" : "Call to Order"}
+              <a class="btn btn-primary btn-sm" href="${productUrl(p)}">View Details</a>
+              <button class="btn btn-outline btn-sm" data-order="${PRODUCTS.indexOf(p)}">
+                ${p.order === "buy" && p.buyLink ? "Buy Now" : "Quick Order"}
               </button>
             </div>
           </div>
@@ -203,8 +296,9 @@ function openOrderModal(p) {
     <div class="modal">
       <button class="m-close" aria-label="Close">✕</button>
       <h3>${p.name}</h3>
-      <div class="m-price">${formatPrice(p.price)}</div>
+      <div class="m-price">${priceHTML(p)}</div>
       <p>${p.desc}</p>
+      <p style="margin-bottom:14px;"><a href="${productUrl(p)}" style="font-weight:700;">See full details &amp; add-ons →</a></p>
       ${colorsHTML}
       ${
         p.order === "custom"
@@ -246,6 +340,191 @@ function renderGallery(gridEl) {
         ${g.caption}
       </figcaption>
     </figure>`).join("");
+}
+
+/* ============================================================
+   PRODUCT DETAIL PAGE (product.html?p=slug)
+   ============================================================ */
+function renderProductPage(rootEl) {
+  const slug = new URLSearchParams(location.search).get("p") || "";
+  const p = productBySlug(slug);
+
+  // Unknown product — never echo the raw URL value back into the page
+  if (!p) {
+    rootEl.innerHTML = `
+      <div class="container" style="padding:70px 22px; text-align:center;">
+        <h1>We couldn't find that one</h1>
+        <p style="margin:12px 0 24px; color:#5A665F;">It may have been renamed or is no longer offered.</p>
+        <a class="btn btn-primary" href="shop.html">Browse All Flowers</a>
+      </div>`;
+    return;
+  }
+
+  document.title = `${p.name} — Flowers Etc. | Canton, TX`;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute("content", p.desc);
+
+  const cat = CATEGORIES.find(c => c.id === p.category) || {};
+  const r = resolvePrice(p);
+  const canBuyOnline = p.order === "buy" && p.buyLink;
+
+  /* --- photos: main + any extras --- */
+  const shots = [p.image, ...(p.photos || [])].filter(Boolean);
+  const mainShot = shots.length
+    ? `<img id="pd-main" src="images/${shots[0]}" alt="${p.name}">`
+    : `<div class="ph" style="aspect-ratio:1/1;"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
+  const thumbs = shots.length > 1
+    ? `<div class="pd-thumbs">${shots
+        .map((s, i) => `<button class="pd-thumb ${i === 0 ? "active" : ""}" data-src="images/${s}">
+             <img src="images/${s}" alt="${p.name} photo ${i + 1}"></button>`)
+        .join("")}</div>`
+    : "";
+
+  /* --- sizes --- */
+  const sizesHTML = r.sizes
+    ? `<div class="pd-block">
+         <h3>Choose a size</h3>
+         <div class="pd-sizes">
+           ${r.sizes.map((s, i) => `
+             <label class="pd-size">
+               <input type="radio" name="pdsize" value="${s.label}" ${i === 1 || r.sizes.length === 1 ? "checked" : ""}>
+               <span class="pd-size-label">${s.label}</span>
+               <span class="pd-size-price">$${s.price}${s.was ? ` <s>$${s.was}</s>` : ""}</span>
+             </label>`).join("")}
+         </div>
+       </div>`
+    : "";
+
+  /* --- flowers --- */
+  const flowersHTML = p.flowers && p.flowers.length
+    ? `<div class="pd-block">
+         <h3>What's in it</h3>
+         <ul class="pd-flowers">${p.flowers.map(f => `<li>${f}</li>`).join("")}</ul>
+         ${SHOP.substitutionNote ? `<p class="pd-sub">${SHOP.substitutionNote}</p>` : ""}
+       </div>`
+    : "";
+
+  /* --- colors --- */
+  const colorsHTML = p.colors && p.colors.length
+    ? `<div class="pd-block">
+         <h3>Color options</h3>
+         <div>${p.colors.map(c => `<span class="chip">${c}</span>`).join("")}</div>
+       </div>`
+    : "";
+
+  /* --- add-ons --- */
+  const addonsHTML = typeof ADDONS !== "undefined" && ADDONS.length
+    ? `<div class="pd-block pd-addons">
+         <h3>Make it extra special</h3>
+         <ul class="pd-addon-list">
+           ${ADDONS.map(a => `
+             <li>
+               <span class="pd-addon-name">${a.name}${a.customizable ? ` <em>customizable</em>` : ""}</span>
+               <span class="pd-addon-price">${a.price}</span>
+             </li>`).join("")}
+         </ul>
+         ${typeof ADDON_PROMISE !== "undefined"
+            ? `<div class="pd-promise"><strong>📞 We always confirm before we create.</strong> ${ADDON_PROMISE}</div>`
+            : ""}
+       </div>`
+    : "";
+
+  /* --- related --- */
+  const related = PRODUCTS.filter(x => x.category === p.category && x.name !== p.name).slice(0, 4);
+  const relatedHTML = related.length
+    ? `<section class="block" style="border-top:1px solid var(--line);">
+         <div class="container">
+           <div class="section-head"><div class="flourish">You might also like</div><h2>More ${cat.name || "Flowers"}</h2></div>
+           <div class="product-grid">
+             ${related.map(x => `
+               <article class="product-card">
+                 <a class="p-media-link" href="${productUrl(x)}">${productMedia(x)}</a>
+                 <div class="p-body">
+                   <h3><a class="p-title-link" href="${productUrl(x)}">${x.name}</a></h3>
+                   <div class="p-price">${priceHTML(x)}</div>
+                   <p class="p-desc">${x.desc}</p>
+                   <div class="p-actions"><a class="btn btn-outline btn-sm" href="${productUrl(x)}">View Details</a></div>
+                 </div>
+               </article>`).join("")}
+           </div>
+         </div>
+       </section>`
+    : "";
+
+  rootEl.innerHTML = `
+    <div class="container">
+      <nav class="pd-crumbs">
+        <a href="shop.html">Shop</a> ›
+        <a href="shop.html?cat=${p.category}">${cat.name || ""}</a> ›
+        <span>${p.name}</span>
+      </nav>
+
+      <div class="pd-wrap">
+        <div class="pd-media">
+          ${mainShot}
+          ${thumbs}
+        </div>
+
+        <div class="pd-info">
+          <div class="p-cat">${cat.name || ""}</div>
+          <h1>${p.name}</h1>
+          <div class="pd-price">${priceHTML(p)}</div>
+          ${p.order === "custom" ? `<span class="badge-custom">Custom — we design it with you</span>` : ""}
+          <p class="pd-desc">${p.desc}</p>
+
+          ${sizesHTML}
+          ${flowersHTML}
+          ${colorsHTML}
+
+          <div class="pd-actions">
+            ${canBuyOnline ? `<a class="btn btn-primary" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
+            <a class="btn ${canBuyOnline ? "btn-outline" : "btn-primary"}" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
+            <a class="btn btn-blush" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
+            <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send an Inquiry</a>
+          </div>
+
+          <div class="pd-reassure">
+            <div><strong>Same-day delivery</strong> on orders by 2:30 PM</div>
+            <div><strong>Hand-delivered</strong> across ${SHOP.deliveryArea}</div>
+            <div><strong>A real person</strong> answers — ${SHOP.ownerName} or one of our girls</div>
+          </div>
+
+          ${addonsHTML}
+
+          <div class="pd-photos-note">📸 Have a picture of something you love? Text or email it over and
+            we'll design from it — <a href="sms:${SHOP.phoneHref}">text ${SHOP.phone}</a> or
+            <a href="mailto:${SHOP.email}?subject=Reference photo for ${encodeURIComponent(p.name)}">email us</a>.</div>
+        </div>
+      </div>
+    </div>
+    ${relatedHTML}`;
+
+  // thumbnail switching
+  const main = document.getElementById("pd-main");
+  rootEl.querySelectorAll(".pd-thumb").forEach(t =>
+    t.addEventListener("click", () => {
+      if (main) main.src = t.dataset.src;
+      rootEl.querySelectorAll(".pd-thumb").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+    })
+  );
+
+  // Product structured data for Google
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.desc,
+    brand: { "@type": "Brand", name: SHOP.name },
+    ...(p.image ? { image: location.origin + location.pathname.replace(/product\.html$/, "") + "images/" + p.image } : {}),
+    ...(typeof p.price === "number"
+      ? { offers: { "@type": "Offer", price: p.price, priceCurrency: "USD", availability: "https://schema.org/InStock" } }
+      : {}),
+  };
+  const tag = document.createElement("script");
+  tag.type = "application/ld+json";
+  tag.textContent = JSON.stringify(ld);
+  document.head.appendChild(tag);
 }
 
 /* ============================================================
