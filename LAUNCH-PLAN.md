@@ -25,13 +25,21 @@ These are things only the owner knows. Wrong info live is worse than no website.
 
 ## Phase 2 — Photos (the site's biggest upgrade)
 
-Shot list in `images/README.md`. Priority order:
-1. One photo per Shop product (17 products)
-2. 9+ gallery photos for Our Work
-3. Storefront + owner photo (About), wedding + sympathy work (Services)
+DONE (first pass): Lisa emailed 78 photos → 19 placed on products + 12 in the
+Our Work gallery. Originals kept in `images/incoming/` (git-ignored) for re-swapping.
 
-Rules: landscape orientation for products, square-ish for gallery,
-under ~500 KB each (resize at squoosh.app). Add filenames in `js/data.js`.
+⚠️ Those emailed photos are LOW-RESOLUTION (~640px) — email compressed them.
+Good enough for cards/gallery, but for crisp results (and any large/hero use)
+get the FULL-SIZE originals from Lisa via Google Drive/Dropbox or text as
+"Actual Size", then re-save over the same filenames in `images/`.
+
+Still needs photos (currently showing placeholders):
+- [ ] Holiday Centerpiece
+- [ ] Fruit Basket, Coffee Basket, Candy Basket
+- [ ] Stuffed Animals, Friendship Gifts
+- [ ] Storefront + a photo of Lisa (About page — still placeholder art)
+- [ ] Optional: add a "Plants & Dish Gardens" product (Lisa sent several nice
+      dish-garden photos with no matching product yet: IMG_0367/0012/0504)
 
 ## Phase 3 — Make the contact form real (15 minutes)
 

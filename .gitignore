@@ -9,3 +9,6 @@ desktop.ini
 # Editor scratch files
 *.swp
 *.tmp
+
+# Original full-size photo dump — kept locally for re-swapping, not published
+images/incoming/

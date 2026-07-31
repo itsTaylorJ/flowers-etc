@@ -334,7 +334,8 @@ section.block { padding: 68px 0; }
   transition: transform 0.16s, box-shadow 0.16s;
 }
 .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
-.product-card img.p-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.product-card img.p-photo { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+.product-card .ph { aspect-ratio: 1/1; }
 .p-body { padding: 18px 20px 22px; display: flex; flex-direction: column; flex: 1; }
 .p-cat {
   font-size: 0.74rem;
