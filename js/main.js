@@ -229,7 +229,10 @@ function renderShop(gridEl, filterEl) {
   }
 
   function drawGrid() {
-    const items = PRODUCTS.filter(p => current === "all" || p.category === current);
+    const filtered = PRODUCTS.filter(p => current === "all" || p.category === current);
+    // Products still waiting on photos sink to the bottom (they stay
+    // orderable — a "coming soon" card gets people asking).
+    const items = [...filtered.filter(p => p.image), ...filtered.filter(p => !p.image)];
     const catName = id => (CATEGORIES.find(c => c.id === id) || {}).name || "";
     gridEl.innerHTML = items
       .map((p, i) => `
@@ -299,6 +302,7 @@ function openOrderModal(p) {
       <div class="m-price">${priceHTML(p)}</div>
       <p>${p.desc}</p>
       <p style="margin-bottom:14px;"><a href="${productUrl(p)}" style="font-weight:700;">See full details &amp; add-ons →</a></p>
+      ${p.notice ? `<div class="m-notice">🕐 ${p.notice}</div>` : ""}
       ${colorsHTML}
       ${
         p.order === "custom"
@@ -310,6 +314,7 @@ function openOrderModal(p) {
              call or text us and we'll take your order in just a minute or two.</div>`
       }
       ${addonsHTML}
+      ${SHOP.customizeNote ? `<div class="m-customize">💐 ${SHOP.customizeNote}</div>` : ""}
       <div class="m-photos">📸 Have a photo of something you love — a Pinterest find, a past
         arrangement, the dress? <a href="sms:${SHOP.phoneHref}">Text it to us</a> or
         <a href="mailto:${SHOP.email}?subject=Reference photos for my order">email it</a>
@@ -471,6 +476,7 @@ function renderProductPage(rootEl) {
           <div class="pd-price">${priceHTML(p)}</div>
           ${p.order === "custom" ? `<span class="badge-custom">Custom — we design it with you</span>` : ""}
           <p class="pd-desc">${p.desc}</p>
+          ${p.notice ? `<div class="pd-notice">🕐 ${p.notice}</div>` : ""}
 
           ${sizesHTML}
           ${flowersHTML}
@@ -487,6 +493,12 @@ function renderProductPage(rootEl) {
             <div><strong>Same-day delivery</strong> on orders by 2:30 PM</div>
             <div><strong>Hand-delivered</strong> across ${SHOP.deliveryArea}</div>
             <div><strong>A real person</strong> answers — ${SHOP.ownerName} or one of our girls</div>
+          </div>
+
+          <div class="pd-block pd-goodtoknow">
+            <h3>Good to know</h3>
+            ${SHOP.customizeNote ? `<div class="pd-gtk-item"><span>💐</span><p>${SHOP.customizeNote}</p></div>` : ""}
+            ${SHOP.noticeNote ? `<div class="pd-gtk-item"><span>🕐</span><p>${SHOP.noticeNote}</p></div>` : ""}
           </div>
 
           ${addonsHTML}

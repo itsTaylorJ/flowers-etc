@@ -34,6 +34,18 @@ const SHOP = {
     "Flowers are seasonal, so if something isn't at its best the day we design, " +
     "we'll substitute a similar bloom of equal or greater value — always matching " +
     "the style and colors you chose. If it's a big change, we'll call you first.",
+
+  // Shown on every product — the "make it yours" invitation. Set "" to hide.
+  customizeNote:
+    "Don't see quite what you had in mind? Don't hesitate to give us a call — " +
+    "we can customize this arrangement to be whatever you want it to be. " +
+    "(Additional fees may apply depending on the changes.)",
+
+  // Shown on every product — the ordering-notice heads-up. Set "" to hide.
+  noticeNote:
+    "We prefer at least 24 hours' notice on orders so we can make sure the " +
+    "flowers you want are in stock. If something isn't available, we'll contact " +
+    "you right away and work out the perfect substitute together.",
 };
 
 /* ------------------------------------------------------------
@@ -73,9 +85,10 @@ const CATEGORIES = [
    Each product needs:
      name      — display name
      category  — one of the category ids above
-     price     — number, or a string like "From $85" for custom work
+     price     — number, or a string like "From $85" / "$175 – $400+"
      desc      — one or two sentences
-     image     — filename inside the /images folder ("" = elegant placeholder)
+     image     — filename inside the /images folder ("" = elegant placeholder;
+                 products without a photo automatically sort to the bottom)
      order     — "buy"    → shows a Buy Now button (uses buyLink)
                  "custom" → shows Call to Order (phone) + inquiry option
      buyLink   — Stripe/Square payment link URL (only for order: "buy";
@@ -83,13 +96,13 @@ const CATEGORIES = [
                  will show "Call to Order" as a fallback automatically)
 
    Optional extras:
-     flowers   — the actual flowers pictured, e.g.
-                 flowers: ["Roses", "Oriental lilies", "Stock"]
+     flowers   — the actual flowers pictured, e.g. flowers: ["Roses", "Stock"]
      colors    — color choices, e.g. colors: ["Red & white", "You choose"]
-     sizes     — price tiers, e.g.
-                 sizes: [{ label: "Dozen", price: 75 }, ...]
+     sizes     — price tiers, e.g. sizes: [{ label: "Dozen", price: 75 }, ...]
                  (when present, the card shows "From $<lowest>")
      photos    — extra photo filenames for the detail-page gallery
+     notice    — a product-specific ordering note shown prominently,
+                 e.g. "Please allow at least 24 hours."
      salePrice — TEMPORARY promo price. Overrides everything and shows the
                  old price struck through. Delete the line to end the sale.
      saleNote  — small badge for the sale, e.g. "Mother's Day Special"
@@ -115,9 +128,9 @@ const PRODUCTS = [
   {
     name: "Sunshine Morning",
     category: "everyday",
-    price: 45,
-    desc: "A big armful of sunshine — yellow roses and towering gladiolus that brighten a room the second you set it down.",
-    flowers: ["Yellow roses", "Yellow gladiolus", "White alstroemeria", "Bear grass & ruscus greenery"],
+    price: 95,
+    desc: "A big armful of sunshine — a cheerful mix of gladiolus and roses that brightens a room the second you set it down.",
+    flowers: ["Roses", "Gladiolus", "Alstroemeria", "Bear grass & ruscus greenery"],
     image: "sunshine-morning.jpg",
     order: "buy",
     buyLink: "",
@@ -125,9 +138,9 @@ const PRODUCTS = [
   {
     name: "Garden Romance",
     category: "everyday",
-    price: 65,
-    desc: "Blush roses and green hydrangea tucked together as soft and sweet as a hug — our most-loved anniversary arrangement.",
-    flowers: ["Light pink roses", "White snapdragons", "Green hydrangea", "White carnations", "Waxflower", "Seeded eucalyptus"],
+    price: 95,
+    desc: "Roses, hydrangeas, and snapdragons tucked in with fresh eucalyptus — soft, sweet, and our most-loved anniversary arrangement.",
+    flowers: ["Roses", "Hydrangea", "Snapdragons", "Eucalyptus"],
     image: "garden-romance.jpg",
     order: "buy",
     buyLink: "",
@@ -136,7 +149,7 @@ const PRODUCTS = [
   {
     name: "Birthday Blooms",
     category: "everyday",
-    price: 60,
+    price: 50,
     desc: "Peach roses and cheerful green button mums all dressed up with a bow — the birthday gift that gets the loudest \"oh my goodness!\"",
     flowers: ["Peach roses", "Hot pink spray roses", "Green button mums", "Peach snapdragons", "White & purple lisianthus"],
     image: "birthday-blooms.jpg",
@@ -146,7 +159,7 @@ const PRODUCTS = [
   {
     name: "Get Well Soon",
     category: "everyday",
-    price: 40,
+    price: "From $40",
     desc: "Peach roses and bold pink gerbera daisies over a cloud of hydrangea — cheerful, fresh, and impossible to walk past without smiling.",
     flowers: ["Peach roses", "Peach spray roses", "Hot pink gerbera daisies", "Green hydrangea", "Mini carnations"],
     image: "get-well-soon.jpg",
@@ -168,13 +181,14 @@ const PRODUCTS = [
   {
     name: "Casket Spray",
     category: "sympathy",
-    price: "From $225",
-    desc: "Dozens and dozens of soft roses laid together like a blanket — about as tender and loving a tribute as we know how to make. Delivered directly to the funeral home.",
+    price: "From $325",
+    desc: "Dozens and dozens of soft roses laid together like a blanket — about as tender and loving a tribute as we know how to make. Pricing goes up with your flower selection, and we deliver directly to the funeral home.",
     flowers: ["Roses (light pink, blush & cream)", "White waxflower", "Silver dollar eucalyptus", "Salal & palm greenery"],
     image: "casket-spray.jpg",
     photos: ["gallery-01.jpg", "gallery-04.jpg", "gallery-14.jpg"],
     order: "custom",
     buyLink: "",
+    notice: "Typically a custom order — please request at least 24 hours in advance.",
     colors: ["White & ivory", "Soft pastels", "Red & white", "Golden yellow & blue", "Family's choice"],
   },
   {
@@ -192,7 +206,7 @@ const PRODUCTS = [
   {
     name: "Peaceful Garden Basket",
     category: "sympathy",
-    price: 75,
+    price: "From $75",
     desc: "Sunshine-yellow roses set against true-blue delphinium in a woven basket — bright, warm, and full of good memories.",
     flowers: ["Yellow roses", "Blue delphinium", "White stock", "Purple statice", "Baby's breath"],
     image: "peaceful-garden-basket.jpg",
@@ -201,32 +215,22 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Sympathy Wreath",
+    name: "Sympathy Wreaths & Hearts",
     category: "sympathy",
-    price: "From $95",   // PRICE PLACEHOLDER — confirm with Lisa
-    desc: "A tender open heart of lilies and roses on a standing easel, offered as a quiet way to say that love remains. Available as a heart or a traditional round wreath.",
-    flowers: ["Oriental lilies", "Roses & spray roses", "White stock", "Purple statice", "Waxflower", "Seeded eucalyptus"],
+    price: "$175 – $400+",
+    desc: "A tender tribute on a standing easel — offered as a classic round wreath or an open heart, fresh or lasting silk, in the colors your family chooses. Pricing varies with your flower selection.",
+    flowers: ["Oriental lilies", "Roses & spray roses", "Carnations", "White stock", "Waxflower", "Baby's breath", "Seeded eucalyptus"],
     image: "sympathy-wreath.jpg",
+    photos: ["memory-heart.jpg", "gallery-10.jpg", "gallery-05.jpg"],
     order: "custom",
     buyLink: "",
-    colors: ["White & ivory", "Soft pastels", "Fall tones", "Family's choice"],
-  },
-  {
-    name: "Memory Heart",
-    category: "sympathy",
-    price: "From $85",   // PRICE PLACEHOLDER — confirm with Lisa
-    desc: "A soft open heart on an easel — a gentle, loving way to say goodbye to someone who meant the world. Available fresh or in lasting silk.",
-    flowers: ["Pink carnations", "White cushion mums", "White daisy poms", "Pink roses", "Waxflower", "Baby's breath"],
-    image: "memory-heart.jpg",
-    photos: ["gallery-10.jpg", "gallery-05.jpg"],
-    order: "custom",
-    buyLink: "",
-    colors: ["White & ivory", "Soft pastels", "Red", "Family's choice"],
+    notice: "Please request at least 24 hours in advance so we can gather the right flowers.",
+    colors: ["White & ivory", "Soft pastels", "Fall tones", "Red", "Family's choice"],
   },
   {
     name: "Memory Cross",
     category: "sympathy",
-    price: "From $85",   // PRICE PLACEHOLDER — confirm with Lisa
+    price: "$125 – $225",
     desc: "A standing cross of roses, lilies and golden mums that says everything a hard day makes hard to say. Available fresh or in lasting silk.",
     flowers: ["Roses (red, pink & coral)", "Orange asiatic lilies", "Yellow cushion mums", "Bronze spider mums", "Carnations", "Pine cones"],
     image: "memory-cross.jpg",
@@ -235,26 +239,16 @@ const PRODUCTS = [
     colors: ["White & ivory", "Soft pastels", "Fall tones", "Family's choice"],
   },
   {
-    name: "Silk Cemetery Arrangement",
+    name: "Cemetery Flowers & Subscriptions",
     category: "sympathy",
-    price: 60,
-    desc: "A cheerful mix of everlasting roses in every happy color, made to keep their place looking loved all season long — and to hold up beautifully in the Texas heat.",
-    flowers: ["Silk roses & rosebuds (pink, purple, yellow, cream)", "Silk daisies", "Silk foliage"],
+    price: 50,
+    desc: "Lasting silk arrangements designed for cemetery vases — beautiful through every Texas season, in any colors you'd like. And with our cemetery subscription, you pick the months, how often, and the flowers: you pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you know it's been done.",
+    flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
     image: "silk-cemetery-arrangement.jpg",
-    photos: ["gallery-15.jpg"],
-    order: "buy",
-    buyLink: "",
-    colors: ["Spring pastels", "Bright mixed", "Sunflowers & blue", "Red & white", "Fall tones"],
-  },
-  {
-    name: "Cemetery Subscription",
-    category: "sympathy",
-    price: "By subscription",
-    desc: "You pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you always know it's been done.",
-    flowers: ["Silk sunflowers", "Blue cushion mums", "Blue hydrangea", "Delphinium", "Seasonal silk blooms"],
-    image: "cemetery-subscription.jpg",
+    photos: ["cemetery-subscription.jpg", "cemetery-vase-flowers.jpg"],
     order: "custom",
     buyLink: "",
+    colors: ["Spring pastels", "Bright mixed", "Sunflowers & blue", "Red & white", "Fall tones", "Your choice"],
   },
   {
     name: "Standing Wooden Cross",
@@ -289,11 +283,11 @@ const PRODUCTS = [
   {
     name: "Wall Crosses & Keepsakes",
     category: "sympathy",
-    price: "From $20",
-    desc: "A quiet little reminder that the ones we love never really leave us — perfect to tuck on a shelf or nightstand when flowers feel like too much.",
+    price: "From $8",
+    desc: "Little reminders that the ones we love never really leave us — crosses, plaques and keepsakes for shelf or nightstand. Our keepsake inventory rotates often, so you're welcome to order online — but please call to confirm we have what you want, or we might just have something even more fitting for you!",
     flowers: [],
     image: "wall-crosses-keepsakes.jpg",
-    order: "custom",
+    order: "buy",
     buyLink: "",
   },
 
@@ -307,6 +301,7 @@ const PRODUCTS = [
     image: "bridal-bouquet.jpg",
     order: "custom",
     buyLink: "",
+    notice: "Wedding orders are custom, made over the phone — please order about 1 month ahead. A 50% deposit holds your date, with the balance due 2 weeks before the ceremony. Exceptions possible depending on the size of the order — just ask!",
     colors: ["Blush & ivory", "All white", "Bright & bold", "Your wedding colors"],
   },
   {
@@ -318,13 +313,14 @@ const PRODUCTS = [
     image: "full-wedding-package.jpg",
     order: "custom",
     buyLink: "",
+    notice: "Wedding orders are custom, made over the phone — please order about 1 month ahead. A 50% deposit holds your date, with the balance due 2 weeks before the ceremony. Exceptions possible depending on the size of the order — just ask!",
   },
 
   // ——— Seasonal & Holiday ———
   {
     name: "Prom & Homecoming",
     category: "seasonal",
-    price: "From $25",
+    price: "$15 – $45",
     desc: "Petal-soft tulips gathered with delicate waxflower and a little sparkle — corsages and boutonnieres made to match. Bring us a photo of the dress!",
     flowers: ["Blush pink tulips", "White waxflower", "Bouvardia florets", "Italian ruscus greenery"],
     image: "prom-homecoming.jpg",
@@ -429,7 +425,7 @@ const ADDONS = [
   { name: "Personalized ribbon (your colors & wording)", price: "$5 per ribbon", customizable: true },
   { name: "Stuffed bear", price: "From $15", customizable: false },
   { name: "Stuffed rabbit", price: "From $20", customizable: false },
-  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $20", customizable: true },
+  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", customizable: true },
   { name: "Mylar balloon", price: "From $6", customizable: false },   // PRICE PLACEHOLDER
   { name: "Upgraded keepsake vase", price: "Ask us", customizable: true },
 ];
@@ -461,8 +457,7 @@ const SEASONS = [
     enabled: true,
     banner: "Valentine's Day orders are open — roses go fast, so call early!",
     prices: {
-      "Rose Bouquet": { "Half Dozen": 60, "Dozen": 95, "Two Dozen": 175 },
-      "Garden Romance": 85,
+      "Rose Bouquet": { "Half Dozen": 60, "Dozen": 95, "Two Dozen": 175 },  // PRICE PLACEHOLDER — confirm with Lisa
     },
   },
   {
@@ -472,7 +467,7 @@ const SEASONS = [
     enabled: true,
     banner: "Mother's Day is coming — order early so we can get her the best blooms.",
     prices: {
-      "Rose Bouquet": { "Half Dozen": 55, "Dozen": 85, "Two Dozen": 155 },
+      "Rose Bouquet": { "Half Dozen": 55, "Dozen": 85, "Two Dozen": 155 },  // PRICE PLACEHOLDER — confirm with Lisa
     },
   },
   {
@@ -511,5 +506,5 @@ const GALLERY = [
   { image: "gallery-12.jpg", caption: "Spring bouquet with a balloon bunch", tag: "Everyday" },
   { image: "gallery-13.jpg", caption: "Snowy lilies and glads with deep red carnations", tag: "Sympathy" },
   { image: "gallery-14.jpg", caption: "Ivory roses and callas cascading with soft greens", tag: "Sympathy" },
-  { image: "gallery-15.jpg", caption: "Everlasting silk blooms for the cemetery", tag: "Silk" },
+  { image: "gallery-15.jpg", caption: "Cemetery vase flowers in lasting silk", tag: "Silk" },
 ];

@@ -11,8 +11,13 @@ is ordered — finish a phase before starting the next.
 These are things only the owner knows. Wrong info live is worse than no website.
 
 - [x] **Store hours** — confirmed: Mon–Fri 8–5, Sat 8–12, Sun closed (done)
-- [ ] **Every price** — placeholder prices are live by design for the review
-      phase. Lisa corrects them before launch (marked `PRICE PLACEHOLDER` in `js/data.js`).
+- [x] **Most prices confirmed by Lisa** — Sunshine $95, Garden Romance $95,
+      Birthday $50, Get Well from $40, casket from $325, wreaths/hearts
+      $175–$400+, cross $125–$225, cemetery $50, prom $15–$45, keepsakes from $8,
+      Peaceful Garden from $75 (done)
+- [ ] Still `PRICE PLACEHOLDER` in `js/data.js`: Rose Bouquet sizes (45/75/135
+      + holiday tiers), Memorial Lantern $45, Plants & Dish Gardens from $45,
+      balloon add-on $6, Standing Spray from $150
 - [x] **Delivery fees & area** — $5 Canton / $10 out of town / $15 extended towns,
       30-mile radius, 2:30 PM same-day cutoff (done)
 - [x] Payment methods — cash, check, debit/credit, Zelle (done)

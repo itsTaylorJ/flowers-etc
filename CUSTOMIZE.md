@@ -18,6 +18,10 @@ Almost everything the shop owner will ask you to change lives in **one file**:
 | "Offer sizes (half dozen / dozen)" | Add `sizes: [{label:"Dozen", price:75}, ...]` to that product |
 | "Put something on sale right now" | Add `salePrice: 55` (and optional `saleNote: "Spring Special"`) to that product. Delete the line to end the sale. |
 | "Raise rose prices for Valentine's" | Already automatic — see `SEASONS` in `js/data.js` |
+| "Change the customize-anything note" | `SHOP.customizeNote` in `js/data.js` — shows on every product |
+| "Change the 24-hour notice wording" | `SHOP.noticeNote` in `js/data.js` — shows on every product |
+| "Special notice on one product" (24h, deposits...) | Add `notice: "..."` to that product — shows highlighted on its page and popup |
+| "Products without photos" | They automatically sort to the bottom of the shop grid; add an `image:` and they move up |
 
 ## Seasonal pricing (the `SEASONS` list in `js/data.js`)
 
