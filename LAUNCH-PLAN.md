@@ -10,7 +10,8 @@ is ordered — finish a phase before starting the next.
 
 These are things only the owner knows. Wrong info live is worse than no website.
 
-- [x] **Store hours** — confirmed: Mon–Fri 8–5, Sat 8–12, Sun closed (done)
+- [x] **Store hours** — confirmed: Mon–Fri 8–5 and Saturday 8–12. Sunday is closed; funeral delivery may be available by arrangement.
+- [x] **Customer email address** — confirmed: cantontxflowersetc@gmail.com.
 - [x] **Most prices confirmed by Lisa** — Sunshine $95, Garden Romance $95,
       Birthday $50, Get Well from $40, casket from $325, wreaths/hearts
       $175–$400+, cross $125–$225, cemetery $50, prom $15–$45, keepsakes from $8,
@@ -18,10 +19,11 @@ These are things only the owner knows. Wrong info live is worse than no website.
 - [ ] Still `PRICE PLACEHOLDER` in `js/data.js`: Rose Bouquet sizes (45/75/135
       + holiday tiers), Memorial Lantern $45, Plants & Dish Gardens from $45,
       balloon add-on $6, Standing Spray from $150
-- [x] **Delivery fees & area** — $5 Canton / $10 out of town / $15 extended towns,
-      30-mile radius, 2:30 PM same-day cutoff (done)
+- [x] **Delivery fees & area** — $5 inside Canton city limits / $10 just outside / $15 farther within 35 miles. Regular towns include Mabank, Wills Point, Van, Grand Saline, Martins Mill, and Ben Wheeler. Same-day cutoff is 2:30 PM Monday–Friday and 10 AM Saturday.
+- [ ] **Facility restrictions** — ask Lisa about any hospital, nursing-home, school, or workplace restrictions.
+- [ ] **Delivery photos** — ask Lisa whether they are automatic, by request, Cemetery Care only, or unavailable.
 - [x] Payment methods — cash, check, debit/credit, Zelle (done)
-- [x] Wedding terms — 2 months ahead, 50% retainer, balance 2 weeks prior (done)
+- [ ] Wedding terms — ask Lisa to reconcile lead time, retainer, balance deadline, delivery/setup, and cancellation terms.
 - [x] Funeral homes list + cemetery subscription service (done)
 - [x] Owner name — Lisa Thompson (done)
 - [x] Her story (About page — written; have Lisa read and approve it)
@@ -48,14 +50,12 @@ Still needs photos (currently showing placeholders):
 
 ## Phase 3 — Make the forms real (20 minutes)
 
-- [ ] Sign up at formspree.io with cantontxflowersetc@gmail.com (free tier)
+- [ ] Using cantontxflowersetc@gmail.com, create the inquiry and order endpoints.
 - [ ] Create a form, copy the endpoint, replace `YOUR_FORM_ID` in BOTH
       `contact.html` (inquiries) and `js/cart.js` → `ORDER_FORM_ACTION` (orders)
 - [ ] Send a test inquiry AND a test cart order; confirm both land in Gmail
 - [x] Google Maps embed on the contact page (done)
-- [x] Full online ordering: cart + checkout at cart.html — order placed online,
-      payment taken on Lisa's confirmation call (done). Online CARD payment
-      still comes with the Phase 4 Stripe/Square decision.
+- [ ] Complete dependable online order requests. Until the endpoint is connected, the site preserves the cart and offers a copyable summary plus call/text options; it does not claim the request was sent.
 
 ## Phase 4 — Payments decision (owner researching — no rush)
 

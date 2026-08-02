@@ -4,10 +4,10 @@
    the follow-up call until online card payment (Stripe/Square)
    is connected — then it plugs into this same flow.
 
-   SETUP: to receive orders by email, create a Formspree form and
+   SETUP: to receive order requests, create a Formspree form and
    put its URL in ORDER_FORM_ACTION below (same as the contact
-   form). Until then, checkout falls back to opening the
-   customer's email app with the full order written out.
+   form). Until then, checkout preserves the cart and shows a
+   copyable order summary with call and text options.
    ============================================================ */
 
 const ORDER_FORM_ACTION = "https://formspree.io/f/YOUR_FORM_ID";
@@ -208,8 +208,18 @@ function renderCartPage(rootEl) {
               <label for="co-method">Pickup or Delivery? *</label>
               <select id="co-method" required>
                 <option value="Pickup at the shop (free)">Pickup at the shop — free</option>
-                <option value="Delivery">Delivery — fee calculated from your address</option>
+                <option value="Delivery">Delivery — choose the correct service area below</option>
               </select>
+            </div>
+            <div class="full co-delivery" style="display:none;">
+              <label for="co-zone">Delivery area *</label>
+              <select id="co-zone">
+                <option value="">Choose the delivery area</option>
+                <option value="5">Inside Canton city limits — $5</option>
+                <option value="10">Just outside Canton city limits — $10</option>
+                <option value="15">Farther away, within 35 miles — $15</option>
+              </select>
+              <div class="co-help">The $15 area includes Mabank, Wills Point, Van, Grand Saline, Martins Mill, and Ben Wheeler.</div>
             </div>
             <div class="full co-delivery" style="display:none;">
               <label for="co-recipient">Recipient name (who is this going to?)</label>
@@ -225,7 +235,7 @@ function renderCartPage(rootEl) {
               <div class="co-help" id="co-fee-help"></div>
             </div>
             <div class="co-delivery" style="display:none;">
-              <label for="co-time">Preferred delivery time *</label>
+              <label for="co-time">Requested delivery time *</label>
               <input type="time" id="co-time" min="08:00" max="17:00" step="900">
               <div class="co-help" id="co-time-help"></div>
             </div>
@@ -274,43 +284,32 @@ function renderCartPage(rootEl) {
     })
   );
 
-  /* ---------- delivery fee from ZIP / address ---------- */
-  // $5 in town · $10 just outside city limits · $15 to the listed towns · up to 35 miles
-  const ZONE15 = {
-    "75147": "Mabank", "75140": "Grand Saline", "75169": "Wills Point",
-    "75790": "Van", "75754": "Martins Mill / Ben Wheeler",
-  };
-  function zipFee(zip) {
-    if (zip === "75103")
-      return { fee: 5, help: "Canton — $5 in town, $10 just outside city limits (we'll confirm which on the call)." };
-    if (ZONE15[zip])
-      return { fee: 15, help: ZONE15[zip] + " — $15 delivery." };
-    if (/^\d{5}$/.test(zip))
-      return { fee: null, help: "We deliver up to 35 miles — we'll confirm your exact fee when we call." };
-    return { fee: null, help: "" };
-  }
-
   /* ---------- delivery time windows ----------
      Mon–Fri: deliveries 8:00 AM – 5:00 PM, same-day orders by 2:30 PM.
      Saturday: deliveries 8:00 AM – 12:00 PM, same-day orders by 10:00 AM.
-     Sunday: closed. Earliest delivery is always 8:00 AM.            */
+     Sunday: closed; funeral delivery may be available by arrangement. */
   function deliveryWindow(dateStr) {
     if (!dateStr) return undefined;
     const day = new Date(dateStr + "T12:00:00").getDay();
-    if (day === 0) return null; // Sunday
+    if (day === 0) return null;
     if (day === 6) return { min: "08:00", max: "12:00", cutoff: "10:00 AM",
-      label: "Saturday deliveries run 8:00 AM – 12:00 PM (same-day orders by 10:00 AM)." };
+      label: "Choose a specific requested time between 8:00 AM and 12:00 PM. We'll confirm it with you." };
     return { min: "08:00", max: "17:00", cutoff: "2:30 PM",
-      label: "Deliveries run 8:00 AM – 5:00 PM (same-day orders by 2:30 PM)." };
+      label: "Choose a specific requested time between 8:00 AM and 5:00 PM. We'll confirm it with you." };
   }
 
   const methodSel = rootEl.querySelector("#co-method");
+  const zoneEl = rootEl.querySelector("#co-zone");
   const zipEl = rootEl.querySelector("#co-zip");
   const dateEl = rootEl.querySelector("#co-date");
   const timeEl = rootEl.querySelector("#co-time");
   const tipEl = rootEl.querySelector("#co-tip");
   const isDelivery = () => methodSel.value === "Delivery";
   let currentFee = 0;
+  const padDatePart = n => String(n).padStart(2, "0");
+  const now = new Date();
+  const minimumDate = now.getFullYear() + "-" + padDatePart(now.getMonth() + 1) + "-" + padDatePart(now.getDate());
+  dateEl.min = minimumDate;
 
   const updateTotals = () => {
     const tip = isDelivery() ? Math.max(0, +tipEl.value || 0) : 0;
@@ -324,14 +323,15 @@ function renderCartPage(rootEl) {
 
   const updateDelivery = () => {
     rootEl.querySelectorAll(".co-delivery").forEach(d => (d.style.display = isDelivery() ? "" : "none"));
-    const z = zipFee(zipEl.value.trim());
-    currentFee = z.fee || 0;
-    rootEl.querySelector("#co-fee-help").textContent = isDelivery() ? z.help : "";
+    currentFee = isDelivery() ? (+zoneEl.value || 0) : 0;
+    rootEl.querySelector("#co-fee-help").textContent = isDelivery() && currentFee
+      ? "$" + currentFee + " delivery for the selected area."
+      : "";
     const w = deliveryWindow(dateEl.value);
     const timeHelp = rootEl.querySelector("#co-time-help");
     const dateHelp = rootEl.querySelector("#co-date-help");
     if (w === null) {
-      dateHelp.textContent = "We're closed Sundays — pick another day and we'll make it beautiful.";
+      dateHelp.textContent = "The shop is closed Sunday. Call to ask about funeral delivery by arrangement.";
       timeHelp.textContent = "";
     } else if (w) {
       timeEl.min = w.min; timeEl.max = w.max;
@@ -339,15 +339,15 @@ function renderCartPage(rootEl) {
       // same-day cutoff heads-up (soft — we never block, we call)
       const today = new Date(); const pad = n => String(n).padStart(2, "0");
       const todayStr = today.getFullYear() + "-" + pad(today.getMonth() + 1) + "-" + pad(today.getDate());
-      dateHelp.textContent =
-        dateEl.value === todayStr
-          ? "Heads up: same-day orders need to be in by " + w.cutoff + " — if we're past that, we'll call you with the soonest we can do."
-          : "";
+      dateHelp.textContent = dateEl.value === todayStr
+        ? "Heads up: same-day orders need to be in by " + w.cutoff + " — if we're past that, we'll call you with the soonest we can do."
+        : "";
     } else { dateHelp.textContent = ""; timeHelp.textContent = ""; }
     updateTotals();
   };
 
   methodSel.addEventListener("change", updateDelivery);
+  zoneEl.addEventListener("change", updateDelivery);
   zipEl.addEventListener("input", updateDelivery);
   dateEl.addEventListener("change", updateDelivery);
   tipEl.addEventListener("input", updateTotals);
@@ -361,13 +361,15 @@ function renderCartPage(rootEl) {
     /* friendly validation for delivery orders */
     const errBox = rootEl.querySelector("#co-errors");
     const errors = [];
+    if (!v("co-date")) errors.push("Please choose the date needed.");
+    else if (v("co-date") < minimumDate) errors.push("Please choose today or a future date.");
     if (isDelivery()) {
-      if (!v("co-address").trim() && !/^\d{5}$/.test(v("co-zip").trim()))
-        errors.push("For delivery we need the full address or at least the ZIP code, so we can figure your delivery fee.");
-      if (!v("co-date")) errors.push("Please pick a delivery date.");
-      else if (deliveryWindow(v("co-date")) === null)
-        errors.push("We're closed Sundays — please pick another delivery day.");
-      if (!v("co-time")) errors.push("Please pick a preferred delivery time.");
+      if (!v("co-zone")) errors.push("Please choose the correct delivery area.");
+      if (!v("co-address").trim()) errors.push("Please enter the full delivery address.");
+      if (!/^\d{5}$/.test(v("co-zip").trim())) errors.push("Please enter the five-digit delivery ZIP code.");
+      if (v("co-date") && deliveryWindow(v("co-date")) === null)
+        errors.push("Sunday delivery requires a call to the shop for special arrangements.");
+      if (!v("co-time")) errors.push("Please pick a requested delivery time.");
       else {
         const w = deliveryWindow(v("co-date"));
         if (w && (v("co-time") < w.min || v("co-time") > w.max))
@@ -406,11 +408,12 @@ function renderCartPage(rootEl) {
       "Phone: " + v("co-phone"),
       "Email: " + (v("co-email") || "—"),
       "Method: " + v("co-method"),
+      "Delivery area: " + (v("co-zone") ? "$" + v("co-zone") + " zone" : "—"),
       "Recipient: " + (v("co-recipient") || "—"),
       "Address: " + (v("co-address") || "—"),
       "ZIP: " + (v("co-zip") || "—"),
       "Date needed: " + (v("co-date") || "—"),
-      "Preferred delivery time: " + (v("co-time") || "—"),
+      "Requested delivery time: " + (v("co-time") || "—"),
       "Occasion: " + (v("co-occasion") || "—"),
       "Card message: " + (v("co-card") || "—"),
       "Add-ons: " + (addons.length ? addons.join("; ") : "none"),
@@ -430,19 +433,42 @@ function renderCartPage(rootEl) {
     }
 
     if (!sent) {
-      // fallback: open the customer's email app with the whole order written out
-      location.href = `mailto:${SHOP.email}?subject=${encodeURIComponent("Online order from " + v("co-name"))}&body=${encodeURIComponent(summary)}`;
+      rootEl.innerHTML = `
+        <div class="container" style="padding:70px 22px; max-width:760px;">
+          <h1>Your request has not been sent yet</h1>
+          <p style="margin:14px 0; color:#5A665F; line-height:1.7;">
+            Online submission is still being connected. Your cart has been saved. Copy the summary below, then call or text the shop so Lisa can confirm the order.
+          </p>
+          <textarea id="unsent-order-summary" readonly style="width:100%;min-height:320px;margin:18px 0;padding:16px;"></textarea>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" type="button" id="copy-order-summary">Copy order summary</button>
+            <a class="btn btn-outline" href="tel:${SHOP.phoneHref}">Call ${SHOP.phone}</a>
+            <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">Text ${SHOP.phone}</a>
+          </div>
+          <p id="copy-order-status" style="margin-top:12px;" aria-live="polite"></p>
+        </div>`;
+      rootEl.querySelector("#unsent-order-summary").value = summary;
+      rootEl.querySelector("#copy-order-summary").addEventListener("click", async () => {
+        const status = rootEl.querySelector("#copy-order-status");
+        try {
+          await navigator.clipboard.writeText(summary);
+          status.textContent = "Order summary copied. Your cart is still saved until the request is confirmed.";
+        } catch (err) {
+          rootEl.querySelector("#unsent-order-summary").select();
+          status.textContent = "The summary is selected. Copy it, then text or call the shop.";
+        }
+      });
+      window.scrollTo(0, 0);
+      return;
     }
 
     cartClear();
     rootEl.innerHTML = `
       <div class="container" style="padding:70px 22px; text-align:center; max-width:640px;">
         <div style="font-size:2.8rem;">💐</div>
-        <h1>${sent ? "Your order is in!" : "One more tap — hit Send"}</h1>
+        <h1>Your order request is in</h1>
         <p style="margin:14px 0 8px; color:#5A665F; line-height:1.7;">
-          ${sent
-            ? "Thank you! We'll call or text you shortly to confirm every detail and take payment — nothing has been charged online."
-            : "Your email app just opened with your whole order written out — press <strong>Send</strong> and it's on its way to us. We'll call or text you to confirm every detail and take payment."}
+          Thank you. We'll call or text you shortly to confirm every detail and take payment — nothing has been charged online.
         </p>
         <p style="margin-bottom:28px; color:#5A665F;">Need it fast or thought of something?
           Call or text <a href="tel:${SHOP.phoneHref}" style="font-weight:700;">${SHOP.phone}</a>.</p>

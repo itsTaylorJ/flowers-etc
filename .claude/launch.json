@@ -4,7 +4,7 @@
     {
       "name": "flowers-etc",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["C:/Users/tjlan/Obsidian Vault/FlowersEtc/.claude/serve.js"],
+      "runtimeArgs": ["C:/Users/tjlan/Obsidian Vault/FlowerrsEtc/FlowersEtc/.claude/serve.js"],
       "port": 8765
     }
   ]

@@ -1,24 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flowers Etc. — Florist in Canton, TX | Fresh &amp; Silk Flowers</title>
-  <meta name="description" content="Flowers Etc. in Canton, Texas — fresh &amp; silk flowers for weddings, funerals &amp; special occasions. Call (903) 567-7045 to order.">
-  <!-- Social link previews (texted/shared links show a proper card) -->
-  <meta property="og:title" content="Flowers Etc. — Florist in Canton, TX">
-  <meta property="og:description" content="Fresh &amp; silk flowers for weddings, funerals &amp; special occasions. Call or text (903) 567-7045.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flowers Etc. — Canton, TX Florist | Local Flower Delivery</title>
+  <meta name="description" content="Hand-designed fresh and silk flowers from Flowers Etc. in Canton, Texas. Same-day local delivery requests accepted by 2:30 PM weekdays and 10 AM Saturday.">
+  <link rel="canonical" href="https://itstaylorj.github.io/flowers-etc/">
+  <meta property="og:title" content="Flowers Etc. — Your hometown Canton florist">
+  <meta property="og:description" content="Thoughtful flowers designed in Canton and delivered with personal attention.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://itstaylorj.github.io/flowers-etc/">
-  <!-- TODO at photo time: add og:image with an absolute URL to her best arrangement photo -->
-
-  <!-- Local business info for Google -->
+  <meta property="og:image" content="https://itstaylorj.github.io/flowers-etc/images/garden-romance.jpg">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Florist",
     "name": "Flowers Etc.",
-    "description": "Fresh & silk flowers for weddings, funerals & special occasions in Canton, Texas.",
+    "description": "Fresh and silk flowers for celebrations, sympathy, weddings, and everyday moments in Canton, Texas.",
     "telephone": "+19035677045",
     "email": "cantontxflowersetc@gmail.com",
     "url": "https://itstaylorj.github.io/flowers-etc/",
@@ -30,6 +28,7 @@
       "postalCode": "75103",
       "addressCountry": "US"
     },
+    "areaServed": ["Canton", "Mabank", "Wills Point", "Van", "Grand Saline", "Martins Mill", "Ben Wheeler"],
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
@@ -50,230 +49,76 @@
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="home">
+<body data-page="home" class="heritage-home">
+  <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
 
-  <!-- ————— Hero ————— -->
-  <section class="hero">
-    <h1 class="sr-only">Flowers Etc. — Fresh &amp; Silk Flowers in Canton, Texas</h1>
-
-    <!-- SVG recreation of the shop's logo. To use the original image instead,
-         save it as images/logo.png and replace this <svg> with:
-         <img class="logo-svg" src="images/logo.png" alt="Flowers Etc"> -->
-    <svg class="logo-svg" viewBox="0 0 660 320" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Flowers Etc — Fresh and Silk Flowers, Canton, Texas">
-      <defs>
-        <g id="bell">
-          <path d="M0 0 C-6 2.5 -8 10 -4.5 14 L4.5 14 C8 10 6 2.5 0 0 Z" fill="#F4A9BC" stroke="#E4778F" stroke-width="0.6"/>
-          <path d="M-4.5 14 q2.25 3 4.5 1 q2.25 3 4.5 -1" fill="none" stroke="#E4778F" stroke-width="0.8"/>
-        </g>
-        <g id="petal5">
-          <g fill="#F09CB0" stroke="#E4778F" stroke-width="0.5">
-            <ellipse cx="0" cy="-7" rx="3.4" ry="7"/>
-            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-7" rx="3.4" ry="7" transform="rotate(288)"/>
-          </g>
-          <circle r="2.6" fill="#F3BE5E"/>
-        </g>
-        <path id="scroll" d="M0 0 C-16 0 -24 -12 -16 -19 C-10 -24 -1 -20 -3 -13 C-4.5 -8.5 -11 -9 -11 -13"
-              fill="none" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
-        <path id="leaf" d="M0 0 C10 -14 26 -18 38 -12 C30 2 12 6 0 0 Z" fill="#5FA097"/>
-      </defs>
-
-      <!-- top rule with scroll ends -->
-      <path d="M64 120 H596" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
-      <use href="#scroll" transform="translate(64 120)"/>
-      <use href="#scroll" transform="translate(596 120) scale(-1 1)"/>
-
-      <!-- central flower cluster -->
-      <g transform="translate(330 0)">
-        <path d="M-30 60 C-90 28 -150 34 -205 78" fill="none" stroke="#8CBF7E" stroke-width="2"/>
-        <path d="M30 60 C90 28 150 34 205 78" fill="none" stroke="#8CBF7E" stroke-width="2"/>
-        <use href="#bell" transform="translate(-95 42)"/>
-        <use href="#bell" transform="translate(-130 44)"/>
-        <use href="#bell" transform="translate(-165 52)"/>
-        <use href="#bell" transform="translate(-198 66)"/>
-        <use href="#bell" transform="translate(95 42)"/>
-        <use href="#bell" transform="translate(130 44)"/>
-        <use href="#bell" transform="translate(165 52)"/>
-        <use href="#bell" transform="translate(198 66)"/>
-
-        <use href="#petal5" transform="translate(-243 96) scale(1.7)"/>
-        <use href="#petal5" transform="translate(243 96) scale(1.7)"/>
-
-        <use href="#leaf" transform="translate(-40 106) scale(-1.5 1.5)"/>
-        <use href="#leaf" transform="translate(40 106) scale(1.5 1.5)"/>
-
-        <!-- peach fan petals -->
-        <g fill="#F2CFA6" stroke="#DFAF77" stroke-width="0.8">
-          <path d="M-16 96 C-30 70 -56 58 -82 62 C-78 88 -52 104 -16 96 Z"/>
-          <path d="M16 96 C30 70 56 58 82 62 C78 88 52 104 16 96 Z"/>
-        </g>
-
-        <!-- main flower -->
-        <g transform="translate(0 78)">
-          <g fill="#F09CB0" stroke="#E4778F" stroke-width="0.8">
-            <ellipse cx="0" cy="-22" rx="9" ry="22"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(30)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(60)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(90)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(120)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(150)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(180)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(210)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(240)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(270)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(300)"/>
-            <ellipse cx="0" cy="-22" rx="9" ry="22" transform="rotate(330)"/>
-          </g>
-          <circle r="15" fill="#F6C874" stroke="#E8A94C" stroke-width="1.5"/>
-          <circle r="4" fill="#E4778F"/>
-        </g>
-      </g>
-
-      <!-- shop name -->
-      <text x="330" y="208" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif"
-            font-size="67" letter-spacing="7" fill="#3E7C74">FLOWERS ETC</text>
-
-      <!-- script subline -->
-      <text x="330" y="254" text-anchor="middle" font-family="'Parisienne', cursive"
-            font-size="28" fill="#D96A8B">Fresh &amp; Silk Flowers  ~  Canton, Texas</text>
-
-      <!-- bottom rule -->
-      <path d="M110 288 H550" stroke="#3E7C74" stroke-width="3" stroke-linecap="round"/>
-      <use href="#scroll" transform="translate(110 288) scale(1 -1)"/>
-      <use href="#scroll" transform="translate(550 288) scale(-1 -1)"/>
-      <use href="#petal5" transform="translate(330 288) scale(2)"/>
-    </svg>
-
-    <p class="lead">We specialize in fresh &amp; silk flowers for weddings, funerals
-    &amp; special occasions — every arrangement designed by hand, with love.</p>
-    <div class="hero-actions">
-      <a class="btn btn-blush" href="shop.html">Shop Arrangements</a>
-      <a class="btn btn-outline" data-shop-tel href="#">📞 Call to Order</a>
-    </div>
-  </section>
-
-  <!-- ————— Trust strip ————— -->
-  <div class="trust-strip">
-    <div class="container">
-      <div class="trust-item">
-        <div class="t-icon">🌷</div>
-        <h3>Fresh Daily</h3>
-        <p>Flowers arrive fresh and are arranged the day you order.</p>
+  <main id="main">
+    <section class="hg-hero">
+      <div class="hg-hero-copy">
+        <p class="hg-eyebrow">Your hometown florist · Canton, Texas</p>
+        <h1>Small-town care, <em>made here.</em></h1>
+        <p class="hg-lead">Thoughtful flowers for celebrations, comfort, remembrance, and the ordinary days when someone needs to know you care.</p>
+        <div class="hg-actions"><a class="hg-button" href="shop.html">Find the right flowers <span>→</span></a><a class="hg-text-link" href="tel:9035677045">Call the shop</a></div>
+        <p class="hg-personal-note">Designed by hand. Confirmed by a real person.</p>
       </div>
-      <div class="trust-item">
-        <div class="t-icon">🚚</div>
-        <h3>Local Delivery</h3>
-        <p>Hand-delivered to <span data-shop="deliveryArea"></span>.</p>
+      <div class="hg-hero-art">
+        <div class="hg-moss-field"></div>
+        <img src="images/garden-romance.jpg" alt="Pink rose, snapdragon, and hydrangea arrangement designed by Flowers Etc.">
+        <blockquote>“You bring the reason. We'll help with the flowers.”</blockquote>
       </div>
-      <div class="trust-item">
-        <div class="t-icon">💐</div>
-        <h3>Designed by Hand</h3>
-        <p>No two arrangements alike — each one made with care.</p>
-      </div>
-      <div class="trust-item">
-        <div class="t-icon">🏡</div>
-        <h3>Family Owned</h3>
-        <p>Owned by Lisa, who's been arranging flowers since high school.</p>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- ————— Categories ————— -->
-  <section class="block">
-    <div class="container">
-      <div class="section-head">
-        <div class="flourish">Browse</div>
-        <h2>Flowers for Every Occasion</h2>
-        <p>From a simple "thinking of you" to the biggest days of your life.</p>
-      </div>
-      <div class="cat-grid" id="home-categories"></div>
-    </div>
-  </section>
+    <div class="hg-trust"><div class="hg-shell"><span>Locally owned</span><span>Fresh &amp; silk flowers</span><span>Same-day: 2:30 weekdays · 10 Sat.</span><span>Delivery within 35 miles</span></div></div>
 
-  <!-- ————— Why local ————— -->
-  <section class="block" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-    <div class="container">
-      <div class="feature-row">
-        <div class="f-media">
-          <div class="ph tall"><span class="ph-icon">✿</span><span>Shop photo coming soon</span></div>
-        </div>
-        <div class="f-text">
-          <h3>Your Neighbor, Your Florist</h3>
-          <p>When you order from Flowers Etc., you're not talking to a call center —
-          you're talking to <span data-shop="ownerName"></span>, who has been arranging
-          flowers for the families of this community since she was in high school.</p>
-          <p>We know the difference a hand-tied bow and a hand-written card make.
-          We know the church, the funeral home, and probably your grandmother.
-          That's the kind of florist we are.</p>
-          <a class="btn btn-primary" href="about.html">Our Story</a>
+    <section class="hg-moments">
+      <div class="hg-shell">
+        <div class="hg-section-intro"><p class="hg-eyebrow">Begin with the moment</p><h2>Flowers are personal. Choosing them should feel simple.</h2><p>Start with the reason you're sending them. Lisa can help with color, size, substitutions, and delivery details.</p></div>
+        <div class="hg-moment-layout">
+          <figure class="hg-moment-photo"><img src="images/sunshine-morning.jpg" alt="Yellow roses and gladiolus arranged in the Canton workroom"><figcaption>Designed in Canton · No two arrangements exactly alike</figcaption></figure>
+          <nav class="hg-occasion-list" aria-label="Shop by occasion">
+            <a href="shop.html"><small>01</small><strong>Birthdays &amp; happy news</strong><span>→</span></a>
+            <a href="shop.html"><small>02</small><strong>Thinking of you</strong><span>→</span></a>
+            <a href="shop.html"><small>03</small><strong>Sympathy &amp; remembrance</strong><span>→</span></a>
+            <a href="shop.html"><small>04</small><strong>Plants &amp; lasting pieces</strong><span>→</span></a>
+            <a href="tel:9035677045"><small>05</small><strong>Something completely custom</strong><span>↗</span></a>
+          </nav>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ————— Testimonials ————— -->
-  <section class="block">
-    <div class="container">
-      <div class="section-head">
-        <div class="flourish">Kind Words</div>
-        <h2>What Our Neighbors Say</h2>
+    <section class="hg-work">
+      <div class="hg-shell hg-work-heading"><div><p class="hg-eyebrow">From the workroom</p><h2>Real flowers, arranged here.</h2></div><p>Browse Lisa's actual work, then use it as a starting point. Availability and substitutions are confirmed personally.</p></div>
+      <div class="hg-shell hg-work-grid">
+        <article class="hg-work-card hg-work-card-large"><img src="images/peaceful-garden-basket.jpg" alt="Yellow roses and blue flowers in a garden basket"><div><small>Warm &amp; cheerful</small><h3>Made for brighter days</h3><a href="product.html?p=peaceful-garden-basket">View this arrangement →</a></div></article>
+        <article class="hg-work-card"><img src="images/garden-romance.jpg" alt="Pink garden-style flower arrangement"><div><small>Soft garden style</small><h3>Thoughtful color, chosen by hand</h3><a href="product.html?p=garden-romance">View this arrangement →</a></div></article>
+        <article class="hg-work-card"><img src="images/sunshine-morning.jpg" alt="Yellow rose and gladiolus arrangement"><div><small>Cheerful favorite</small><h3>A little East Texas sunshine</h3><a href="product.html?p=sunshine-morning">View this arrangement →</a></div></article>
       </div>
-      <div class="testimonial-grid">
-        <!-- Real Google reviews — swap freely; more are on the shop's Google page -->
-        <div class="testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">"Stopped by in a rush (right before closing time) for a last minute
-          birthday bouquet. They hooked me right up and for a very reasonable price...
-          LIFESAVERS!!!! A+++"</p>
-          <div class="who">— Jennifer P. · Google review</div>
-        </div>
-        <div class="testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">"My husband surprised me with a beautiful flower arrangement.
-          Great customer service at delivery, and he said they were great over the phone
-          when he ordered them. We will definitely use them again!"</p>
-          <div class="who">— Jenny C. · Google review</div>
-        </div>
-        <div class="testimonial">
-          <div class="stars">★★★★★</div>
-          <p class="quote">"I ordered flowers for a funeral this weekend. Appreciate your
-          help, they were absolutely gorgeous! Thank you!"</p>
-          <div class="who">— Lacinda · Google review</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ————— CTA ————— -->
-  <section class="cta-band">
-    <h2>Need Flowers Today?</h2>
-    <p>Call us — same-day arrangements are usually no problem, and we love a challenge.</p>
-    <a class="btn btn-outline" data-shop-tel href="#"></a>
-  </section>
+    <section class="hg-guidance" id="sympathy">
+      <div class="hg-shell hg-guidance-grid">
+        <div><p class="hg-eyebrow hg-light">A real person when you need one</p><h2>Kind, steady guidance for difficult orders.</h2><p>For sympathy, funeral, memorial, and cemetery pieces, Lisa can help you choose something appropriate and handle the delivery details carefully.</p><a class="hg-button hg-button-light" href="tel:9035677045">Call (903) 567-7045 <span>↗</span></a></div>
+        <aside><small>Cemetery care</small><h3>Flowers placed with care, even when you can't be here.</h3><p>Recurring placement is available. Lisa will confirm cemetery details, dates, pricing, and availability personally.</p><a href="services.html#cemetery-care">Learn about cemetery care →</a></aside>
+      </div>
+    </section>
+
+    <section class="hg-story">
+      <div class="hg-shell hg-story-grid">
+        <div class="hg-story-number">01</div>
+        <div><p class="hg-eyebrow">The story behind the shop</p><h2>Carried forward by someone who already loved the work.</h2><p>Lisa spent years helping at Flowers Etc. before becoming its owner. She grew into the shop through the daily work—learning, arranging, helping families, and understanding how much the smallest details matter.</p><a class="hg-text-link" href="about.html">Read Lisa's story</a></div>
+      </div>
+    </section>
+
+    <section class="hg-visit"><div class="hg-shell"><div><p class="hg-eyebrow">Visit or call</p><h2>Flowers Etc. in Canton</h2></div><div><p>1200 S Trade Days Blvd, Ste 150<br>Canton, TX 75103</p><p>Monday–Friday, 8 AM–5 PM<br>Saturday, 8 AM–12 PM</p></div><a class="hg-button" href="contact.html">Shop details <span>→</span></a></div></section>
+  </main>
 
   <div id="site-footer"></div>
-
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/cart.js"></script>
-  <script>
-    // Category cards on the home page, built from CATEGORIES in data.js
-    document.getElementById("home-categories").innerHTML = CATEGORIES.map(c => `
-      <a class="cat-card" href="shop.html?cat=${c.id}">
-        <div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>
-        <div class="cat-body">
-          <h3>${c.name}</h3>
-          <p>${c.blurb}</p>
-          <div class="cat-link">Browse ${c.name} →</div>
-        </div>
-      </a>`).join("");
-  </script>
 </body>
 </html>

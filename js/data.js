@@ -6,7 +6,7 @@
 
 const SHOP = {
   name: "Flowers Etc.",
-  tagline: "Fresh & silk flowers for weddings, funerals & special occasions.",
+  tagline: "Fresh & silk flowers for celebrations, sympathy, weddings & everyday moments.",
   phone: "(903) 567-7045",
   phoneHref: "9035677045",            // digits only — used for tap-to-call and text links
   email: "cantontxflowersetc@gmail.com",
@@ -15,12 +15,22 @@ const SHOP = {
   hours: [
     { days: "Monday – Friday", time: "8:00 AM – 5:00 PM" },
     { days: "Saturday",        time: "8:00 AM – 12:00 PM" },
-    { days: "Sunday",          time: "Closed" },
+    { days: "Sunday",          time: "Closed — funeral delivery may be available by arrangement" },
   ],
   // Shown on the home page — edit freely
   established: "",                    // optional year, e.g. "1998" — currently unused (site avoids dates)
   ownerName: "Lisa Thompson",
-  deliveryArea: "Canton and surrounding towns — up to 35 miles",
+  deliveryArea: "Canton and nearby towns within 35 miles",
+  deliveryTowns: ["Mabank", "Wills Point", "Van", "Grand Saline", "Martins Mill", "Ben Wheeler"],
+  deliveryFees: {
+    cantonCityLimits: 5,
+    justOutsideCanton: 10,
+    fartherWithin35Miles: 15,
+  },
+  sameDayCutoff: "2:30 PM Monday–Friday and 10:00 AM Saturday",
+  holidayHoursNote: "Holiday availability varies — call the shop to confirm.",
+  closedDayNote: "Sunday is closed; funeral delivery may be available by arrangement.",
+  missedRecipientNote: "If no one answers, we'll try to contact the customer or recipient and leave the order safely when conditions allow. If it cannot be left safely, we'll contact you to arrange the next step.",
   facebook: "",                       // paste full URL to show a Facebook link, leave "" to hide
   instagram: "",                      // same for Instagram
 
@@ -65,8 +75,8 @@ const CATEGORIES = [
   },
   {
     id: "wedding",
-    name: "Weddings & Events",
-    blurb: "From bridal bouquets to full venue flowers — let's plan together.",
+    name: "Weddings",
+    blurb: "Bridal bouquets, wedding-party flowers, and ceremony or reception designs by consultation.",
   },
   {
     id: "seasonal",
@@ -242,7 +252,7 @@ const PRODUCTS = [
     name: "Cemetery Flowers & Subscriptions",
     category: "sympathy",
     price: 50,
-    desc: "Lasting silk arrangements designed for cemetery vases — and every one is finished with a weather-guard treatment, so it stands up to the Texas sun and rain and stays beautiful visit after visit. With our cemetery subscription, you pick the months, how often, and the flowers: you pick the dates — birthdays, holidays, anniversaries — and we place a fresh silk arrangement at your loved one's resting place, then send you a photo each time so you know it's been done.",
+    desc: "Lasting silk arrangements designed for cemetery vases and finished with a weather-guard treatment for Texas conditions. Recurring placement options are available; Lisa will confirm the dates, cemetery details, service area, and placement process personally.",
     flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
     image: "silk-cemetery-arrangement.jpg",
     photos: ["cemetery-subscription.jpg", "cemetery-vase-flowers.jpg"],
@@ -291,7 +301,7 @@ const PRODUCTS = [
     buyLink: "",
   },
 
-  // ——— Weddings & Events ———
+  // ——— Weddings ———
   {
     name: "Bridal Bouquet",
     category: "wedding",

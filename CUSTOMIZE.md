@@ -84,23 +84,23 @@ Products meant to stay phone-only (casket sprays, weddings) keep `order: "custom
 
 Customers can add any product to the cart (🛒 in the header) and check out at
 `cart.html` — items, sizes, quantity, pickup/delivery with fees, card message,
-add-ons, and notes. **Nothing is charged online**: the order arrives by email
-and Lisa calls/texts to confirm and take payment.
+add-ons, and notes. **Nothing is charged online.** After the endpoint is connected,
+Lisa receives the request and calls/texts to confirm details and payment.
 
 - To receive orders by email: create a Formspree form (same account as the
   contact form) and paste its URL into `ORDER_FORM_ACTION` at the top of
-  `js/cart.js`. Until then, checkout opens the customer's email app with the
-  full order written out.
+  `js/cart.js`. Until then, checkout preserves the cart and displays a copyable
+  order summary with call and text options. It never claims the request was sent.
 - When Lisa picks Stripe or Square, online card payment plugs into this same
   checkout — no rebuild.
 - Call, text, and inquiry options stay available everywhere alongside the cart.
 
 ## Making the contact form actually send
 
-The form currently falls back to opening the visitor's email app. For real
-form delivery:
+The form currently preserves the inquiry as copyable text and tells the customer
+to call or text. For real form delivery:
 
-1. Sign up at **formspree.io** with the shop's email (free: 50 messages/month)
+1. Sign up at **formspree.io** using **cantontxflowersetc@gmail.com**
 2. Create a form, copy the endpoint URL
 3. In `contact.html`, replace `YOUR_FORM_ID` in the form's `action` attribute
 
@@ -112,6 +112,6 @@ paste it into `contact.html` where the map placeholder comment is.
 ## Remaining placeholders to fill in
 
 Search the project for `[` to find them all. Currently:
-- `js/data.js`: phone, email, address, hours, owner name, year established, delivery area
+- `js/data.js`: confirmed customer-facing email and shop hours live here
 - `index.html`: three real customer testimonials
 - `about.html`: the shop's real story (two paragraphs)

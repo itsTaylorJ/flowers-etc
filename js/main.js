@@ -15,24 +15,24 @@
   const headerHTML = `
     ${announcementHTML}
     <div class="topbar">
-      🌸 Call or text to order: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>
-      &nbsp;·&nbsp; Local delivery to ${SHOP.deliveryArea}
+      <span>Flowers made in Canton</span>
+      <span>Call or text <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a></span>
+      <span>Local East Texas delivery</span>
     </div>
     <header class="site">
       <div class="nav-wrap">
-        <a class="brand" href="index.html">
-          <span class="brand-flower">✿</span>
-          <span class="brand-name">${SHOP.name}</span>
+        <a class="brand" href="index.html" aria-label="Flowers Etc. home">
+          <img src="images/logo.png" alt="Flowers Etc.">
         </a>
         <a class="cart-btn" href="cart.html" aria-label="Your order">🛒<span id="cart-count"></span></a>
-        <button class="nav-toggle" aria-label="Open menu">☰</button>
-        <nav class="main-nav">
-          <a href="index.html"    data-nav="home">Home</a>
-          <a href="shop.html"     data-nav="shop">Shop Flowers</a>
-          <a href="gallery.html"  data-nav="gallery">Our Work</a>
-          <a href="services.html" data-nav="services">Services</a>
-          <a href="about.html"    data-nav="about">About Us</a>
-          <a href="contact.html"  data-nav="contact">Contact</a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">☰</button>
+        <nav class="main-nav" id="main-navigation">
+          <a href="shop.html" data-nav="shop">Shop</a>
+          <a href="services.html#sympathy" data-nav="services">Sympathy</a>
+          <a href="services.html#cemetery-care">Cemetery Care</a>
+          <a href="gallery.html" data-nav="gallery">Our Work</a>
+          <a href="about.html" data-nav="about">Lisa's Story</a>
+          <a href="contact.html" data-nav="contact">Visit</a>
         </nav>
       </div>
     </header>`;
@@ -50,8 +50,8 @@
             <h4>${SHOP.name}</h4>
             <p>${SHOP.tagline}</p>
             <p style="margin-top:10px;">${SHOP.address}<br>${SHOP.cityStateZip}<br>
-            Call or text: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a><br>
-            <a href="mailto:${SHOP.email}">${SHOP.email}</a></p>
+            Call or text: <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>
+            ${SHOP.email ? `<br><a href="mailto:${SHOP.email}">${SHOP.email}</a>` : ""}</p>
           </div>
           <div>
             <h4>Visit</h4>
@@ -69,6 +69,7 @@
             <ul>
               ${SHOP.hours.map(h => `<li>${h.days}: ${h.time}</li>`).join("")}
             </ul>
+            ${SHOP.holidayHoursNote ? `<p style="margin-top:8px; font-size:0.85rem;">${SHOP.holidayHoursNote}</p>` : ""}
           </div>
         </div>
         <div class="footer-bottom">
@@ -87,7 +88,19 @@
   // Mobile menu
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector("nav.main-nav");
-  toggle.addEventListener("click", () => nav.classList.toggle("open"));
+  toggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && nav.classList.contains("open")) {
+      nav.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+      toggle.focus();
+    }
+  });
 
   /* ---------- Fill any element marked with data-shop ---------- */
   // e.g. <span data-shop="phone"></span> becomes the phone number
@@ -104,6 +117,11 @@
     if (!el.textContent.trim()) el.textContent = "Text " + SHOP.phone;
   });
   document.querySelectorAll("[data-shop-mail]").forEach(el => {
+    if (!SHOP.email) {
+      const container = el.closest(".email-only") || el;
+      container.hidden = true;
+      return;
+    }
     el.setAttribute("href", "mailto:" + SHOP.email);
     if (!el.textContent.trim()) el.textContent = SHOP.email;
   });
@@ -315,9 +333,8 @@ function openOrderModal(p) {
       ${addonsHTML}
       ${SHOP.customizeNote ? `<div class="m-customize">💐 ${SHOP.customizeNote}</div>` : ""}
       <div class="m-photos">📸 Have a photo of something you love — a Pinterest find, a past
-        arrangement, the dress? <a href="sms:${SHOP.phoneHref}">Text it to us</a> or
-        <a href="mailto:${SHOP.email}?subject=Reference photos for my order">email it</a>
-        and we'll design from it.</div>
+        arrangement, or the dress? <a href="sms:${SHOP.phoneHref}">Text it to us</a>
+        and we'll use it as design direction.</div>
       <div class="m-actions">
         <button class="btn btn-primary" data-cart-add="${p.name}">🛒 Add to Cart — Order Online</button>
         ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
@@ -491,9 +508,9 @@ function renderProductPage(rootEl) {
           </div>
 
           <div class="pd-reassure">
-            <div><strong>Same-day delivery</strong> on orders by 2:30 PM</div>
+            <div><strong>Same-day requests</strong> by 2:30 PM weekdays · 10 AM Saturday</div>
             <div><strong>Hand-delivered</strong> across ${SHOP.deliveryArea}</div>
-            <div><strong>A real person</strong> answers — ${SHOP.ownerName} or one of our girls</div>
+            <div><strong>A real person</strong> answers — ${SHOP.ownerName} or a member of the design team</div>
           </div>
 
           <div class="pd-block pd-goodtoknow">
@@ -504,9 +521,8 @@ function renderProductPage(rootEl) {
 
           ${addonsHTML}
 
-          <div class="pd-photos-note">📸 Have a picture of something you love? Text or email it over and
-            we'll design from it — <a href="sms:${SHOP.phoneHref}">text ${SHOP.phone}</a> or
-            <a href="mailto:${SHOP.email}?subject=Reference photo for ${encodeURIComponent(p.name)}">email us</a>.</div>
+          <div class="pd-photos-note">📸 Have a picture of something you love? Text it to
+            <a href="sms:${SHOP.phoneHref}">${SHOP.phone}</a> and we'll use it as design direction.</div>
         </div>
       </div>
     </div>
