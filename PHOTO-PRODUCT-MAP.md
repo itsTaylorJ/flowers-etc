@@ -1,23 +1,32 @@
 # Photo and product map
 
-The new source library contained 100 reviewable photos. Twenty-nine were selected and converted to web-ready WebP files; the originals remain untouched. Duplicate downloads, weak angles, and lower-value snapshots were not added just to make the gallery larger.
+The new source library contained 100 reviewable files representing 87 unique photos. Thirty-three were selected and converted to web-ready WebP files; the originals remain untouched. Duplicate downloads, repeated exports, weak angles, and lower-value snapshots were not added just to make the gallery larger.
 
 ## Photos now connected to products
 
-- **Designer’s Choice:** `peach-purple-garden.webp`, `gerbera-garden-vase.webp`, `jewel-tone-vase.webp`, `blush-garden-vase.webp`.
+- **Rose Bouquet:** `red-rose-vase.webp` plus the primary bouquet.
+- **Sunshine Morning:** `sunny-yellow-rose-arrangement.webp` plus the primary arrangement.
+- **Garden Romance:** `peach-purple-garden.webp` plus the primary arrangement.
+- **Birthday Blooms:** `birthday-balloon-flowers.webp` plus the primary arrangement.
+- **Get Well Soon:** `white-lily-vase.webp` plus the primary arrangement.
+- **Designer’s Choice:** `jewel-tone-vase.webp` plus the primary design.
 - **Casket Spray:** `sympathy-casket-pink.webp`, `sympathy-casket-yellow.webp`, `white-blue-casket-spray.webp`, `cowboy-casket-spray.webp`.
-- **Standing Spray:** `sympathy-sunflower-standing-2024.webp`, `yellow-blue-standing-spray.webp`, `sunflower-standing-spray.webp`, `sympathy-standing-yellow.webp`.
+- **Standing Spray:** `sympathy-sunflower-standing-2024.webp`, `yellow-blue-standing-spray.webp`, and `sympathy-standing-yellow.webp`.
 - **Sympathy Wreaths & Hearts:** `sympathy-wreath-pink.webp` plus existing heart/wreath examples.
-- **Cemetery Flower Replacement:** `blue-yellow-silk-cemetery.webp`, `blue-yellow-silk-cemetery-2.webp` plus existing silk examples.
-- **Prom & Homecoming:** `dusty-rose-corsage.webp`, `white-lily-boutonniere.webp`, `blush-rose-corsage.webp` plus the existing corsage.
-- **Plants & Dish Gardens:** `ladybug-dish-garden.webp`, `peace-lily-memorial-garden.webp`, `mixed-plant-basket.webp`, `peach-plant-garden.webp`.
+- **Cemetery Flower Replacement:** `blue-yellow-silk-cemetery.webp` and `blue-yellow-silk-cemetery-2.webp` plus the primary silk arrangement.
+- **Memorial Wind Chimes:** `memorial-wind-chime-detail.webp` plus the primary full view.
+- **Memorial Lantern:** `memorial-lantern-flowers.webp` plus the primary lantern.
+- **Wall Crosses & Keepsakes:** `friendship-cross-keepsakes.webp` plus the primary keepsake display.
+- **Prom & Homecoming:** `dusty-rose-corsage.webp` and `white-lily-boutonniere.webp` plus existing corsage examples.
+- **Holiday Centerpiece:** `holiday-fall-centerpiece.webp`.
+- **Plants & Dish Gardens:** `peace-lily-memorial-garden.webp` and `mixed-plant-basket.webp` plus the primary dish garden.
 
 ## Gallery-only proof added
 
 - Everyday: golden tulips, purple birthday basket, gerbera garden vase, birthday balloon flowers, blush garden vase, jewel-tone vase, and white lilies.
 - Sympathy: pink and yellow casket sprays, sunflower tributes, pink wreath, patriotic tribute, tailored white/blue and cowboy casket designs, and white cascading spray.
 - Silk & Cemetery: two blue-and-yellow lasting arrangements.
-- Prom & Seasonal: two corsages and a boutonniere.
+- Prom & Seasonal: one corsage and a boutonniere.
 - Plants & Gifts: three distinct living plant designs.
 
 ## Product names worth considering later
