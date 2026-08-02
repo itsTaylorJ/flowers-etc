@@ -450,16 +450,62 @@ function renderProductPage(rootEl) {
   const r = resolvePrice(p);
   const canBuyOnline = p.order === "buy" && p.buyLink;
 
-  /* --- photos: main + any extras --- */
-  const shots = [p.image, ...(p.photos || [])].filter(Boolean);
+  /* --- photos: main + truthful examples or rotating inventory --- */
+  const shotFiles = [p.image, ...(p.photos || [])].filter(Boolean);
+  const galleryKind = p.galleryKind === "inventory" ? "inventory" : "examples";
+  const galleryCopy = galleryKind === "inventory"
+    ? {
+        title: "Shop inventory examples",
+        primary: "Representative item from Flowers Etc. Call to confirm the exact style currently available.",
+        extra: "Past or current Flowers Etc. inventory. Styles rotate, so Lisa will confirm the exact item before the order is made.",
+      }
+    : {
+        title: "Past work & style examples",
+        primary: "Representative Flowers Etc. design. Every arrangement is made by hand, so flowers, colors, and shape may vary.",
+        extra: "Past Flowers Etc. work for style inspiration. Flower availability, colors, scale, and exact design will vary.",
+      };
+  const shots = shotFiles.map((src, i) => ({
+    src,
+    alt: i === 0
+      ? `${p.name} designed by Flowers Etc. in Canton, Texas`
+      : `${p.name} ${galleryKind === "inventory" ? "inventory" : "style"} example ${i + 1} from Flowers Etc.`,
+    caption: i === 0 ? galleryCopy.primary : galleryCopy.extra,
+  }));
   const mainShot = shots.length
-    ? `<img id="pd-main" src="images/${shots[0]}" alt="${p.name}">`
+    ? `<div class="pd-stage">
+         <button type="button" class="pd-main-button" id="pd-open-photo" aria-label="Open a larger view of ${p.name}" aria-describedby="pd-photo-caption">
+           <img id="pd-main" src="images/${shots[0].src}" alt="${shots[0].alt}" decoding="async">
+           <span class="pd-zoom-hint" aria-hidden="true">View larger</span>
+         </button>
+         ${shots.length > 1 ? `<button type="button" class="pd-gallery-arrow pd-gallery-prev" data-gallery-step="-1" aria-label="Previous ${p.name} photo">‹</button>
+         <button type="button" class="pd-gallery-arrow pd-gallery-next" data-gallery-step="1" aria-label="Next ${p.name} photo">›</button>` : ""}
+       </div>`
     : `<div class="ph" style="aspect-ratio:1/1;"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
   const thumbs = shots.length > 1
-    ? `<div class="pd-thumbs">${shots
-        .map((s, i) => `<button type="button" class="pd-thumb ${i === 0 ? "active" : ""}" data-src="images/${s}" aria-label="Show ${p.name} photo ${i + 1}">
-             <img src="images/${s}" alt="${p.name} photo ${i + 1}"></button>`)
+    ? `<div class="pd-thumbs" aria-label="Choose a ${p.name} photo">${shots
+        .map((shot, i) => `<button type="button" class="pd-thumb ${i === 0 ? "active" : ""}" data-index="${i}" aria-label="Show ${p.name} photo ${i + 1}" aria-current="${i === 0 ? "true" : "false"}">
+             <img src="images/${shot.src}" alt="" loading="lazy" decoding="async"></button>`)
         .join("")}</div>`
+    : "";
+  const photoSummary = shots.length
+    ? `<div class="pd-photo-summary">
+         <div><strong>${galleryCopy.title}</strong><span id="pd-photo-count">1 of ${shots.length}</span></div>
+         <p id="pd-photo-caption" aria-live="polite">${shots[0].caption}</p>
+       </div>`
+    : "";
+  const lightboxHTML = shots.length
+    ? `<dialog class="pd-lightbox" id="pd-lightbox" aria-labelledby="pd-lightbox-title">
+         <div class="pd-lightbox-shell">
+           <h2 id="pd-lightbox-title" class="sr-only">${p.name} photo gallery</h2>
+           <button type="button" class="pd-lightbox-close" aria-label="Close larger photo">Close</button>
+           <img id="pd-lightbox-image" src="images/${shots[0].src}" alt="${shots[0].alt}">
+           <div class="pd-lightbox-footer">
+             ${shots.length > 1 ? `<button type="button" data-lightbox-step="-1" aria-label="Previous photo">← Previous</button>` : "<span></span>"}
+             <p id="pd-lightbox-caption">${shots[0].caption}</p>
+             ${shots.length > 1 ? `<button type="button" data-lightbox-step="1" aria-label="Next photo">Next →</button>` : "<span></span>"}
+           </div>
+         </div>
+       </dialog>`
     : "";
 
   /* --- sizes --- */
@@ -545,6 +591,7 @@ function renderProductPage(rootEl) {
         <div class="pd-media">
           ${mainShot}
           ${thumbs}
+          ${photoSummary}
         </div>
 
         <div class="pd-info">
@@ -587,17 +634,90 @@ function renderProductPage(rootEl) {
         </div>
       </div>
     </div>
+    ${lightboxHTML}
     ${relatedHTML}`;
 
-  // thumbnail switching
+  // Product gallery: thumbnail, arrow, keyboard, lightbox and mobile swipe controls.
   const main = document.getElementById("pd-main");
-  rootEl.querySelectorAll(".pd-thumb").forEach(t =>
-    t.addEventListener("click", () => {
-      if (main) main.src = t.dataset.src;
-      rootEl.querySelectorAll(".pd-thumb").forEach(x => x.classList.remove("active"));
-      t.classList.add("active");
-    })
+  const photoCaption = document.getElementById("pd-photo-caption");
+  const photoCount = document.getElementById("pd-photo-count");
+  const lightbox = document.getElementById("pd-lightbox");
+  const lightboxImage = document.getElementById("pd-lightbox-image");
+  const lightboxCaption = document.getElementById("pd-lightbox-caption");
+  let activeShot = 0;
+  let gallerySwipeHandled = false;
+
+  const setShot = index => {
+    if (!shots.length) return;
+    activeShot = (index + shots.length) % shots.length;
+    const shot = shots[activeShot];
+    if (main) {
+      main.src = `images/${shot.src}`;
+      main.alt = shot.alt;
+    }
+    if (photoCaption) photoCaption.textContent = shot.caption;
+    if (photoCount) photoCount.textContent = `${activeShot + 1} of ${shots.length}`;
+    rootEl.querySelectorAll(".pd-thumb").forEach(thumb => {
+      const selected = Number(thumb.dataset.index) === activeShot;
+      thumb.classList.toggle("active", selected);
+      thumb.setAttribute("aria-current", selected ? "true" : "false");
+    });
+    if (lightboxImage) {
+      lightboxImage.src = `images/${shot.src}`;
+      lightboxImage.alt = shot.alt;
+    }
+    if (lightboxCaption) lightboxCaption.textContent = shot.caption;
+  };
+
+  rootEl.querySelectorAll(".pd-thumb").forEach(thumb =>
+    thumb.addEventListener("click", () => setShot(Number(thumb.dataset.index)))
   );
+  rootEl.querySelectorAll("[data-gallery-step]").forEach(button =>
+    button.addEventListener("click", () => setShot(activeShot + Number(button.dataset.galleryStep)))
+  );
+  rootEl.querySelectorAll("[data-lightbox-step]").forEach(button =>
+    button.addEventListener("click", () => setShot(activeShot + Number(button.dataset.lightboxStep)))
+  );
+
+  const openPhoto = document.getElementById("pd-open-photo");
+  if (openPhoto && lightbox) openPhoto.addEventListener("click", () => {
+    if (gallerySwipeHandled) {
+      gallerySwipeHandled = false;
+      return;
+    }
+    setShot(activeShot);
+    lightbox.showModal();
+  });
+  const closePhoto = rootEl.querySelector(".pd-lightbox-close");
+  if (closePhoto && lightbox) closePhoto.addEventListener("click", () => lightbox.close());
+  if (lightbox) {
+    lightbox.addEventListener("click", event => {
+      if (event.target === lightbox) lightbox.close();
+    });
+    lightbox.addEventListener("keydown", event => {
+      if (event.key === "ArrowLeft") setShot(activeShot - 1);
+      if (event.key === "ArrowRight") setShot(activeShot + 1);
+    });
+  }
+
+  const stage = rootEl.querySelector(".pd-stage");
+  if (stage && shots.length > 1) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    stage.addEventListener("touchstart", event => {
+      touchStartX = event.changedTouches[0].clientX;
+      touchStartY = event.changedTouches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener("touchend", event => {
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      const deltaY = event.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        gallerySwipeHandled = true;
+        setShot(activeShot + (deltaX < 0 ? 1 : -1));
+        window.setTimeout(() => { gallerySwipeHandled = false; }, 500);
+      }
+    }, { passive: true });
+  }
 
   // Product structured data for Google
   const ld = {
@@ -606,7 +726,7 @@ function renderProductPage(rootEl) {
     name: p.name,
     description: p.desc,
     brand: { "@type": "Brand", name: SHOP.name },
-    ...(p.image ? { image: location.origin + location.pathname.replace(/product\.html$/, "") + "images/" + p.image } : {}),
+    ...(shots.length ? { image: shots.map(shot => location.origin + location.pathname.replace(/product\.html$/, "") + "images/" + shot.src) } : {}),
     ...(typeof p.price === "number"
       ? { offers: { "@type": "Offer", price: p.price, priceCurrency: "USD", availability: "https://schema.org/InStock" } }
       : {}),

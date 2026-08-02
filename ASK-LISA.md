@@ -29,3 +29,13 @@ Confirmed and already published: $50 per arrangement; scheduling is available by
 13. Standing Spray: from $150.
 
 Balloon prices are now confirmed and are no longer placeholders.
+
+## Photo requests
+
+These are content requests rather than blockers. The current site can publish without them.
+
+14. Please photograph one current example each of the Fruit Basket, Coffee Basket, Candy Basket, Stuffed Animals, and Friendship Gifts. The existing library does not contain an honest product photo for these five items.
+15. Please provide recent wedding work for the Bridal Bouquet and Full Wedding Package pages, especially full bouquets, wedding-party flowers, and ceremony or reception details.
+16. For Rose Bouquet, Sunshine Morning, Garden Romance, Birthday Blooms, and Get Well Soon, capture the same finished arrangement from the front, a three-quarter angle, and close up. Current additional photos are clearly labeled past-work style examples, not alternate views of the exact arrangement.
+17. Photograph current holiday centerpieces for the seasons Lisa wants to sell online. The site currently has one fall example, but not Christmas, Valentine’s Day, Mother’s Day, or other seasonal versions.
+18. When Lisa confirms product size tiers, photograph Standard, Deluxe, and Premium versions together whenever those tiers are materially different.
