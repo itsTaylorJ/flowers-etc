@@ -15,7 +15,12 @@ const CART_KEY = "flowersetc_cart";
 
 /* ---------- storage ---------- */
 function cartItems() {
-  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+  try {
+    const items = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    return items.map(item => item.name === "Cemetery Flowers & Subscriptions"
+      ? { ...item, name: "Cemetery Flower Replacement" }
+      : item);
+  }
   catch (e) { return []; }
 }
 function cartSave(items) {
@@ -144,10 +149,13 @@ function renderCartPage(rootEl) {
             price !== null ? "$" + price * item.qty : "Priced with you by phone"
           }</div>
         </div>
-        <div class="cart-qty">
-          <button data-qty="${idx}" data-d="-1" aria-label="One less">−</button>
-          <span>${item.qty}</span>
-          <button data-qty="${idx}" data-d="1" aria-label="One more">+</button>
+        <div class="cart-line-actions">
+          <div class="cart-qty" aria-label="Quantity for ${item.name}">
+            <button data-qty="${idx}" data-d="-1" aria-label="Decrease ${item.name} quantity">−</button>
+            <span aria-live="polite">${item.qty}</span>
+            <button data-qty="${idx}" data-d="1" aria-label="Increase ${item.name} quantity">+</button>
+          </div>
+          <button class="cart-remove" data-remove="${idx}" aria-label="Remove ${item.name} from your order">Remove</button>
         </div>
       </div>`;
   }).join("");
@@ -280,6 +288,12 @@ function renderCartPage(rootEl) {
     b.addEventListener("click", () => {
       const i = +b.getAttribute("data-qty");
       cartSetQty(i, cartItems()[i].qty + +b.getAttribute("data-d"));
+      renderCartPage(rootEl);
+    })
+  );
+  rootEl.querySelectorAll("[data-remove]").forEach(b =>
+    b.addEventListener("click", () => {
+      cartSetQty(+b.getAttribute("data-remove"), 0);
       renderCartPage(rootEl);
     })
   );

@@ -24,21 +24,31 @@
         <a class="brand" href="index.html" aria-label="Flowers Etc. home">
           <img src="images/logo.png" alt="Flowers Etc.">
         </a>
-        <a class="cart-btn" href="cart.html" aria-label="Your order">🛒<span id="cart-count"></span></a>
-        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">☰</button>
         <nav class="main-nav" id="main-navigation">
-          <a href="shop.html" data-nav="shop">Shop</a>
-          <a href="services.html#sympathy" data-nav="services">Sympathy</a>
-          <a href="services.html#cemetery-care">Cemetery Care</a>
+          <div class="nav-dropdown">
+            <button class="nav-shop-toggle" type="button" data-nav="shop" aria-expanded="false" aria-controls="shop-navigation">Shop <span aria-hidden="true">⌄</span></button>
+            <div class="nav-submenu" id="shop-navigation">
+              <a href="shop.html">Shop all flowers</a>
+              <a href="shop.html?cat=everyday">Everyday &amp; Just Because</a>
+              <a href="shop.html?cat=sympathy">Sympathy &amp; Funeral</a>
+              <a href="shop.html?cat=wedding">Weddings</a>
+              <a href="shop.html?cat=seasonal">Seasonal &amp; Holiday</a>
+              <a href="shop.html?cat=extras">Gifts &amp; Extras</a>
+            </div>
+          </div>
+          <a href="services.html" data-nav="services">Services</a>
           <a href="gallery.html" data-nav="gallery">Our Work</a>
           <a href="about.html" data-nav="about">Lisa's Story</a>
-          <a href="contact.html" data-nav="contact">Visit</a>
+          <a href="contact.html" data-nav="contact">Contact Us</a>
         </nav>
+        <a class="cart-btn" href="cart.html" aria-label="Your order">🛒<span id="cart-count"></span></a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">☰</button>
       </div>
     </header>`;
 
   const socialLinks = [
-    SHOP.facebook ? `<li><a href="${SHOP.facebook}" target="_blank" rel="noopener">Facebook</a></li>` : "",
+    SHOP.facebook ? `<li><a href="${SHOP.facebook}" target="_blank" rel="noopener noreferrer">Follow on Facebook</a></li>` : "",
+    SHOP.facebookMessenger ? `<li><a href="${SHOP.facebookMessenger}" target="_blank" rel="noopener noreferrer">Message us on Facebook</a></li>` : "",
     SHOP.instagram ? `<li><a href="${SHOP.instagram}" target="_blank" rel="noopener">Instagram</a></li>` : "",
   ].join("");
 
@@ -54,7 +64,7 @@
             ${SHOP.email ? `<br><a href="mailto:${SHOP.email}">${SHOP.email}</a>` : ""}</p>
           </div>
           <div>
-            <h4>Visit</h4>
+            <h4>Explore</h4>
             <ul>
               <li><a href="shop.html">Shop Flowers</a></li>
               <li><a href="gallery.html">Our Work</a></li>
@@ -69,7 +79,6 @@
             <ul>
               ${SHOP.hours.map(h => `<li>${h.days}: ${h.time}</li>`).join("")}
             </ul>
-            ${SHOP.holidayHoursNote ? `<p style="margin-top:8px; font-size:0.85rem;">${SHOP.holidayHoursNote}</p>` : ""}
           </div>
         </div>
         <div class="footer-bottom">
@@ -93,12 +102,37 @@
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   });
+
+  // Shop category menu: click/touch friendly, keyboard dismissible, and nested on mobile.
+  const shopMenu = document.querySelector(".nav-dropdown");
+  const shopToggle = document.querySelector(".nav-shop-toggle");
+  const closeShopMenu = () => {
+    shopMenu.classList.remove("open");
+    shopToggle.setAttribute("aria-expanded", "false");
+  };
+  shopToggle.addEventListener("click", () => {
+    const open = shopMenu.classList.toggle("open");
+    shopToggle.setAttribute("aria-expanded", String(open));
+  });
+  document.addEventListener("click", event => {
+    if (!shopMenu.contains(event.target)) closeShopMenu();
+  });
+  nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+    closeShopMenu();
+    nav.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+  }));
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && nav.classList.contains("open")) {
-      nav.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open menu");
-      toggle.focus();
+    if (event.key === "Escape") {
+      if (shopMenu.classList.contains("open")) {
+        closeShopMenu();
+        shopToggle.focus();
+      } else if (nav.classList.contains("open")) {
+        nav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open menu");
+        toggle.focus();
+      }
     }
   });
 
@@ -131,14 +165,20 @@
 
   window.productMedia = p =>
     p.image
-      ? `<img class="p-photo" src="images/${p.image}" alt="${p.name}">`
+      ? `<img class="p-photo" src="images/${p.image}" alt="${p.name}" loading="lazy" decoding="async">`
       : `<div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
 
   // URL-friendly id for a product, e.g. "Casket Spray" -> "casket-spray"
   window.slugify = s =>
     s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  window.productBySlug = slug => PRODUCTS.find(p => slugify(p.name) === slug);
+  window.productBySlug = slug => {
+    const aliases = {
+      "cemetery-flowers-and-subscriptions": "cemetery-flower-replacement",
+    };
+    const resolvedSlug = aliases[slug] || slug;
+    return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
+  };
   window.productUrl = p => `product.html?p=${slugify(p.name)}`;
 
   /* ---------- Seasonal pricing engine ----------
@@ -352,7 +392,10 @@ function openOrderModal(p) {
    GALLERY GRID (Our Work page)
    ============================================================ */
 function renderGallery(gridEl) {
-  gridEl.innerHTML = GALLERY.map(g => `
+  const controls = document.getElementById("gallery-filters");
+  const tags = [...new Set(GALLERY.map(g => g.tag))];
+  const draw = activeTag => {
+    gridEl.innerHTML = GALLERY.filter(g => !activeTag || g.tag === activeTag).map(g => `
     <figure class="gallery-card">
       ${g.image
         ? `<img src="images/${g.image}" alt="${g.caption}" loading="lazy">`
@@ -362,6 +405,23 @@ function renderGallery(gridEl) {
         ${g.caption}
       </figcaption>
     </figure>`).join("");
+  };
+
+  draw("");
+  if (!controls) return;
+  controls.innerHTML = [`<button type="button" class="active" data-gallery-tag="" aria-pressed="true">All work</button>`]
+    .concat(tags.map(tag => `<button type="button" data-gallery-tag="${tag}" aria-pressed="false">${tag}</button>`))
+    .join("");
+  controls.addEventListener("click", e => {
+    const button = e.target.closest("[data-gallery-tag]");
+    if (!button) return;
+    controls.querySelectorAll("button").forEach(item => {
+      const selected = item === button;
+      item.classList.toggle("active", selected);
+      item.setAttribute("aria-pressed", String(selected));
+    });
+    draw(button.getAttribute("data-gallery-tag"));
+  });
 }
 
 /* ============================================================
@@ -397,7 +457,7 @@ function renderProductPage(rootEl) {
     : `<div class="ph" style="aspect-ratio:1/1;"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
   const thumbs = shots.length > 1
     ? `<div class="pd-thumbs">${shots
-        .map((s, i) => `<button class="pd-thumb ${i === 0 ? "active" : ""}" data-src="images/${s}">
+        .map((s, i) => `<button type="button" class="pd-thumb ${i === 0 ? "active" : ""}" data-src="images/${s}" aria-label="Show ${p.name} photo ${i + 1}">
              <img src="images/${s}" alt="${p.name} photo ${i + 1}"></button>`)
         .join("")}</div>`
     : "";
@@ -517,6 +577,7 @@ function renderProductPage(rootEl) {
             <h3>Good to know</h3>
             ${SHOP.customizeNote ? `<div class="pd-gtk-item"><span>💐</span><p>${SHOP.customizeNote}</p></div>` : ""}
             ${SHOP.noticeNote ? `<div class="pd-gtk-item"><span>🕐</span><p>${SHOP.noticeNote}</p></div>` : ""}
+            ${SHOP.deliveryPhotoNote ? `<div class="pd-gtk-item"><span>📸</span><p>${SHOP.deliveryPhotoNote}</p></div>` : ""}
           </div>
 
           ${addonsHTML}

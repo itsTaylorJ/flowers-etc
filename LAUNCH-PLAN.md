@@ -1,125 +1,69 @@
-# Flowers Etc. — Launch Plan
+# Flowers Etc. launch plan
 
-The site is live for review at https://itstaylorj.github.io/flowers-etc/
-"Launch" means: the owner starts telling customers about it. Everything below
-is ordered — finish a phase before starting the next.
+The current review site is https://itstaylorj.github.io/flowers-etc/. Work in this order so Lisa can review the business promises before customers depend on them.
 
----
+## Phase 1 — deploy this review package
 
-## Phase 1 — Content she must confirm (launch blockers)
+- [ ] Copy this entire handoff over the repository, preserving `.git`.
+- [ ] Review the changed files and confirm no unrelated files were removed.
+- [ ] Open every page locally and check desktop and phone layouts.
+- [ ] Commit and push the package to GitHub Pages.
+- [ ] Ask Lisa to review the homepage, Services, Shop, three or four product galleries, Our Work, Contact Us, and cart.
 
-These are things only the owner knows. Wrong info live is worse than no website.
+## Phase 2 — owner confirmations
 
-- [x] **Store hours** — confirmed: Mon–Fri 8–5 and Saturday 8–12. Sunday is closed; funeral delivery may be available by arrangement.
-- [x] **Customer email address** — confirmed: cantontxflowersetc@gmail.com.
-- [x] **Most prices confirmed by Lisa** — Sunshine $95, Garden Romance $95,
-      Birthday $50, Get Well from $40, casket from $325, wreaths/hearts
-      $175–$400+, cross $125–$225, cemetery $50, prom $15–$45, keepsakes from $8,
-      Peaceful Garden from $75 (done)
-- [ ] Still `PRICE PLACEHOLDER` in `js/data.js`: Rose Bouquet sizes (45/75/135
-      + holiday tiers), Memorial Lantern $45, Plants & Dish Gardens from $45,
-      balloon add-on $6, Standing Spray from $150
-- [x] **Delivery fees & area** — $5 inside Canton city limits / $10 just outside / $15 farther within 35 miles. Regular towns include Mabank, Wills Point, Van, Grand Saline, Martins Mill, and Ben Wheeler. Same-day cutoff is 2:30 PM Monday–Friday and 10 AM Saturday.
-- [ ] **Facility restrictions** — ask Lisa about any hospital, nursing-home, school, or workplace restrictions.
-- [ ] **Delivery photos** — ask Lisa whether they are automatic, by request, Cemetery Care only, or unavailable.
-- [x] Payment methods — cash, check, debit/credit, Zelle (done)
-- [ ] Wedding terms — ask Lisa to reconcile lead time, retainer, balance deadline, delivery/setup, and cancellation terms.
-- [x] Funeral homes list + cemetery subscription service (done)
-- [x] Owner name — Lisa Thompson (done)
-- [x] Her story (About page — written; have Lisa read and approve it)
-- [x] Real reviews — 3 Google reviews live on the home page (done)
-- [ ] FAQ answers read aloud to her — she'll want her own wording somewhere.
+The exact unresolved list is in `ASK-LISA.md`.
 
-## Phase 2 — Photos (the site's biggest upgrade)
+- [ ] Wedding consultation, delivery/setup, and cancellation/refund terms.
+- [ ] Cemetery Replacement radius, schedule options, added placement fees, removal/replacement, and weather-loss terms.
+- [ ] Rose Bouquet and holiday rose tiers.
+- [ ] Memorial Lantern, Plants & Dish Gardens, and Standing Spray starting prices.
+- [ ] Approval of new gallery and product-photo choices.
+- [ ] Approval of the public Lisa story.
 
-DONE (first pass): Lisa emailed 78 photos → 19 placed on products + 12 in the
-Our Work gallery. Originals kept in `images/incoming/` (git-ignored) for re-swapping.
+Already confirmed: hours, email, delivery fees/radius, weekday and Saturday cutoffs, facility policy, requested photos, funeral lead/delivery timing, wedding deposit schedule, $50 Cemetery Replacement arrangements, weather protectant, balloon prices, and call-to-confirm event services.
 
-⚠️ Those emailed photos are LOW-RESOLUTION (~640px) — email compressed them.
-Good enough for cards/gallery, but for crisp results (and any large/hero use)
-get the FULL-SIZE originals from Lisa via Google Drive/Dropbox or text as
-"Actual Size", then re-save over the same filenames in `images/`.
+## Phase 3 — make inquiries real
 
-Still needs photos (currently showing placeholders):
-- [ ] Holiday Centerpiece
-- [ ] Fruit Basket, Coffee Basket, Candy Basket
-- [ ] Stuffed Animals, Friendship Gifts
-- [ ] Storefront + a photo of Lisa (About page — still placeholder art)
-- [ ] Optional: add a "Plants & Dish Gardens" product (Lisa sent several nice
-      dish-garden photos with no matching product yet: IMG_0367/0012/0504)
+- [ ] Using `cantontxflowersetc@gmail.com`, create Formspree endpoints for inquiries and order requests.
+- [ ] Replace `YOUR_FORM_ID` in `contact.html` and `js/cart.js`.
+- [ ] Submit one real Contact inquiry and one real cart order from a phone.
+- [ ] Confirm both arrive in the shop inbox with the correct customer, delivery, product, add-on, and notes information.
+- [ ] Confirm error messages do not tell customers an unsent order was received.
 
-## Phase 3 — Make the forms real (20 minutes)
+## Phase 4 — local-search cleanup
 
-- [ ] Using cantontxflowersetc@gmail.com, create the inquiry and order endpoints.
-- [ ] Create a form, copy the endpoint, replace `YOUR_FORM_ID` in BOTH
-      `contact.html` (inquiries) and `js/cart.js` → `ORDER_FORM_ACTION` (orders)
-- [ ] Send a test inquiry AND a test cart order; confirm both land in Gmail
-- [x] Google Maps embed on the contact page (done)
-- [ ] Complete dependable online order requests. Until the endpoint is connected, the site preserves the cart and offers a copyable summary plus call/text options; it does not claim the request was sent.
+- [ ] Claim or update Google Business Profile with the confirmed name, address, phone, hours, photos, service area, and website.
+- [ ] Update Facebook About, hours, website, and message settings.
+- [ ] Correct stale hours/ownership information on Birdeye, Yellow Pages, Yelp, WeddingWire, and other visible directories where possible.
+- [ ] Add 10–20 current-owner photos to Google and Facebook.
+- [ ] Create a short, repeatable process for asking happy customers for a Google review.
 
-## Phase 4 — Payments decision (owner researching — no rush)
+## Phase 5 — brand ownership
 
-The site already works without this: every product falls back to call/text.
-When ready, compare:
+- [ ] Choose and purchase a shop-owned domain after Lisa approves the name.
+- [ ] Connect it to GitHub Pages and make it canonical across the site.
+- [ ] Update Google, Facebook, directories, email signature, QR codes, and printed materials with the final domain.
+- [ ] Consider a matching branded email later; the confirmed Gmail address remains valid now.
 
-|  | Stripe Payment Links | Square Online Checkout |
-|---|---|---|
-| Fee | 2.9% + 30¢ | 2.9% + 30¢ |
-| Setup | Create link per product, paste into `buyLink` | Same idea, via Square dashboard |
-| Best if | Online-only payments | She ever wants a card reader in the shop too |
-| Payout | ~2 business days | ~1–2 business days |
+## Phase 6 — measurement and marketing
 
-**Recommendation:** if she might ever take cards in person, Square keeps
-everything in one place. Either way: she creates the account herself (bank
-details are involved), then we paste each product's payment link into
-`buyLink` in `js/data.js` — Buy Now buttons appear automatically.
-A shopping cart (Snipcart etc.) is a later upgrade only if phone volume demands it.
+- [ ] Add lightweight analytics only after the final domain is connected.
+- [ ] Track calls, texts, Contact inquiries, cart submissions, Facebook messages, and review-link clicks.
+- [ ] Pin a Facebook website announcement using one strong arrangement photo.
+- [ ] Post real work two or three times per week when possible and curate the strongest examples into the site monthly.
+- [ ] Ask funeral homes, venues, churches, and community partners to link to the site when appropriate.
 
-## Phase 5 — Pre-launch QA (we do this together, ~1 hour)
+## Phase 7 — payments, deliberately later
 
-- [ ] Click every link/button on every page, on a phone
-- [ ] Test tap-to-call and tap-to-text from a real phone
-- [ ] Send a real text to (903) 567-7045 to prove texts arrive
-- [ ] Test the contact form end to end
-- [ ] Spelling pass with the owner
-- [ ] Check the site on the slowest phone in the family (photo sizes!)
-- [ ] Add Open Graph tags (og:image with her best arrangement photo) so
-      links texted/shared on Facebook show a pretty preview card
+Do not connect payment just because the interface has a cart. First make pricing, inventory confirmation, delivery validation, substitutions, and inquiry handling dependable.
 
-## Phase 6 — Launch (marketing, in order of impact)
+Start with a small set of fixed-price, repeatable products. Keep custom, wedding, funeral, event, Cemetery Replacement scheduling, and variable-price work on a confirm-first path. Compare Square and Stripe only after Lisa decides how in-store and online payment should work together.
 
-1. **Facebook post from the shop's page** announcing the website, pinned to top.
-   Her existing followers are the warmest audience she has. Post a great photo +
-   the link. Update the page's Website field + the About section.
-2. **Google Business Profile** (deferred by choice — do it at launch): claim it,
-   exact same name/address/phone as the site, add the site URL, upload 10+ photos,
-   and start asking happy customers for Google reviews. For "florist near me"
-   searches this outranks everything else we do.
-3. **In-shop**: small sign or QR code at the register ("Order online anytime").
-   QR on delivery cards too — every delivery recipient is a future customer.
-4. **Local anchors**: ask the funeral homes she works with to list/link her;
-   same for wedding venues and churches. In a small town these referrals beat ads.
-5. **Facebook posts rhythm**: one photo of real work 2–3×/week. Every post
-   quietly links the site. This also feeds the Gallery page with new photos.
+## Ongoing photo standard
 
-## Phase 7 — After launch (keep it alive)
-
-- Holiday banner calendar — set `SHOP.announcement` ~2 weeks ahead of:
-  Valentine's, Easter, Mother's Day, prom season (spring), homecoming (fall),
-  Thanksgiving, Christmas. Then turn it off after.
-- Add new work to the Gallery monthly (fresh site = trust + better Google).
-- Collect reviews steadily; rotate the best into the home page.
-- Optional: free privacy-friendly analytics (GoatCounter or Cloudflare) if we
-  want to see visitor counts. Skip Google Analytics — overkill here.
-- Custom domain when she's ready (~$12/yr) — attaches to this same hosting
-  with no rebuild; print materials should wait for this if possible.
-
----
-
-## How updates work (the ongoing loop)
-
-1. Owner gives feedback → we edit (usually just `js/data.js`)
-2. `git commit` + `git push`
-3. The live link updates in ~1 minute; she refreshes and sees it
-
-Quick-edit map lives in `CUSTOMIZE.md`.
+- Add new work monthly, not every image automatically.
+- Prefer original-resolution files for home and product-card use.
+- Keep low-resolution Facebook downloads for gallery tiles and secondary photos.
+- Preserve originals separately and export web copies.
+- Obtain customer permission before showing private event details, people, names, service programs, or grave markers.
