@@ -56,9 +56,9 @@ Already confirmed: hours, email, delivery fees/radius, weekday and Saturday cuto
 
 ## Phase 7 — payments, deliberately later
 
-Do not connect payment just because the interface has a cart. First make pricing, inventory confirmation, delivery validation, substitutions, and inquiry handling dependable.
+The shop currently uses Payanywhere in person. Do not connect or replace payment just because the interface has a cart. First make pricing, inventory confirmation, delivery validation, substitutions, and inquiry handling dependable.
 
-Start with a small set of fixed-price, repeatable products. Keep custom, wedding, funeral, event, Cemetery Replacement scheduling, and variable-price work on a confirm-first path. Compare Square and Stripe only after Lisa decides how in-store and online payment should work together.
+When the site is ready, start secure online payment with a small set of fixed-price, repeatable products. Keep custom, wedding, funeral, event, Cemetery Replacement scheduling, and variable-price work on a confirm-first path. Evaluate whether Payanywhere can support the desired online workflow or whether another platform is a better fit only after Lisa decides how in-store and online payment should work together. A member of the Flowers Etc. team should continue personally confirming every order.
 
 ## Ongoing photo standard
 

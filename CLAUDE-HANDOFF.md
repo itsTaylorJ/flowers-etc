@@ -1,6 +1,6 @@
 # Claude Code handoff
 
-This folder is a complete deployable update to the Flowers Etc. static website with the approved Heritage Garden direction and the operating answers supplied through August 2, 2026.
+This folder is a complete deployable update to the Flowers Etc. static website with the approved Heritage Garden direction and the operating answers supplied through August 3, 2026.
 
 ## Important files
 
@@ -30,8 +30,8 @@ Both Formspree endpoints still contain `YOUR_FORM_ID`. This is deliberate. Until
 - Same-day cutoff remains 2:30 PM Monday–Friday and 10 AM Saturday.
 - The cart includes a clear Remove action in addition to quantity controls.
 - Standard products collect optional flower, color, and inventory requests before entering the cart; those instructions stay attached to the exact cart line and order summary.
-- Custom products no longer expose Add to Cart and instead lead with “Call Lisa to Request This Design,” with text and inquiry alternatives.
-- Every “Make it extra special” add-on can be placed in the cart. Fixed-price extras contribute to the subtotal; variable inventory items remain confirmation-priced. Bears and rabbits are combined as “Stuffed animal,” with selection explicitly dependent on current stock.
+- Custom products no longer expose Add to Cart and instead lead with “Call the Shop to Request This Design,” with text and inquiry alternatives.
+- Fixed-price “Make it extra special” add-ons enter the cart and contribute to the subtotal. Variable inventory items use “Request current options,” remain visible in the order summary, and are explicitly excluded from the subtotal until a team member confirms availability and price. Bears and rabbits are combined as “Stuffed animal,” with selection explicitly dependent on current stock.
 - Platform-dependent emoji icons were replaced with a consistent custom SVG set, and the enlarged product-image dialog is centered on desktop and mobile.
 - The header keeps the cart at the right edge, adds a Shop category menu, gives Services a primary position, and uses Contact Us instead of Visit.
 - `services.html` now covers delivery, funeral timing, Cemetery Replacement, weddings, events, custom work, plants, gifts, and balloon pricing.
@@ -39,4 +39,4 @@ Both Formspree endpoints still contain `YOUR_FORM_ID`. This is deliberate. Until
 - A curated set of 45 web-ready `.webp` photos was made from the source library without altering the originals. The pink rose vase leads Rose Bouquet, the bright cube and yellow-pink vase appear under Custom Arrangement in Everyday & Just Because, the previously mislabeled Holiday Centerpiece image is now under Casket Spray, Stuffed Animals has four distinct inventory views, and Wedding Flowers & Floral Design combines the former bouquet and package listings with five wedding images. The Our Work page contains 60 examples with category filters.
 - The homepage includes verified Google/Facebook review excerpts and links, plus Facebook follow and message paths.
 - Google currently shows 5.0 from 26 reviews; Facebook shows 92% recommended from 16 reviews. Do not rewrite or invent testimonials.
-- Payment remains a later phase.
+- The shop currently uses Payanywhere in person. Online payment remains a later-phase decision; the present site truthfully says it is not active yet. Future intent is secure checkout for fixed-price standard orders, while custom and inventory-dependent requests remain confirm-first and every order receives personal confirmation from a member of the Flowers Etc. team.

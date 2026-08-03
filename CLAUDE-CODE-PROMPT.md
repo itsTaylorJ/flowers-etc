@@ -24,7 +24,7 @@ Work carefully and complete the deployment end to end:
 3. Copy the prepared handoff files over their matching paths in the target repository. The handoff is the authority for the website HTML, CSS, JavaScript, documentation, and selected web-ready images.
 4. Do not invent, infer, or silently change business facts. Leave questions in `ASK-LISA.md` unresolved unless the handoff explicitly marks them completed. Do not replace a `PRICE PLACEHOLDER` without Lisa's confirmation.
 5. Keep both `YOUR_FORM_ID` placeholders until real Formspree endpoints are supplied and tested. The site must not claim an order or inquiry was sent if no real endpoint accepted it.
-6. Keep payment processing deferred. The current cart prepares line items, totals, requests, and an order summary, but it must not claim that customers are being charged online.
+6. The shop currently uses Payanywhere in person. Keep the online-payment platform decision deferred: do not integrate, replace, or select a processor. The current cart prepares line items, totals, requests, and an order summary and must truthfully say online payment is not active yet. Preserve the future intent of secure online checkout for fixed-price standard orders, with custom and inventory-dependent requests remaining confirm-first.
 7. Confirm the current catalog structure after copying:
    - 26 products total;
    - exactly one wedding product named `Wedding Flowers & Floral Design`;
@@ -34,12 +34,12 @@ Work carefully and complete the deployment end to end:
 8. Confirm the current ordering experience:
    - every non-custom product has an optional flower, color, item, or inventory-request field;
    - those instructions persist into the cart and the submitted/copied order summary;
-   - every `order: "custom"` product has no product Add-to-cart action and instead shows `Call Lisa to Request This Design`;
+   - every `order: "custom"` product has no product Add-to-cart action and instead shows `Call the Shop to Request This Design`;
    - exact-price Make It Special items enter the cart and affect the subtotal;
-   - variable-price items such as Stuffed Animal enter the cart as confirmation-price items;
+   - variable-price items such as Stuffed Animal use `Request current options`, appear as request-only lines, and are excluded from the subtotal until confirmed;
    - Stuffed Animal states that style, size, and color depend on current inventory;
    - minus, plus, and Remove controls work;
-   - the substitution language mentions season, current shop stock, possible sourcing when lead time allows, equal-or-greater-value substitutions, and Lisa calling before a significant change.
+   - the substitution language mentions season, current shop stock, possible sourcing when lead time allows, equal-or-greater-value substitutions, and a member of the shop team calling before a significant change;
 9. Verify JavaScript syntax for `js/data.js`, `js/main.js`, and `js/cart.js`.
 10. Serve the target repository locally and test at desktop and phone widths. Check:
     - homepage layout, reviews, Facebook links, and current hero imagery;

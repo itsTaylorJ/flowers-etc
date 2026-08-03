@@ -1,6 +1,6 @@
 # Flowers Etc. — approved operating information
 
-Last updated: August 2, 2026. These answers were supplied by Taylor and should be treated as current unless Lisa changes them.
+Last updated: August 3, 2026. These answers were supplied by Taylor and should be treated as current unless Lisa changes them.
 
 ## Shop
 
@@ -53,6 +53,14 @@ Last updated: August 2, 2026. These answers were supplied by Taylor and should b
 
 - Subject to date and availability: birthdays, quinceañeras, corporate events, private parties, baby showers, bridal showers, and holiday or milestone celebrations.
 - Customers must call to confirm availability and scope. These are services, not fixed-price shop products.
+
+## Payments
+
+- The shop currently uses Payanywhere for in-person payment processing.
+- The online payment platform and integration decision is intentionally deferred until the site content, pricing, inventory-confirmation, and order-request workflow are complete.
+- The current website does not process online payments.
+- Future intent: allow secure online payment for fixed-price standard orders while still having a member of the Flowers Etc. team personally confirm every order.
+- Custom work and inventory-dependent options remain confirm-first and are priced before payment.
 
 ## Missed recipient and weather
 

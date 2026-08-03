@@ -83,7 +83,7 @@ For homepage and product-card hero use, prefer original-resolution files. Many F
 - Keep event work on Services until Lisa confirms packages, lead times, and repeatable pricing.
 - Keep funeral information gentle and procedural. Customers in grief need fewer choices, not more copy.
 - Ask for a review after successful delivery, especially when a customer requests a delivery photo. Link directly to Google first; Facebook second.
-- Add a short “What happens next” sequence near the cart once Formspree is live: submit request, Lisa confirms design/delivery, payment is taken, arrangement is created and delivered.
+- Add a short “What happens next” sequence near the cart once Formspree is live: submit request, a member of the shop team confirms design/delivery, payment is arranged, and the arrangement is created and delivered.
 
 ## Accessibility and technical notes
 
@@ -92,7 +92,7 @@ For homepage and product-card hero use, prefer original-resolution files. Many F
 - Cart quantity changes and Remove are distinct controls.
 - Image alt text describes the design or purpose without keyword stuffing.
 - New photos are compressed WebP files and are not upscaled.
-- Payment remains intentionally deferred. Do not add Stripe or Square until product/pricing operations and the request workflow are stable.
+- The shop currently uses Payanywhere in person. Online payment remains intentionally deferred; do not integrate or replace a processor until product/pricing operations and the request workflow are stable.
 
 ## Recommended sequence
 

@@ -1,8 +1,8 @@
 /* ============================================================
    FLOWERS ETC — CART & ONLINE CHECKOUT
-   Customers build an order fully online. Payment is confirmed on
-   the follow-up call until online card payment (Stripe/Square)
-   is connected — then it plugs into this same flow.
+   Customers build an order request online. Online payment is
+   intentionally deferred while the shop continues using Payanywhere
+   in person. A future fixed-price checkout can use this same flow.
 
    SETUP: to receive order requests, create a Formspree form and
    put its URL in ORDER_FORM_ACTION below (same as the contact
@@ -83,6 +83,10 @@ function cartLinePrice(item) {
 function cartAdd(name, size, instructions = "", kind = "product") {
   const product = PRODUCTS.find(x => x.name === name);
   if (kind !== "addon" && (!product || product.order === "custom")) return false;
+  const addon = kind === "addon"
+    ? (typeof ADDONS !== "undefined" ? ADDONS : []).find(x => x.name === name)
+    : null;
+  if (kind === "addon" && !addon) return false;
   const cleanInstructions = String(instructions || "").trim().slice(0, 500);
   const items = cartItems();
   const hit = items.find(i =>
@@ -94,7 +98,7 @@ function cartAdd(name, size, instructions = "", kind = "product") {
   if (hit) hit.qty += 1;
   else items.push({ name, size: size || "", instructions: cleanInstructions, kind, qty: 1 });
   cartSave(items);
-  cartToast(name);
+  cartToast(name, Boolean(addon && addon.requestOnly));
   return true;
 }
 function cartSetQty(index, qty) {
@@ -116,12 +120,14 @@ function cartBadge() {
 }
 
 /* ---------- "added" toast ---------- */
-function cartToast(name) {
+function cartToast(name, requestOnly = false) {
   let t = document.querySelector(".cart-toast");
   if (t) t.remove();
   t = document.createElement("div");
   t.className = "cart-toast";
-  t.innerHTML = `${siteIcon("check")} <strong></strong> added to your order &nbsp;·&nbsp; <a href="cart.html">Review &amp; Checkout →</a>`;
+  t.innerHTML = requestOnly
+    ? `${siteIcon("check")} <strong></strong> requested &nbsp;·&nbsp; <a href="cart.html">Review order →</a>`
+    : `${siteIcon("check")} <strong></strong> added to your order &nbsp;·&nbsp; <a href="cart.html">Review &amp; Checkout →</a>`;
   t.querySelector("strong").textContent = name;
   document.body.appendChild(t);
   setTimeout(() => t.classList.add("show"), 20);
@@ -189,20 +195,24 @@ function renderCartPage(rootEl) {
     const catalog = cartCatalog(item);
     const p = catalog && catalog.kind === "product" ? catalog.entry : null;
     const isAddon = catalog && catalog.kind === "addon";
+    const isRequest = Boolean(isAddon && catalog.entry.requestOnly);
     const price = cartLinePrice(item);
     const img = p && p.image
       ? `<img src="images/${p.image}" alt="${item.name}">`
       : `<div class="cart-addon-thumb" aria-hidden="true">${siteIcon(isAddon ? "gift" : "flower")}</div>`;
     const itemHref = p ? productUrl(p) : "shop.html";
-    const priceCopy = price !== null
-      ? (price === 0 ? "Included" : "$" + price * item.qty)
-      : "Price confirmed with you";
+    const priceCopy = isRequest
+      ? "Not included in subtotal"
+      : price !== null
+        ? (price === 0 ? "Included" : "$" + price * item.qty)
+        : "Price confirmed before payment";
     return `
       <div class="cart-line">
         <a class="cart-thumb" href="${itemHref}">${img}</a>
         <div class="cart-line-info">
           <a class="cart-line-name" href="${itemHref}">${item.name}</a>
-          ${isAddon ? `<div class="cart-line-kind">Make it special add-on</div>` : ""}
+          ${isRequest ? `<div class="cart-line-kind">Option request · availability and price confirmed first</div>` :
+            isAddon ? `<div class="cart-line-kind">Make it special add-on</div>` : ""}
           ${item.size ? `<div class="cart-line-size">${item.size}</div>` : ""}
           ${item.instructions ? `<div class="cart-line-instructions"><strong>Your request:</strong> ${escapeHTML(item.instructions)}</div>` : ""}
           <div class="cart-line-price">${priceCopy}</div>
@@ -222,7 +232,14 @@ function renderCartPage(rootEl) {
     const pr = cartLinePrice(i);
     return pr !== null ? s + pr * i.qty : s;
   }, 0);
-  const hasQuoted = items.some(i => cartLinePrice(i) === null);
+  const hasRequests = items.some(i => {
+    const catalog = cartCatalog(i);
+    return Boolean(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
+  });
+  const hasQuoted = items.some(i => {
+    const catalog = cartCatalog(i);
+    return cartLinePrice(i) === null && !(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
+  });
 
   rootEl.innerHTML = `
     <div class="container">
@@ -236,14 +253,15 @@ function renderCartPage(rootEl) {
           ${lines}
           <div class="cart-totals">
             <div><span>Items subtotal</span><strong>$${subtotal}</strong></div>
-            ${hasQuoted ? `<div class="cart-quoted"><span>+ custom-priced items</span><em>confirmed with you by phone</em></div>` : ""}
+            ${hasRequests ? `<div class="cart-quoted"><span>+ requested options</span><em>not included in subtotal</em></div>` : ""}
+            ${hasQuoted ? `<div class="cart-quoted"><span>+ confirmation-priced items</span><em>confirmed before payment</em></div>` : ""}
             <div id="cart-delivery-row" style="display:none;"><span>Delivery</span><strong id="cart-delivery-fee"></strong></div>
             <div class="cart-grand"><span>Estimated total</span><strong id="cart-grand">$${subtotal}</strong></div>
           </div>
-          <p class="cart-reassure">${siteIcon("flower")}<span><strong>Nothing is charged online.</strong> We'll call or text to
-          confirm every detail — and take payment — before we make a single stem. Cash, check,
-          debit &amp; credit cards, and Zelle accepted. Tips for our delivery drivers are always
-          welcome, never expected.</span></p>
+          <p class="cart-reassure">${siteIcon("flower")}<span><strong>Online payment is not active yet.</strong>
+          A member of the Flowers Etc. team will call or text to confirm your order, availability,
+          delivery or pickup details, and payment before we begin. Secure online checkout is planned
+          later for fixed-price orders. Tips for our delivery drivers are always welcome, never expected.</span></p>
           <p class="cart-alt">Customer needs change — if you'd rather finish this order with a person,
             <a href="tel:${SHOP.phoneHref}">call</a> or <a href="sms:${SHOP.phoneHref}">text us</a>
             at ${SHOP.phone}, or <a href="contact.html">send an inquiry</a> instead. We're easy.</p>
@@ -316,7 +334,7 @@ function renderCartPage(rootEl) {
               <label for="co-card">Card message (free, hand-written)</label>
               <textarea id="co-card" placeholder="What should the card say?"></textarea>
             </div>
-            <div class="full co-added-note">Add-ons selected from “Make it extra special” appear as individual items in the cart and are included in the order summary.</div>
+            <div class="full co-added-note">Fixed-price add-ons are included in the subtotal. Request-only options are clearly marked, included in the order summary, and priced after availability is confirmed.</div>
             <div class="full">
               <label for="co-notes">Anything else? Colors, substitutions, special requests...</label>
               <textarea id="co-notes"></textarea>
@@ -326,8 +344,8 @@ function renderCartPage(rootEl) {
               <button type="submit" class="btn btn-primary" style="width:100%;">Place My Order</button>
             </div>
           </div>
-          <p class="form-note">By placing your order you're reserving it — we'll call or text
-          shortly to confirm everything and take payment. ${SHOP.noticeNote}</p>
+          <p class="form-note">By placing your order, you're sending a request. A member of our team will call or text
+          to confirm availability, final details, and payment before work begins. ${SHOP.noticeNote}</p>
         </form>
       </div>
     </div>`;
@@ -381,7 +399,8 @@ function renderCartPage(rootEl) {
     rootEl.querySelector("#cart-delivery-fee").textContent = "$" + currentFee;
     const grand = subtotal + (isDelivery() ? currentFee : 0) + tip;
     rootEl.querySelector("#cart-grand").textContent =
-      "$" + grand + (tip ? " (incl. $" + tip + " tip)" : "") + (hasQuoted ? " + custom items" : "");
+      "$" + grand + (tip ? " (incl. $" + tip + " tip)" : "") +
+      (hasQuoted ? " + confirmation-priced items" : "") + (hasRequests ? " + requested options" : "");
   };
 
   const updateDelivery = () => {
@@ -456,7 +475,11 @@ function renderCartPage(rootEl) {
     const tip = isDelivery() ? Math.max(0, +v("co-tip") || 0) : 0;
     const orderLines = items.map(i => {
       const pr = cartLinePrice(i);
-      const priceText = pr !== null ? (pr === 0 ? "included" : "$" + pr * i.qty) : "price TBD";
+      const catalog = cartCatalog(i);
+      const isRequest = Boolean(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
+      const priceText = isRequest
+        ? "REQUEST ONLY — not included in subtotal"
+        : pr !== null ? (pr === 0 ? "included" : "$" + pr * i.qty) : "price confirmed before payment";
       return `• ${i.qty} × ${i.name}${i.size ? " (" + i.size + ")" : ""} — ${priceText}` +
         (i.instructions ? `\n  Customer request: ${i.instructions}` : "");
     });
@@ -464,7 +487,9 @@ function renderCartPage(rootEl) {
       "NEW ONLINE ORDER — Flowers Etc. website",
       "",
       "ITEMS:", ...orderLines,
-      "Items subtotal: $" + subtotal + (hasQuoted ? " (plus custom-priced items)" : ""),
+      "Items subtotal: $" + subtotal +
+        (hasQuoted ? " (plus confirmation-priced items)" : "") +
+        (hasRequests ? " (requested options excluded)" : ""),
       "Estimated delivery fee: " + (isDelivery() ? (currentFee ? "$" + currentFee : "TBD — confirm by ZIP/address") : "n/a (pickup)"),
       "Driver tip: " + (tip ? "$" + tip : "—"),
       "",
@@ -500,7 +525,7 @@ function renderCartPage(rootEl) {
         <div class="container" style="padding:70px 22px; max-width:760px;">
           <h1>Your request has not been sent yet</h1>
           <p style="margin:14px 0; color:#5A665F; line-height:1.7;">
-            Online submission is still being connected. Your cart has been saved. Copy the summary below, then call or text the shop so Lisa can confirm the order.
+            Online submission is still being connected. Your cart has been saved. Copy the summary below, then call or text the shop so a member of our team can confirm the order.
           </p>
           <textarea id="unsent-order-summary" readonly style="width:100%;min-height:320px;margin:18px 0;padding:16px;"></textarea>
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -531,7 +556,7 @@ function renderCartPage(rootEl) {
         <div class="order-success-icon">${siteIcon("check")}</div>
         <h1>Your order request is in</h1>
         <p style="margin:14px 0 8px; color:#5A665F; line-height:1.7;">
-          Thank you. We'll call or text you shortly to confirm every detail and take payment — nothing has been charged online.
+          Thank you. A member of our team will call or text shortly to confirm availability, every detail, and payment. Online payment is not active yet.
         </p>
         <p style="margin-bottom:28px; color:#5A665F;">Need it fast or thought of something?
           Call or text <a href="tel:${SHOP.phoneHref}" style="font-weight:700;">${SHOP.phone}</a>.</p>

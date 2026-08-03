@@ -52,7 +52,7 @@ every year** — so holiday prices can never get stuck on in July.
 Every product automatically gets its own page — no file to create. The link is
 `product.html?p=<product-name-in-dashes>`, e.g. `product.html?p=rose-bouquet`.
 Rename a product and its link changes to match. These pages are shareable
-(Lisa can text one to a customer) and Google can index each one.
+(a member of the shop team can text one to a customer) and Google can index each one.
 | "I don't like the colors" | The `:root` block at the top of `css/style.css` — change the hex codes |
 | "Different fonts" | Same `:root` block (`--font-head`, `--font-body`) + the Google Fonts `<link>` in each page's `<head>` |
 | "Change the wording on the home page" | `index.html` — the text is plain HTML |
@@ -70,33 +70,40 @@ Rename a product and its link changes to match. These pages are shareable
 Tips: landscape orientation (wider than tall) works best for product cards;
 keep files under ~500 KB so pages load fast (resize at squoosh.app if needed).
 
-## Turning on online payments (when she's ready)
+## Turning on online payments (later)
 
-1. She creates a free **Stripe** (stripe.com) or **Square** account herself
-   (this needs her bank details, so she should do this part).
-2. In Stripe: Payment Links → create a link per arrangement (name + price).
-3. Paste each link into that product's `buyLink` field in `js/data.js`.
-4. The "Call to Order" fallback automatically becomes a real **Buy Now — Secure Checkout** button.
+The shop currently uses Payanywhere for in-person payment. Do not choose, connect,
+or replace a payment platform yet. Finish the catalog, confirmed pricing, inventory
+workflow, Formspree delivery, and order testing first.
 
-Products meant to stay phone-only (casket sprays, weddings) keep `order: "custom"` — they never show a buy button.
+When the shop is ready, evaluate whether Payanywhere supports the desired online
+checkout or whether another platform is a better fit. Fixed-price, repeatable products
+can then use secure online checkout. Products meant to stay phone-only (casket sprays,
+weddings, and other custom work) keep `order: "custom"` and remain confirm-first.
 
 ## Online ordering (the cart)
 
 Customers can add any standard `order: "buy"` product to the cart from its detail
 page after entering optional flower, color, inventory, or stuffed-animal requests.
 Custom `order: "custom"` products never show an Add to Cart action; they direct the
-customer to call Lisa, text, or send a custom-order inquiry. “Make it extra special”
-add-ons enter the cart as real line items. Exact-price add-ons contribute to the
-subtotal; `amount: null` add-ons remain confirmation-priced. **Nothing is charged
-online.** After the endpoint is connected, Lisa receives the product-level requests
-with the rest of the order and calls/texts to confirm details and payment.
+customer to call the shop, text, or send a custom-order inquiry. “Make it extra special”
+items with exact prices enter the cart as paid line items and contribute to the subtotal.
+Inventory-dependent options use `amount: null` with `requestOnly: true`; their button
+says “Request current options,” they remain visible in the order summary, and they are
+explicitly excluded from the subtotal until a team member confirms availability and price.
+
+The current site states that online payment is not active yet. After the endpoint is
+connected, a member of the Flowers Etc. team receives the order request and calls or
+texts to confirm availability, details, and payment. Later, fixed-price standard orders
+can be charged through secure online checkout while custom and request-only items stay
+confirm-first.
 
 - To receive orders by email: create a Formspree form (same account as the
   contact form) and paste its URL into `ORDER_FORM_ACTION` at the top of
   `js/cart.js`. Until then, checkout preserves the cart and displays a copyable
   order summary with call and text options. It never claims the request was sent.
-- When Lisa picks Stripe or Square, online card payment plugs into this same
-  checkout — no rebuild.
+- When the shop chooses its future online payment approach, it can plug into this
+  same checkout flow without rebuilding the catalog.
 - Call, text, and inquiry options stay available everywhere alongside the cart.
 
 ## Making the contact form actually send

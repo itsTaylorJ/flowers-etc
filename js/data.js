@@ -37,7 +37,7 @@ const SHOP = {
 
   deliveryPhotoNote: "Delivery or placement photos are available by request.",
   facilityNote: "Flowers Etc. does not add special facility restrictions. Hospitals, schools, care communities, funeral homes, and workplaces may have their own rules, so we confirm recipient and facility details before delivery.",
-  funeralOrderNote: "Please place funeral orders at least 24 hours ahead. We plan to deliver at least one hour before the service. Depending on the design, size, and flower availability, Lisa may be able to help on a shorter timeline—call to confirm.",
+  funeralOrderNote: "Please place funeral orders at least 24 hours ahead. We plan to deliver at least one hour before the service. Depending on the design, size, and flower availability, we may be able to help on a shorter timeline—call to confirm.",
 
   // Announcement banner — shows at the very top of every page when not "".
   // Leave "" and the seasonal banners below will fill it in automatically.
@@ -49,8 +49,8 @@ const SHOP = {
     "Flowers and colors depend on the season and what is currently in the shop. " +
     "If a requested bloom isn't on hand, we may be able to source it when your pickup " +
     "or delivery date allows. Otherwise, we'll substitute a similar bloom of equal or " +
-    "greater value while matching the style and color direction you chose. Lisa will " +
-    "confirm availability and call before making any significant change.",
+    "greater value while matching the style and color direction you chose. A member of " +
+    "our team will confirm availability and call before making any significant change.",
 
   // Shown on every product — the "make it yours" invitation. Set "" to hide.
   customizeNote:
@@ -108,7 +108,7 @@ const CATEGORIES = [
                  products without a photo automatically sort to the bottom)
      order     — "buy"    → shows a Buy Now button (uses buyLink)
                  "custom" → shows Call to Order (phone) + inquiry option
-     buyLink   — Stripe/Square payment link URL (only for order: "buy";
+     buyLink   — future secure-payment URL (only for order: "buy";
                  leave "" until the payment account is set up — the button
                  will show "Call to Order" as a fallback automatically)
 
@@ -269,7 +269,7 @@ const PRODUCTS = [
     name: "Cemetery Flower Replacement",
     category: "sympathy",
     price: 50,
-    desc: "A lasting silk arrangement for $50, designed for a cemetery vase and sprayed with a weather protectant. Placement can be set up on a schedule by request, and photo confirmation is available by request. Lisa will confirm cemetery details, service area, and scheduling personally.",
+    desc: "A lasting silk arrangement for $50, designed for a cemetery vase and sprayed with a weather protectant. Placement can be set up on a schedule by request, and photo confirmation is available by request. Our team will confirm cemetery details, service area, and scheduling personally.",
     flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
     image: "silk-cemetery-arrangement.jpg",
     photos: ["blue-yellow-silk-cemetery.webp", "blue-yellow-silk-cemetery-2.webp"],
@@ -330,7 +330,7 @@ const PRODUCTS = [
     name: "Wedding Flowers & Floral Design",
     category: "wedding",
     price: "Bouquets from $125 · packages by consultation",
-    desc: "From the bridal bouquet and wedding-party flowers to ceremony pieces, sweetheart-table installations, and reception centerpieces, Lisa can design a coordinated floral story around your colors, season, venue, and budget.",
+    desc: "From the bridal bouquet and wedding-party flowers to ceremony pieces, sweetheart-table installations, and reception centerpieces, we can design a coordinated floral story around your colors, season, venue, and budget.",
     flowers: ["Bridal and attendant bouquets", "Boutonnieres and corsages", "Ceremony arrangements", "Sweetheart-table and reception flowers", "Centerpieces and finishing floral details"],
     image: "wedding-floral-installation.webp",
     photos: ["bridal-bouquet.jpg", "full-wedding-package.jpg", "wedding-table-centerpiece.webp", "wedding-ring-detail.webp"],
@@ -410,7 +410,7 @@ const PRODUCTS = [
     name: "Stuffed Animals",
     category: "extras",
     price: "From $15",
-    desc: "Stuffed animals from $15, with sizes, colors, and styles varying according to what is currently in stock — sweet on their own or added to an arrangement. Lisa will confirm the available selection.",
+    desc: "Stuffed animals from $15, with sizes, colors, and styles varying according to what is currently in stock — sweet on their own or added to an arrangement. Request current options and a member of our team will confirm the available selection and price.",
     flowers: [],
     image: "grey-brown-bears-2026.webp",
     photos: ["stuffed-animals-full-shelf-2026.webp", "stuffed-bears-shelf-2026.webp", "valentine-bears-three-2026.webp"],
@@ -444,20 +444,21 @@ const PRODUCTS = [
    ADD-ONS — shown on every product's detail page and order popup.
      name         — what it is
      price        — what it costs
-     amount       — exact numeric cart price, or null when Lisa must confirm it
+     amount       — exact numeric cart price, or null when the shop must confirm it
+     requestOnly  — true keeps the item out of the paid subtotal and records it as a request
      customizable — true adds a small "can be customized" note
      note         — optional inventory or selection guidance
    ------------------------------------------------------------ */
 const ADDONS = [
   { name: "Hand-written card message", price: "Free", amount: 0, customizable: true },
   { name: "Personalized ribbon (your colors & wording)", price: "$5 per ribbon", amount: 5, customizable: true },
-  { name: "Stuffed animal", price: "From $15", amount: null, customizable: false, note: "Selection varies with current shop inventory." },
-  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", amount: null, customizable: true, note: "Lisa will confirm the available keepsake and final price." },
+  { name: "Stuffed animal", price: "From $15", amount: null, requestOnly: true, customizable: false, note: "Selection and price vary with current shop inventory." },
+  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", amount: null, requestOnly: true, customizable: true, note: "Our team will confirm the available keepsake and final price." },
   { name: "Latex balloon — shop supplied, helium included", price: "$2 each", amount: 2, customizable: false },
   { name: "Latex balloon inflation — customer supplied", price: "$1 each", amount: 1, customizable: false },
   { name: "Mylar balloon — shop supplied, helium included", price: "$5 each", amount: 5, customizable: false },
   { name: "Mylar balloon inflation — customer supplied", price: "$2 each", amount: 2, customizable: false },
-  { name: "Upgraded keepsake vase", price: "Ask us", amount: null, customizable: true, note: "Style and price depend on current inventory." },
+  { name: "Upgraded keepsake vase", price: "Ask us", amount: null, requestOnly: true, customizable: true, note: "Style and price depend on current inventory." },
 ];
 
 // Shown wherever add-ons appear — the promise that a real person confirms

@@ -339,7 +339,7 @@ function renderShop(gridEl, filterEl) {
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
               ${p.order === "custom"
-                ? `<a class="btn btn-primary btn-sm" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>`
+                ? `<a class="btn btn-primary btn-sm" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call the Shop to Request This Design</a>`
                 : `<a class="btn btn-primary btn-sm" href="${productUrl(p)}">Choose Details</a>`}
               <a class="btn btn-outline btn-sm" href="${productUrl(p)}">View Details</a>
             </div>
@@ -411,15 +411,15 @@ function openOrderModal(p) {
         and we'll use it as design direction.</span></div>
       ${p.order !== "custom" ? `<div class="m-instructions">
         <label for="m-instructions">Flower, color, or item requests <span>(optional)</span></label>
-        <textarea id="m-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything Lisa should check for you..."></textarea>
-        <small>Lisa will confirm availability before the order is finalized.</small>
+        <textarea id="m-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything our team should check for you..."></textarea>
+        <small>A member of our team will confirm availability before the order is finalized.</small>
       </div>` : ""}
       <div class="m-actions">
         ${p.order === "custom"
-          ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>`
+          ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call the Shop to Request This Design</a>`
           : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#m-instructions">${siteIcon("cart")} Add to Cart — Order Online</button>`}
         ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
-        <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} ${p.order === "custom" ? "Text Lisa About This Design" : "Text Us Your Order"}</a>
+        <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} ${p.order === "custom" ? "Text Us About This Design" : "Text Us Your Order"}</a>
         <a class="btn btn-outline" href="${inquiryHref}">Send an Inquiry Instead</a>
       </div>
     </div>`;
@@ -497,7 +497,7 @@ function renderProductPage(rootEl) {
     ? {
         title: "Shop inventory examples",
         primary: "Representative item from Flowers Etc. Call to confirm the exact style currently available.",
-        extra: "Past or current Flowers Etc. inventory. Styles rotate, so Lisa will confirm the exact item before the order is made.",
+        extra: "Past or current Flowers Etc. inventory. Styles rotate, so our team will confirm the exact item before the order is made.",
       }
     : {
         title: "Past work & style examples",
@@ -583,8 +583,8 @@ function renderProductPage(rootEl) {
   const instructionsHTML = p.order !== "custom"
     ? `<div class="pd-block pd-instructions">
          <label for="pd-instructions">Flower, color, or item requests <span>(optional)</span></label>
-         <textarea id="pd-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything Lisa should check for you..."></textarea>
-         <small>Requests depend on season and current inventory. Lisa will confirm what is available before the order is finalized.</small>
+         <textarea id="pd-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything our team should check for you..."></textarea>
+         <small>Requests depend on season and current inventory. A member of our team will confirm what is available before the order is finalized.</small>
        </div>`
     : "";
 
@@ -600,7 +600,7 @@ function renderProductPage(rootEl) {
                  ${a.note ? `<small>${a.note}</small>` : ""}
                </div>
                <span class="pd-addon-price">${a.price}</span>
-               <button type="button" class="pd-addon-add" data-addon-add="${index}">${a.amount === null ? "Add — confirm price" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
+               <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
              </li>`).join("")}
          </ul>
          ${typeof ADDON_PROMISE !== "undefined"
@@ -661,8 +661,8 @@ function renderProductPage(rootEl) {
 
           <div class="pd-actions">
             ${p.order === "custom"
-              ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>
-                 <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Lisa About This Design</a>
+              ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call the Shop to Request This Design</a>
+                 <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Us About This Design</a>
                  <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send a Custom-Order Inquiry</a>`
               : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#pd-instructions">${siteIcon("cart")} Add to Cart — Order Online</button>
                  ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
@@ -674,7 +674,7 @@ function renderProductPage(rootEl) {
           <div class="pd-reassure">
             <div><strong>Same-day requests</strong> by 2:30 PM weekdays · 10 AM Saturday</div>
             <div><strong>Hand-delivered</strong> across ${SHOP.deliveryArea}</div>
-            <div><strong>A real person</strong> answers — ${SHOP.ownerName} or a member of the design team</div>
+            <div><strong>A real person</strong> from our Canton shop answers</div>
           </div>
 
           <div class="pd-block pd-goodtoknow">

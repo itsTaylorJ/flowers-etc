@@ -7,7 +7,7 @@
 - 3 products currently have one photo
 - 5 products still need an honest product photo
 - All additional arrangement images are identified as past Flowers Etc. work and style inspiration.
-- Keepsake galleries explain that inventory rotates and Lisa will confirm the exact item.
+- Keepsake galleries explain that inventory rotates and a member of the shop team will confirm the exact item.
 - Product galleries support thumbnails, previous/next controls, mobile swiping, keyboard arrows in the enlarged view, and click-to-enlarge.
 - No AI-generated product photographs are used.
 - A perceptual duplicate check prevents the same photograph from appearing twice under different filenames or formats within one listing or across separate product listings.
