@@ -5,8 +5,11 @@ The current review site is https://itstaylorj.github.io/flowers-etc/. Work in th
 ## Phase 1 — deploy this review package
 
 - [ ] Copy this entire handoff over the repository, preserving `.git`.
+- [ ] Confirm all eight asset-loading pages use the v10 cache key after copying.
 - [ ] Review the changed files and confirm no unrelated files were removed.
 - [ ] Open every page locally and check desktop and phone layouts.
+- [ ] On Shop, select Sympathy and confirm the shopping guide appears; switch categories and confirm it hides.
+- [ ] Confirm canonical/social metadata, the corrected Designer's Choice sitemap URL, and no broken image references.
 - [ ] Commit and push the package to GitHub Pages.
 - [ ] Ask Lisa to review the homepage, Services, Shop, three or four product galleries, Our Work, Contact Us, and cart.
 
@@ -15,21 +18,21 @@ The current review site is https://itstaylorj.github.io/flowers-etc/. Work in th
 The exact unresolved list is in `ASK-LISA.md`.
 
 - [ ] Wedding consultation, delivery/setup, and cancellation/refund terms.
-- [ ] Cemetery Replacement radius, schedule options, added placement fees, removal/replacement, and weather-loss terms.
 - [ ] Rose Bouquet and holiday rose tiers.
 - [ ] Memorial Lantern, Plants & Dish Gardens, and Standing Spray starting prices.
 - [ ] Approval of new gallery and product-photo choices.
 - [ ] Approval of the public Lisa story.
 
-Already confirmed: hours, email, delivery fees/radius, weekday and Saturday cutoffs, facility policy, requested photos, funeral lead/delivery timing, wedding deposit schedule, $50 Cemetery Replacement arrangements, weather protectant, balloon prices, and call-to-confirm event services.
+Already confirmed: hours, email, delivery fees/radius, weekday and Saturday cutoffs, facility policy, requested photos, funeral lead/delivery timing, wedding deposit schedule, $50 Cemetery Replacement arrangements, regular 35-mile Cemetery Replacement service area, customer-requested frequency, no added cemetery delivery/placement fee, removal of the previous arrangement when necessary, case-by-case help after damage or removal, weather protectant, balloon prices, and call-to-confirm event services.
 
 ## Phase 3 — make inquiries real
 
-- [ ] Using `cantontxflowersetc@gmail.com`, create Formspree endpoints for inquiries and order requests.
-- [ ] Replace `YOUR_FORM_ID` in `contact.html` and `js/cart.js`.
+- [x] Create separate Formspree endpoints for Contact Inquiries and Website Order Requests.
+- [x] Configure the active endpoints in `contact.html` and `js/cart.js`.
 - [ ] Submit one real Contact inquiry and one real cart order from a phone.
-- [ ] Confirm both arrive in the shop inbox with the correct customer, delivery, product, add-on, and notes information.
+- [ ] Confirm both arrive in Formspree and the temporary testing inbox with the correct customer, delivery, product, add-on, and notes information.
 - [ ] Confirm error messages do not tell customers an unsent order was received.
+- [ ] Add and verify `cantontxflowersetc@gmail.com` in Formspree, then change both forms' destination to the shop inbox before public launch.
 
 ## Phase 4 — local-search cleanup
 

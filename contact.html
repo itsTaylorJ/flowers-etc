@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us — Flowers Etc.</title>
   <meta name="description" content="Contact Flowers Etc. — hours, location, phone, and an easy inquiry form.">
+  <link rel="canonical" href="https://itstaylorj.github.io/flowers-etc/contact.html">
+  <meta property="og:title" content="Contact Flowers Etc. in Canton, Texas">
+  <meta property="og:description" content="Call, text, email, visit, or message Flowers Etc. for flowers, gifts, local delivery, and custom-order help.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Flowers Etc.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://itstaylorj.github.io/flowers-etc/contact.html">
+  <meta property="og:image" content="https://itstaylorj.github.io/flowers-etc/images/logo.png">
+  <meta property="og:image:alt" content="Flowers Etc. floral logo">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body data-page="contact">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -26,6 +36,7 @@
   <section class="block">
     <div class="container">
 
+      <h2 class="sr-only">Ways to reach Flowers Etc.</h2>
       <div class="info-grid">
         <div class="info-card">
           <div class="i-icon" data-icon="phone" aria-hidden="true"></div>
@@ -61,17 +72,15 @@
       <div class="section-head">
         <div class="flourish">Write to us</div>
         <h2>Send an Inquiry</h2>
-        <p>Perfect for wedding consultations, custom orders, or questions. Online submission is being connected; call or text for anything time-sensitive.</p>
+        <p>Perfect for wedding consultations, custom orders, or questions. Send the form below, or call or text for anything time-sensitive.</p>
       </div>
 
       <!-- FORM SETUP NOTE:
-           This form uses Formspree (free tier: 50 messages/month).
-           1. Go to formspree.io, sign up with the shop's email
-           2. Create a form and copy its endpoint URL
-           3. Replace YOUR_FORM_ID in the action below
-           Until then, the form preserves a copyable inquiry and directs the customer to call or text. -->
+           Configured August 3, 2026 with the Flowers Etc. Contact Inquiries
+           Formspree endpoint. If the endpoint changes later, update both the
+           action below and the deployment documentation. -->
       <div class="form-card">
-        <form id="inquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form id="inquiry-form" action="https://formspree.io/f/mppaaaap" method="POST">
           <div class="form-grid">
             <div>
               <label for="name">Your Name</label>
@@ -102,7 +111,7 @@
                 <a data-shop-sms href="#">Text them to us</a> and mention your name so we can match them to your inquiry.</span></div>
             </div>
             <div class="full">
-              <button type="submit" class="btn btn-primary" style="width:100%;">Prepare Inquiry</button>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Send Inquiry</button>
             </div>
           </div>
           <p id="inquiry-status" class="form-note" aria-live="polite">Need flowers today? Order by 2:30 PM Monday–Friday or 10 AM Saturday, then call the shop to confirm availability: <a data-shop-tel href="#"></a></p>
@@ -123,9 +132,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="js/data.js?v=9"></script>
-  <script src="js/main.js?v=9"></script>
-  <script src="js/cart.js?v=9"></script>
+  <script src="js/data.js?v=10"></script>
+  <script src="js/main.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
   <script>
     // Hours list from data.js
     document.getElementById("hours-list").innerHTML = SHOP.hours
@@ -135,17 +144,39 @@
     // Prefill from ?arrangement= links
     initContactForm();
 
-    // Until Formspree is configured, preserve the inquiry as copyable text.
-    document.getElementById("inquiry-form").addEventListener("submit", function (e) {
+    // Submit through Formspree without sending the customer away from the site.
+    document.getElementById("inquiry-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const status = document.getElementById("inquiry-status");
+      const submitButton = this.querySelector('button[type="submit"]');
       if (this.action.includes("YOUR_FORM_ID")) {
-        e.preventDefault();
         const f = new FormData(this);
         const body =
           `Name: ${f.get("name")}\nPhone: ${f.get("phone")}\nEmail: ${f.get("email") || "-"}\n` +
           `Date needed: ${f.get("date_needed") || "-"}\nInterested in: ${f.get("arrangement") || "-"}\n\n${f.get("message") || ""}`;
         navigator.clipboard?.writeText(body).catch(() => {});
-        document.getElementById("inquiry-status").innerHTML =
+        status.innerHTML =
           `This inquiry has <strong>not been sent yet</strong>. Its details were copied when your browser allowed it. Please call or text <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>.`;
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+      status.textContent = "Sending your inquiry securely...";
+      try {
+        const response = await fetch(this.action, {
+          method: "POST",
+          body: new FormData(this),
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) throw new Error("Formspree did not accept the inquiry.");
+        this.reset();
+        status.innerHTML = `<strong>Your inquiry has been sent.</strong> A member of the Flowers Etc. team will call or text to confirm the details. For anything time-sensitive, call <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>.`;
+      } catch (error) {
+        status.innerHTML = `Your inquiry could not be sent. Please call or text <a href="tel:${SHOP.phoneHref}">${SHOP.phone}</a>, and we’ll help you directly.`;
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Inquiry";
       }
     });
   </script>

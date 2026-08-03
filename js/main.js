@@ -44,7 +44,7 @@
     <header class="site">
       <div class="nav-wrap">
         <a class="brand" href="index.html" aria-label="Flowers Etc. home">
-          <img src="images/logo.png" alt="Flowers Etc.">
+          <img src="images/logo.png" width="1203" height="484" alt="Flowers Etc.">
         </a>
         <nav class="main-nav" id="main-navigation">
           <div class="nav-dropdown">
@@ -303,6 +303,7 @@
 function renderShop(gridEl, filterEl) {
   const params = new URLSearchParams(location.search);
   let current = params.get("cat") || "all";
+  const sympathyGuide = document.getElementById("sympathy-guide");
 
   function drawFilters() {
     const btns = [{ id: "all", name: "All Flowers" }, ...CATEGORIES];
@@ -320,6 +321,7 @@ function renderShop(gridEl, filterEl) {
   }
 
   function drawGrid() {
+    if (sympathyGuide) sympathyGuide.hidden = current !== "sympathy";
     const filtered = PRODUCTS.filter(p => current === "all" || p.category === current);
     // Products still waiting on photos sink to the bottom (they stay
     // orderable — a "coming soon" card gets people asking).
@@ -485,6 +487,36 @@ function renderProductPage(rootEl) {
   document.title = `${p.name} — Flowers Etc. | Canton, TX`;
   const metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) metaDesc.setAttribute("content", p.desc);
+
+  // GitHub Pages serves one static product.html file. Static social crawlers
+  // receive the honest generic fallback in product.html; browsers and search
+  // engines that render JavaScript receive canonical, product-specific metadata.
+  const canonicalURL = new URL(productUrl(p), location.href).href;
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
+  canonical.href = canonicalURL;
+
+  const setOpenGraph = (property, content) => {
+    let tag = document.querySelector(`meta[property="${property}"]`);
+    if (!tag) {
+      tag = document.createElement("meta");
+      tag.setAttribute("property", property);
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute("content", content);
+  };
+  setOpenGraph("og:title", `${p.name} — Flowers Etc.`);
+  setOpenGraph("og:description", p.desc);
+  setOpenGraph("og:type", "product");
+  setOpenGraph("og:url", canonicalURL);
+  if (p.image) {
+    setOpenGraph("og:image", new URL(`images/${p.image}`, location.href).href);
+    setOpenGraph("og:image:alt", `${p.name} designed by Flowers Etc. in Canton, Texas`);
+  }
 
   const cat = CATEGORIES.find(c => c.id === p.category) || {};
   const r = resolvePrice(p);

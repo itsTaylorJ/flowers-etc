@@ -269,7 +269,7 @@ const PRODUCTS = [
     name: "Cemetery Flower Replacement",
     category: "sympathy",
     price: 50,
-    desc: "A lasting silk arrangement for $50, designed for a cemetery vase and sprayed with a weather protectant. Placement can be set up on a schedule by request, and photo confirmation is available by request. Our team will confirm cemetery details, service area, and scheduling personally.",
+    desc: "A lasting silk arrangement for $50, designed for a cemetery vase and sprayed with a weather protectant. Scheduled placement is available within our regular 35-mile delivery area at the frequency you request, with no added delivery or placement fee. Photo confirmation is available by request.",
     flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
     image: "silk-cemetery-arrangement.jpg",
     photos: ["blue-yellow-silk-cemetery.webp", "blue-yellow-silk-cemetery-2.webp"],

@@ -98,22 +98,21 @@ texts to confirm availability, details, and payment. Later, fixed-price standard
 can be charged through secure online checkout while custom and request-only items stay
 confirm-first.
 
-- To receive orders by email: create a Formspree form (same account as the
-  contact form) and paste its URL into `ORDER_FORM_ACTION` at the top of
-  `js/cart.js`. Until then, checkout preserves the cart and displays a copyable
-  order summary with call and text options. It never claims the request was sent.
+- Order requests use the configured Website Order Requests Formspree endpoint in
+  `ORDER_FORM_ACTION` at the top of `js/cart.js`. If that endpoint changes, update
+  the constant and test a complete order. A failed submission preserves the cart,
+  displays a copyable order summary, and offers call and text options.
 - When the shop chooses its future online payment approach, it can plug into this
   same checkout flow without rebuilding the catalog.
 - Call, text, and inquiry options stay available everywhere alongside the cart.
 
-## Making the contact form actually send
+## Contact and order-form delivery
 
-The form currently preserves the inquiry as copyable text and tells the customer
-to call or text. For real form delivery:
-
-1. Sign up at **formspree.io** using **cantontxflowersetc@gmail.com**
-2. Create a form, copy the endpoint URL
-3. In `contact.html`, replace `YOUR_FORM_ID` in the form's `action` attribute
+The Contact Inquiries and Website Order Requests Formspree endpoints are configured.
+They initially deliver to Taylor's testing inbox. Before public launch, add and verify
+**cantontxflowersetc@gmail.com** in Formspree and make it the destination for both forms.
+After any endpoint or destination change, submit one clearly labeled test inquiry and
+one test order and confirm the complete information arrives.
 
 ## Adding the Google Map
 

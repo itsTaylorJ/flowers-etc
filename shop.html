@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop Flowers — Flowers Etc.</title>
   <meta name="description" content="Browse fresh arrangements from Flowers Etc. — everyday bouquets, sympathy flowers, wedding designs, and seasonal favorites.">
+  <link rel="canonical" href="https://itstaylorj.github.io/flowers-etc/shop.html">
+  <meta property="og:title" content="Shop Flowers & Gifts — Flowers Etc. in Canton, Texas">
+  <meta property="og:description" content="Browse hand-designed flowers, sympathy arrangements, wedding work, plants, gifts, and seasonal favorites from Flowers Etc.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Flowers Etc.">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://itstaylorj.github.io/flowers-etc/shop.html">
+  <meta property="og:image" content="https://itstaylorj.github.io/flowers-etc/images/pink-rose-vase-2026.webp">
+  <meta property="og:image:alt" content="Pink rose arrangement designed by Flowers Etc. in Canton, Texas">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body data-page="shop">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -26,8 +36,20 @@
 
   <section class="block">
     <div class="container">
+      <h2 class="sr-only" id="shop-products-title">Browse flowers and gifts</h2>
+      <aside class="sympathy-guide" id="sympathy-guide" aria-labelledby="sympathy-guide-title" hidden>
+        <div>
+          <p class="service-kicker">A little guidance when it matters most</p>
+          <h3 id="sympathy-guide-title">Not sure which sympathy flowers are appropriate?</h3>
+          <p>Our sympathy guide explains which pieces are typically sent to the family, displayed at the service, or placed at the cemetery.</p>
+        </div>
+        <div class="sympathy-guide-actions">
+          <a class="btn btn-primary" href="services.html#sympathy">Read the Sympathy Guide</a>
+          <a class="btn btn-outline" data-shop-tel href="#"></a>
+        </div>
+      </aside>
       <div class="filter-bar" id="filter-bar"></div>
-      <div class="product-grid" id="product-grid"></div>
+      <div class="product-grid" id="product-grid" aria-labelledby="shop-products-title"></div>
     </div>
   </section>
 
@@ -41,9 +63,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="js/data.js?v=9"></script>
-  <script src="js/main.js?v=9"></script>
-  <script src="js/cart.js?v=9"></script>
+  <script src="js/data.js?v=10"></script>
+  <script src="js/main.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
   <script>
     renderShop(document.getElementById("product-grid"), document.getElementById("filter-bar"));
   </script>

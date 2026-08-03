@@ -37,10 +37,14 @@ Last updated: August 3, 2026. These answers were supplied by Taylor and should b
 ## Cemetery Replacement
 
 - Cemetery arrangements are $50 each.
-- Placement can be set up on a schedule by client request.
+- Scheduled placement is available at cemeteries within the shop's regular 35-mile delivery area.
+- Customers choose the requested placement frequency and schedule.
+- No additional delivery or placement fee is added to the $50 arrangement price.
 - Photo confirmation is available by request.
 - Flowers are sprayed with a weather protectant.
-- Service radius, scheduling specifics, any added placement fee, and replacement/removal/weather-loss terms remain unresolved.
+- Automatic replacement for arrangements that are removed, stolen, vandalized, weather-damaged, or otherwise damaged after placement is not included.
+- If a customer or family member notices a problem after placement, they should call the shop. The team will review what happened and discuss the best available next step case by case.
+- During a scheduled placement, the shop may remove or dispose of the previous arrangement when necessary.
 
 ## Balloons
 

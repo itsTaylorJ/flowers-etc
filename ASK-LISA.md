@@ -1,41 +1,40 @@
-# Questions currently reserved for Lisa
+# Questions still reserved for Lisa
 
-Only unresolved decisions belong here. Confirmed answers have been moved to `OPERATIONS-TRUTH.md` and the customer-facing site.
+Last reconciled: August 3, 2026.
+
+Only unresolved decisions belong here. Confirmed answers are recorded in `OPERATIONS-TRUTH.md` and should not be repeated on this list.
+
+## Prices and seasonal dates
+
+1. Are the regular Rose Bouquet prices correct: Half Dozen **$45**, Dozen **$75**, and Two Dozen **$135**?
+2. Are the Valentine's Day Rose Bouquet prices correct: Half Dozen **$60**, Dozen **$95**, and Two Dozen **$175**?
+3. Should Valentine's pricing run every year from **February 1 through February 15**, or should the dates be different?
+4. Are the Mother's Day Rose Bouquet prices correct: Half Dozen **$55**, Dozen **$85**, and Two Dozen **$155**?
+5. Should Mother's Day pricing run every year from **May 1 through May 12**, or should the dates change with the holiday each year?
+6. Is **$45** the correct price for the Memorial Lantern?
+7. Is **from $45** the correct starting price for Plants & Dish Gardens?
+8. Is **from $150** the correct starting price for a Standing Spray?
 
 ## Weddings
 
-1. Is the initial wedding consultation free, paid, or credited toward the final order?
-2. What exactly is included in wedding delivery and setup, and when is there an added fee?
-3. What are the wedding cancellation, rescheduling, deposit-refund, and final-payment terms?
+9. Is the initial wedding consultation free, paid, or credited toward the final order?
+10. What is included in wedding delivery and setup, and when is there an additional fee?
+11. What are the wedding cancellation, rescheduling, deposit-refund, and late- or nonpayment policies?
 
-Confirmed and already published: weddings are preferred at least one month ahead; 50% is due up front; the balance is due two weeks before the wedding.
+## Photos and catalog
 
-## Cemetery Replacement
+12. Can the shop photograph current examples of Holiday Centerpiece, Fruit Basket, Coffee Basket, Candy Basket, and Friendship Gifts?
+13. Can Rose Bouquet, Sunshine Morning, Garden Romance, Birthday Blooms, and Get Well Soon be photographed from the front, a three-quarter angle, and close up?
+14. Which seasonal centerpieces should be actively sold online, and can the shop photograph a current example of each selected design?
+15. Once product tiers are finalized, can Standard, Deluxe, and Premium versions be photographed together when their size differences matter?
 
-4. Which cemeteries or radius can receive scheduled placement service?
-5. What scheduling frequencies are normally available, and how are requested dates handled?
-6. Are regular delivery or placement charges added to the $50 arrangement price?
-7. Who removes or replaces older arrangements, and what is the policy for theft, damage, or extreme-weather loss after placement?
+## Final approval
 
-Confirmed and already published: $50 per arrangement; scheduling is available by request; photo confirmation is available by request; flowers are sprayed with a weather protectant.
+16. Does Lisa approve the public ownership story currently shown on the homepage and About page?
+17. Does Lisa approve the current product-photo assignments and the 60-image Our Work gallery?
 
-## Prices still requiring confirmation
+## Handled outside Lisa's checklist
 
-8. Rose Bouquet: Half Dozen $45, Dozen $75, and Two Dozen $135.
-9. Valentine’s Day rose tiers: $60 / $95 / $175.
-10. Mother’s Day rose tiers: $55 / $85 / $155.
-11. Memorial Lantern: $45.
-12. Plants & Dish Gardens: from $45.
-13. Standing Spray: from $150.
-
-Balloon prices are now confirmed and are no longer placeholders.
-
-## Photo requests
-
-These are content requests rather than blockers. The current site can publish without them.
-
-14. Please photograph one current example each of the Holiday Centerpiece, Fruit Basket, Coffee Basket, Candy Basket, and Friendship Gifts. Stuffed Animals now has current shop-inventory photos.
-15. **Completed:** the wedding offerings are now consolidated into one Wedding Flowers & Floral Design listing, with the bridal bouquet, reception work, and three recent wedding/detail photographs also represented in Our Work. Additional current bouquet and wedding-party close-ups would still strengthen the gallery later.
-16. For Rose Bouquet, Sunshine Morning, Garden Romance, Birthday Blooms, and Get Well Soon, capture the same finished arrangement from the front, a three-quarter angle, and close up. Current additional photos are clearly labeled past-work style examples, not alternate views of the exact arrangement.
-17. Photograph current holiday centerpieces for the seasons Lisa wants to sell online. The site currently has one fall example, but not Christmas, Valentine’s Day, Mother’s Day, or other seasonal versions.
-18. When Lisa confirms product size tiers, photograph Standard, Deluxe, and Premium versions together whenever those tiers are materially different.
+- Formspree endpoint creation and testing is a website setup task.
+- Online payment and Payanywhere integration remain deliberately deferred.
+- Directory cleanup and a shop-owned domain are later launch tasks.

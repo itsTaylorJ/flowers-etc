@@ -4,13 +4,13 @@
    intentionally deferred while the shop continues using Payanywhere
    in person. A future fixed-price checkout can use this same flow.
 
-   SETUP: to receive order requests, create a Formspree form and
-   put its URL in ORDER_FORM_ACTION below (same as the contact
-   form). Until then, checkout preserves the cart and shows a
-   copyable order summary with call and text options.
+   The order-request endpoint is configured through Formspree.
+   If it changes, update ORDER_FORM_ACTION and the handoff
+   documentation. Failed submissions preserve the cart and show
+   a copyable order summary with call and text options.
    ============================================================ */
 
-const ORDER_FORM_ACTION = "https://formspree.io/f/YOUR_FORM_ID";
+const ORDER_FORM_ACTION = "https://formspree.io/f/mvkppppr";
 const CART_KEY = "flowersetc_cart";
 const escapeHTML = value => String(value || "")
   .replace(/&/g, "&amp;")
@@ -514,7 +514,13 @@ function renderCartPage(rootEl) {
         const res = await fetch(ORDER_FORM_ACTION, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ _subject: "New online order from " + v("co-name"), order: summary }),
+          body: JSON.stringify({
+            _subject: "New online order from " + v("co-name"),
+            name: v("co-name"),
+            phone: v("co-phone"),
+            email: v("co-email") || "",
+            order: summary,
+          }),
         });
         sent = res.ok;
       } catch (err) { sent = false; }
@@ -525,7 +531,7 @@ function renderCartPage(rootEl) {
         <div class="container" style="padding:70px 22px; max-width:760px;">
           <h1>Your request has not been sent yet</h1>
           <p style="margin:14px 0; color:#5A665F; line-height:1.7;">
-            Online submission is still being connected. Your cart has been saved. Copy the summary below, then call or text the shop so a member of our team can confirm the order.
+            We couldn't send your request online. Your cart has been saved. Copy the summary below, then call or text the shop so a member of our team can confirm the order.
           </p>
           <textarea id="unsent-order-summary" readonly style="width:100%;min-height:320px;margin:18px 0;padding:16px;"></textarea>
           <div style="display:flex;gap:12px;flex-wrap:wrap;">
