@@ -5,11 +5,33 @@
    ============================================================ */
 
 (function () {
+  const iconPaths = {
+    flower: '<path d="M12 21v-8"/><path d="M12 13c-4.2 0-6.5-2.2-6.5-5.7 3.7-.2 6 1.7 6.5 5.7Z"/><path d="M12 13c4.2 0 6.5-2.2 6.5-5.7-3.7-.2-6 1.7-6.5 5.7Z"/><path d="M12 8.2c-2.4-1.9-2.5-4.3 0-6.2 2.5 1.9 2.4 4.3 0 6.2Z"/>',
+    cart: '<circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    chevronDown: '<path d="m7 9 5 5 5-5"/>',
+    close: '<path d="m6 6 12 12M18 6 6 18"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+    camera: '<path d="M4 8h3l1.5-2h7L17 8h3v11H4Z"/><circle cx="12" cy="13" r="3.2"/>',
+    phone: '<path d="M7.2 3.8 4.5 5.2c-.8.4-1.1 1.3-.8 2.1 2.2 6 6.9 10.7 12.9 12.9.8.3 1.7 0 2.1-.8l1.4-2.7-4.1-2-1.1 1.6c-2.8-1.3-5-3.5-6.3-6.3l1.6-1.1-2-4.1Z"/>',
+    message: '<path d="M4 5h16v11H9l-5 4Z"/>',
+    check: '<path d="m5 12 4 4L19 6"/>',
+    gift: '<path d="M4 10h16v10H4ZM3 7h18v3H3ZM12 7v13"/><path d="M12 7H8.5a2.5 2.5 0 1 1 2.5-2.5V7Zm0 0h3.5A2.5 2.5 0 1 0 13 4.5V7Z"/>',
+    pin: '<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="m4 7 8 6 8-6"/>',
+    person: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21c.6-4.4 3-6.5 7-6.5s6.4 2.1 7 6.5"/>',
+    shop: '<path d="M4 10v10h16V10M3 10l2-6h14l2 6"/><path d="M3 10c0 1.5 1 2.5 2.5 2.5S8 11.5 8 10c0 1.5 1 2.5 2.5 2.5S13 11.5 13 10c0 1.5 1 2.5 2.5 2.5S18 11.5 18 10c0 1.5 1 2.5 2.5 2.5S23 11.5 23 10M9 20v-5h6v5"/>',
+    star: '<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/>',
+  };
+  window.siteIcon = (name, className = "") =>
+    `<svg class="ui-icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${iconPaths[name] || iconPaths.info}</svg>`;
+
   /* ---------- Header & footer (rendered once, used on every page) ---------- */
   const page = document.body.dataset.page || "";
 
   const announcementHTML = SHOP.announcement
-    ? `<div class="announce">🌸 ${SHOP.announcement}</div>`
+    ? `<div class="announce">${siteIcon("flower")}<span>${SHOP.announcement}</span></div>`
     : "";
 
   const headerHTML = `
@@ -26,7 +48,7 @@
         </a>
         <nav class="main-nav" id="main-navigation">
           <div class="nav-dropdown">
-            <button class="nav-shop-toggle" type="button" data-nav="shop" aria-expanded="false" aria-controls="shop-navigation">Shop <span aria-hidden="true">⌄</span></button>
+            <button class="nav-shop-toggle" type="button" data-nav="shop" aria-expanded="false" aria-controls="shop-navigation">Shop ${siteIcon("chevronDown")}</button>
             <div class="nav-submenu" id="shop-navigation">
               <a href="shop.html">Shop all flowers</a>
               <a href="shop.html?cat=everyday">Everyday &amp; Just Because</a>
@@ -41,8 +63,8 @@
           <a href="about.html" data-nav="about">Lisa's Story</a>
           <a href="contact.html" data-nav="contact">Contact Us</a>
         </nav>
-        <a class="cart-btn" href="cart.html" aria-label="Your order">🛒<span id="cart-count"></span></a>
-        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">☰</button>
+        <a class="cart-btn" href="cart.html" aria-label="Your order">${siteIcon("cart")}<span id="cart-count"></span></a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">${siteIcon("menu")}</button>
       </div>
     </header>`;
 
@@ -159,6 +181,13 @@
     el.setAttribute("href", "mailto:" + SHOP.email);
     if (!el.textContent.trim()) el.textContent = SHOP.email;
   });
+  document.querySelectorAll("[data-icon]").forEach(el => {
+    el.innerHTML = siteIcon(el.dataset.icon);
+  });
+  document.querySelectorAll("[data-rating-stars]").forEach(el => {
+    const count = Math.max(0, Math.min(5, Number(el.dataset.ratingStars) || 0));
+    el.innerHTML = Array.from({ length: count }, () => siteIcon("star")).join("");
+  });
 
   /* ---------- Helpers ---------- */
   window.formatPrice = p => (typeof p === "number" ? "$" + p.toFixed(0) : p);
@@ -166,7 +195,7 @@
   window.productMedia = p =>
     p.image
       ? `<img class="p-photo" src="images/${p.image}" alt="${p.name}" loading="lazy" decoding="async">`
-      : `<div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
+      : `<div class="ph"><span class="ph-icon">${siteIcon("flower")}</span><span>Photo coming soon</span></div>`;
 
   // URL-friendly id for a product, e.g. "Casket Spray" -> "casket-spray"
   window.slugify = s =>
@@ -175,6 +204,9 @@
   window.productBySlug = slug => {
     const aliases = {
       "cemetery-flowers-and-subscriptions": "cemetery-flower-replacement",
+      "designers-choice": "custom-arrangement",
+      "bridal-bouquet": "wedding-flowers-and-floral-design",
+      "full-wedding-package": "wedding-flowers-and-floral-design",
     };
     const resolvedSlug = aliases[slug] || slug;
     return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
@@ -259,7 +291,7 @@
   const season = activeSeason();
   if (!SHOP.announcement && season && season.banner) {
     const bar = document.querySelector(".announce");
-    const html = `<div class="announce">🌸 ${season.banner}</div>`;
+    const html = `<div class="announce">${siteIcon("flower")}<span>${season.banner}</span></div>`;
     if (bar) bar.outerHTML = html;
     else document.getElementById("site-header").insertAdjacentHTML("afterbegin", html);
   }
@@ -306,8 +338,10 @@ function renderShop(gridEl, filterEl) {
             ${p.order === "custom" ? `<span class="badge-custom">Custom — call to order</span>` : ""}
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
-              <button class="btn btn-primary btn-sm" data-cart-add="${p.name}">🛒 Add to Cart</button>
-              <a class="btn btn-outline btn-sm" href="${productUrl(p)}">Details</a>
+              ${p.order === "custom"
+                ? `<a class="btn btn-primary btn-sm" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>`
+                : `<a class="btn btn-primary btn-sm" href="${productUrl(p)}">Choose Details</a>`}
+              <a class="btn btn-outline btn-sm" href="${productUrl(p)}">View Details</a>
             </div>
           </div>
         </article>`)
@@ -348,18 +382,18 @@ function openOrderModal(p) {
     : "";
 
   const addonsHTML = typeof ADDONS !== "undefined" && ADDONS.length
-    ? `<div class="m-addons"><strong>Popular add-ons — just ask when you order:</strong>
+    ? `<div class="m-addons"><strong>Popular add-ons:</strong>
        ${ADDONS.map(a => `${a.name} <em>(${a.price})</em>`).join(" · ")}</div>`
     : "";
 
   backdrop.innerHTML = `
-    <div class="modal">
-      <button class="m-close" aria-label="Close">✕</button>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Order ${p.name}">
+      <button class="m-close" aria-label="Close">${siteIcon("close")}</button>
       <h3>${p.name}</h3>
       <div class="m-price">${priceHTML(p)}</div>
       <p>${p.desc}</p>
       <p style="margin-bottom:14px;"><a href="${productUrl(p)}" style="font-weight:700;">See full details &amp; add-ons →</a></p>
-      ${p.notice ? `<div class="m-notice">🕐 ${p.notice}</div>` : ""}
+      ${p.notice ? `<div class="m-notice">${siteIcon("clock")}<span>${p.notice}</span></div>` : ""}
       ${colorsHTML}
       ${
         p.order === "custom"
@@ -371,15 +405,21 @@ function openOrderModal(p) {
              call or text us and we'll take your order in just a minute or two.</div>`
       }
       ${addonsHTML}
-      ${SHOP.customizeNote ? `<div class="m-customize">💐 ${SHOP.customizeNote}</div>` : ""}
-      <div class="m-photos">📸 Have a photo of something you love — a Pinterest find, a past
+      ${SHOP.customizeNote ? `<div class="m-customize">${siteIcon("flower")}<span>${SHOP.customizeNote}</span></div>` : ""}
+      <div class="m-photos">${siteIcon("camera")}<span>Have a photo of something you love — a Pinterest find, a past
         arrangement, or the dress? <a href="sms:${SHOP.phoneHref}">Text it to us</a>
-        and we'll use it as design direction.</div>
+        and we'll use it as design direction.</span></div>
+      ${p.order !== "custom" ? `<div class="m-instructions">
+        <label for="m-instructions">Flower, color, or item requests <span>(optional)</span></label>
+        <textarea id="m-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything Lisa should check for you..."></textarea>
+        <small>Lisa will confirm availability before the order is finalized.</small>
+      </div>` : ""}
       <div class="m-actions">
-        <button class="btn btn-primary" data-cart-add="${p.name}">🛒 Add to Cart — Order Online</button>
+        ${p.order === "custom"
+          ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>`
+          : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#m-instructions">${siteIcon("cart")} Add to Cart — Order Online</button>`}
         ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
-        <a class="btn btn-outline" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
-        <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
+        <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} ${p.order === "custom" ? "Text Lisa About This Design" : "Text Us Your Order"}</a>
         <a class="btn btn-outline" href="${inquiryHref}">Send an Inquiry Instead</a>
       </div>
     </div>`;
@@ -399,7 +439,7 @@ function renderGallery(gridEl) {
     <figure class="gallery-card">
       ${g.image
         ? `<img src="images/${g.image}" alt="${g.caption}" loading="lazy">`
-        : `<div class="ph"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`}
+        : `<div class="ph"><span class="ph-icon">${siteIcon("flower")}</span><span>Photo coming soon</span></div>`}
       <figcaption>
         <span class="g-tag">${g.tag}</span>
         ${g.caption}
@@ -480,7 +520,7 @@ function renderProductPage(rootEl) {
          ${shots.length > 1 ? `<button type="button" class="pd-gallery-arrow pd-gallery-prev" data-gallery-step="-1" aria-label="Previous ${p.name} photo">‹</button>
          <button type="button" class="pd-gallery-arrow pd-gallery-next" data-gallery-step="1" aria-label="Next ${p.name} photo">›</button>` : ""}
        </div>`
-    : `<div class="ph" style="aspect-ratio:1/1;"><span class="ph-icon">✿</span><span>Photo coming soon</span></div>`;
+    : `<div class="ph" style="aspect-ratio:1/1;"><span class="ph-icon">${siteIcon("flower")}</span><span>Photo coming soon</span></div>`;
   const thumbs = shots.length > 1
     ? `<div class="pd-thumbs" aria-label="Choose a ${p.name} photo">${shots
         .map((shot, i) => `<button type="button" class="pd-thumb ${i === 0 ? "active" : ""}" data-index="${i}" aria-label="Show ${p.name} photo ${i + 1}" aria-current="${i === 0 ? "true" : "false"}">
@@ -540,19 +580,31 @@ function renderProductPage(rootEl) {
        </div>`
     : "";
 
+  const instructionsHTML = p.order !== "custom"
+    ? `<div class="pd-block pd-instructions">
+         <label for="pd-instructions">Flower, color, or item requests <span>(optional)</span></label>
+         <textarea id="pd-instructions" maxlength="500" placeholder="Preferred flowers or colors, a stuffed animal request, or anything Lisa should check for you..."></textarea>
+         <small>Requests depend on season and current inventory. Lisa will confirm what is available before the order is finalized.</small>
+       </div>`
+    : "";
+
   /* --- add-ons --- */
   const addonsHTML = typeof ADDONS !== "undefined" && ADDONS.length
     ? `<div class="pd-block pd-addons">
          <h3>Make it extra special</h3>
          <ul class="pd-addon-list">
-           ${ADDONS.map(a => `
+           ${ADDONS.map((a, index) => `
              <li>
-               <span class="pd-addon-name">${a.name}${a.customizable ? ` <em>customizable</em>` : ""}</span>
+               <div class="pd-addon-copy">
+                 <span class="pd-addon-name">${a.name}${a.customizable ? ` <em>customizable</em>` : ""}</span>
+                 ${a.note ? `<small>${a.note}</small>` : ""}
+               </div>
                <span class="pd-addon-price">${a.price}</span>
+               <button type="button" class="pd-addon-add" data-addon-add="${index}">${a.amount === null ? "Add — confirm price" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
              </li>`).join("")}
          </ul>
          ${typeof ADDON_PROMISE !== "undefined"
-            ? `<div class="pd-promise"><strong>📞 We always confirm before we create.</strong> ${ADDON_PROMISE}</div>`
+            ? `<div class="pd-promise"><strong>${siteIcon("phone")} We always confirm before we create.</strong> ${ADDON_PROMISE}</div>`
             : ""}
        </div>`
     : "";
@@ -600,18 +652,23 @@ function renderProductPage(rootEl) {
           <div class="pd-price">${priceHTML(p)}</div>
           ${p.order === "custom" ? `<span class="badge-custom">Custom — we design it with you</span>` : ""}
           <p class="pd-desc">${p.desc}</p>
-          ${p.notice ? `<div class="pd-notice">🕐 ${p.notice}</div>` : ""}
+          ${p.notice ? `<div class="pd-notice">${siteIcon("clock")}<span>${p.notice}</span></div>` : ""}
 
           ${sizesHTML}
           ${flowersHTML}
           ${colorsHTML}
+          ${instructionsHTML}
 
           <div class="pd-actions">
-            <button class="btn btn-primary" data-cart-add="${p.name}">🛒 Add to Cart — Order Online</button>
-            ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
-            <a class="btn btn-blush" href="tel:${SHOP.phoneHref}">📞 Call ${SHOP.phone}</a>
-            <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">💬 Text Us Your Order</a>
-            <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send an Inquiry</a>
+            ${p.order === "custom"
+              ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call Lisa to Request This Design</a>
+                 <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Lisa About This Design</a>
+                 <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send a Custom-Order Inquiry</a>`
+              : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#pd-instructions">${siteIcon("cart")} Add to Cart — Order Online</button>
+                 ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
+                 <a class="btn btn-blush" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call ${SHOP.phone}</a>
+                 <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Us Your Order</a>
+                 <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send an Inquiry</a>`}
           </div>
 
           <div class="pd-reassure">
@@ -622,15 +679,15 @@ function renderProductPage(rootEl) {
 
           <div class="pd-block pd-goodtoknow">
             <h3>Good to know</h3>
-            ${SHOP.customizeNote ? `<div class="pd-gtk-item"><span>💐</span><p>${SHOP.customizeNote}</p></div>` : ""}
-            ${SHOP.noticeNote ? `<div class="pd-gtk-item"><span>🕐</span><p>${SHOP.noticeNote}</p></div>` : ""}
-            ${SHOP.deliveryPhotoNote ? `<div class="pd-gtk-item"><span>📸</span><p>${SHOP.deliveryPhotoNote}</p></div>` : ""}
+            ${SHOP.customizeNote ? `<div class="pd-gtk-item">${siteIcon("flower")}<p>${SHOP.customizeNote}</p></div>` : ""}
+            ${SHOP.noticeNote ? `<div class="pd-gtk-item">${siteIcon("clock")}<p>${SHOP.noticeNote}</p></div>` : ""}
+            ${SHOP.deliveryPhotoNote ? `<div class="pd-gtk-item">${siteIcon("camera")}<p>${SHOP.deliveryPhotoNote}</p></div>` : ""}
           </div>
 
           ${addonsHTML}
 
-          <div class="pd-photos-note">📸 Have a picture of something you love? Text it to
-            <a href="sms:${SHOP.phoneHref}">${SHOP.phone}</a> and we'll use it as design direction.</div>
+          <div class="pd-photos-note">${siteIcon("camera")}<span>Have a picture of something you love? Text it to
+            <a href="sms:${SHOP.phoneHref}">${SHOP.phone}</a> and we'll use it as design direction.</span></div>
         </div>
       </div>
     </div>

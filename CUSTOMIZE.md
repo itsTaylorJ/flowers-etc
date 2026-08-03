@@ -13,7 +13,7 @@ Almost everything the shop owner will ask you to change lives in **one file**:
 | "Remove an arrangement" | Delete its block from `PRODUCTS` |
 | "Add / rename a category" | `CATEGORIES` in `js/data.js` (product `category` must match the `id`) |
 | "Add color choices to a product" | Add `colors: ["Red", "Pastels", ...]` to that product in `js/data.js` |
-| "Change the add-ons (bears, ribbons, balloons...)" | `ADDONS` in `js/data.js` — shown on every product page |
+| "Change the add-ons (stuffed animals, ribbons, balloons...)" | `ADDONS` in `js/data.js` — shown with cart controls on every product page |
 | "List the flowers in an arrangement" | Add `flowers: ["Roses", "Lilies", ...]` to that product |
 | "Offer sizes (half dozen / dozen)" | Add `sizes: [{label:"Dozen", price:75}, ...]` to that product |
 | "Put something on sale right now" | Add `salePrice: 55` (and optional `saleNote: "Spring Special"`) to that product. Delete the line to end the sale. |
@@ -82,10 +82,14 @@ Products meant to stay phone-only (casket sprays, weddings) keep `order: "custom
 
 ## Online ordering (the cart)
 
-Customers can add any product to the cart (🛒 in the header) and check out at
-`cart.html` — items, sizes, quantity, pickup/delivery with fees, card message,
-add-ons, and notes. **Nothing is charged online.** After the endpoint is connected,
-Lisa receives the request and calls/texts to confirm details and payment.
+Customers can add any standard `order: "buy"` product to the cart from its detail
+page after entering optional flower, color, inventory, or stuffed-animal requests.
+Custom `order: "custom"` products never show an Add to Cart action; they direct the
+customer to call Lisa, text, or send a custom-order inquiry. “Make it extra special”
+add-ons enter the cart as real line items. Exact-price add-ons contribute to the
+subtotal; `amount: null` add-ons remain confirmation-priced. **Nothing is charged
+online.** After the endpoint is connected, Lisa receives the product-level requests
+with the rest of the order and calls/texts to confirm details and payment.
 
 - To receive orders by email: create a Formspree form (same account as the
   contact form) and paste its URL into `ORDER_FORM_ACTION` at the top of

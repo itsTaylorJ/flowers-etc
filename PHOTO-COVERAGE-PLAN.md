@@ -2,9 +2,9 @@
 
 ## What is implemented
 
-- 27 products total
-- 16 products now have multi-photo galleries with visually distinct photos
-- 6 products currently have one photo
+- 26 products total
+- 18 products now have multi-photo galleries with visually distinct photos
+- 3 products currently have one photo
 - 5 products still need an honest product photo
 - All additional arrangement images are identified as past Flowers Etc. work and style inspiration.
 - Keepsake galleries explain that inventory rotates and Lisa will confirm the exact item.
@@ -14,16 +14,16 @@
 
 ## Products still needing a photo
 
-1. Fruit Basket
-2. Coffee Basket
-3. Candy Basket
-4. Stuffed Animals
+1. Holiday Centerpiece
+2. Fruit Basket
+3. Coffee Basket
+4. Candy Basket
 5. Friendship Gifts
 
 ## Products needing stronger future coverage
 
-- Bridal Bouquet and Full Wedding Package: recent wedding work and wider event context
-- Holiday Centerpiece: Christmas and other seasonal versions in addition to the current fall example
+- Wedding Flowers & Floral Design now combines bouquet, ceremony, reception, and detail coverage in one five-image listing. Additional current bouquet and wedding-party close-ups would still be useful later.
+- Holiday Centerpiece: a true seasonal table centerpiece with clear scale and a clean background
 - Rose Bouquet, Sunshine Morning, Garden Romance, Birthday Blooms, and Get Well Soon: alternate angles of the exact arrangement rather than only past-work inspiration
 - Any Standard, Deluxe, and Premium tiers: side-by-side scale comparison after Lisa confirms the tiers
 

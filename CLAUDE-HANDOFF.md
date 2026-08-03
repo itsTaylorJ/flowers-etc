@@ -29,10 +29,14 @@ Both Formspree endpoints still contain `YOUR_FORM_ID`. This is deliberate. Until
 - Hours remain Monday–Friday 8 AM–5 PM and Saturday 8 AM–12 PM.
 - Same-day cutoff remains 2:30 PM Monday–Friday and 10 AM Saturday.
 - The cart includes a clear Remove action in addition to quantity controls.
+- Standard products collect optional flower, color, and inventory requests before entering the cart; those instructions stay attached to the exact cart line and order summary.
+- Custom products no longer expose Add to Cart and instead lead with “Call Lisa to Request This Design,” with text and inquiry alternatives.
+- Every “Make it extra special” add-on can be placed in the cart. Fixed-price extras contribute to the subtotal; variable inventory items remain confirmation-priced. Bears and rabbits are combined as “Stuffed animal,” with selection explicitly dependent on current stock.
+- Platform-dependent emoji icons were replaced with a consistent custom SVG set, and the enlarged product-image dialog is centered on desktop and mobile.
 - The header keeps the cart at the right edge, adds a Shop category menu, gives Services a primary position, and uses Contact Us instead of Visit.
 - `services.html` now covers delivery, funeral timing, Cemetery Replacement, weddings, events, custom work, plants, gifts, and balloon pricing.
 - Event work is promoted only as a call-to-confirm service, not as fixed-price shop products.
-- A curated set of 29 new web-ready `.webp` photos was made from the newest image library without altering the originals. Product galleries now show multiple relevant examples, and the Our Work page contains 53 examples with category filters.
+- A curated set of 45 web-ready `.webp` photos was made from the source library without altering the originals. The pink rose vase leads Rose Bouquet, the bright cube and yellow-pink vase appear under Custom Arrangement in Everyday & Just Because, the previously mislabeled Holiday Centerpiece image is now under Casket Spray, Stuffed Animals has four distinct inventory views, and Wedding Flowers & Floral Design combines the former bouquet and package listings with five wedding images. The Our Work page contains 60 examples with category filters.
 - The homepage includes verified Google/Facebook review excerpts and links, plus Facebook follow and message paths.
 - Google currently shows 5.0 from 26 reviews; Facebook shows 92% recommended from 16 reviews. Do not rewrite or invent testimonials.
 - Payment remains a later phase.

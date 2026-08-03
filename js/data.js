@@ -46,9 +46,11 @@ const SHOP = {
   // Shown wherever we name specific flowers, so customers know
   // seasonal swaps can happen. Set to "" to hide it everywhere.
   substitutionNote:
-    "Flowers are seasonal, so if something isn't at its best the day we design, " +
-    "we'll substitute a similar bloom of equal or greater value — always matching " +
-    "the style and colors you chose. If it's a big change, we'll call you first.",
+    "Flowers and colors depend on the season and what is currently in the shop. " +
+    "If a requested bloom isn't on hand, we may be able to source it when your pickup " +
+    "or delivery date allows. Otherwise, we'll substitute a similar bloom of equal or " +
+    "greater value while matching the style and color direction you chose. Lisa will " +
+    "confirm availability and call before making any significant change.",
 
   // Shown on every product — the "make it yours" invitation. Set "" to hide.
   customizeNote:
@@ -138,8 +140,8 @@ const PRODUCTS = [
     desc: "Classic long-stem roses arranged with baby's breath and fresh greenery — timeless, romantic, and never the wrong answer.",
     flowers: ["Long-stem roses", "Baby's breath", "Pittosporum & leatherleaf greenery"],
     colors: ["Classic red", "Blush pink", "White & ivory", "Yellow", "Mixed colors"],
-    image: "rose-bouquet.jpg",
-    photos: ["red-rose-vase.webp"],
+    image: "pink-rose-vase-2026.webp",
+    photos: ["rose-bouquet.jpg", "red-rose-vase.webp"],
     order: "buy",
     buyLink: "",
   },
@@ -189,13 +191,13 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Designer's Choice",
+    name: "Custom Arrangement",
     category: "everyday",
     price: "From $50",
-    desc: "Tell us the occasion and your budget — we'll design something beautiful with the freshest flowers in the shop that day.",
-    flowers: ["Whatever is freshest — garden roses, stock, hydrangea, berries and seasonal blooms"],
-    image: "designers-choice.jpg",
-    photos: ["jewel-tone-vase.webp"],
+    desc: "Tell us the occasion, color direction, and budget — we'll create a one-of-a-kind arrangement with the freshest flowers in the shop that day.",
+    flowers: ["A seasonal mix of roses, carnations, accent flowers, and fresh greenery"],
+    image: "vibrant-rose-cube-2026.webp",
+    photos: ["yellow-pink-everyday-vase-2026.webp", "designers-choice.jpg", "jewel-tone-vase.webp"],
     order: "custom",
     buyLink: "",
   },
@@ -208,7 +210,7 @@ const PRODUCTS = [
     desc: "Dozens and dozens of soft roses laid together like a blanket — about as tender and loving a tribute as we know how to make. Pricing goes up with your flower selection, and we deliver directly to the funeral home.",
     flowers: ["Roses (light pink, blush & cream)", "White waxflower", "Silver dollar eucalyptus", "Salal & palm greenery"],
     image: "casket-spray.jpg",
-    photos: ["sympathy-casket-pink.webp", "sympathy-casket-yellow.webp", "white-blue-casket-spray.webp", "cowboy-casket-spray.webp", "gallery-01.jpg", "gallery-14.jpg"],
+    photos: ["pink-lily-casket-spray-2026.webp", "holiday-fall-centerpiece.webp", "sympathy-casket-pink.webp", "sympathy-casket-yellow.webp", "white-blue-casket-spray.webp", "cowboy-casket-spray.webp", "gallery-01.jpg", "gallery-14.jpg"],
     order: "custom",
     buyLink: "",
     notice: SHOP.funeralOrderNote,
@@ -325,27 +327,17 @@ const PRODUCTS = [
 
   // ——— Weddings ———
   {
-    name: "Bridal Bouquet",
+    name: "Wedding Flowers & Floral Design",
     category: "wedding",
-    price: "From $125",
-    desc: "Blush roses with pops of blue delphinium and thistle, hand-tied with trailing greenery — made for walking down the aisle. Designed around your colors, style, and season.",
-    flowers: ["Blush & light pink roses", "Peach spray roses", "Blue delphinium", "Alstroemeria", "Blue thistle", "Cream stock", "Italian ruscus & eucalyptus"],
-    image: "bridal-bouquet.jpg",
+    price: "Bouquets from $125 · packages by consultation",
+    desc: "From the bridal bouquet and wedding-party flowers to ceremony pieces, sweetheart-table installations, and reception centerpieces, Lisa can design a coordinated floral story around your colors, season, venue, and budget.",
+    flowers: ["Bridal and attendant bouquets", "Boutonnieres and corsages", "Ceremony arrangements", "Sweetheart-table and reception flowers", "Centerpieces and finishing floral details"],
+    image: "wedding-floral-installation.webp",
+    photos: ["bridal-bouquet.jpg", "full-wedding-package.jpg", "wedding-table-centerpiece.webp", "wedding-ring-detail.webp"],
     order: "custom",
     buyLink: "",
     notice: "Wedding orders are custom, made over the phone — please order about 1 month ahead. A 50% deposit holds your date, with the balance due 2 weeks before the ceremony. Exceptions possible depending on the size of the order — just ask!",
     colors: ["Blush & ivory", "All white", "Bright & bold", "Your wedding colors"],
-  },
-  {
-    name: "Full Wedding Package",
-    category: "wedding",
-    price: "By consultation",
-    desc: "Bouquets, boutonnieres, corsages, ceremony and reception flowers — everything for your day, handled by one trusted local florist. Call to talk through your date, vision, and budget.",
-    flowers: ["Designed entirely around your colors and season"],
-    image: "full-wedding-package.jpg",
-    order: "custom",
-    buyLink: "",
-    notice: "Wedding orders are custom, made over the phone — please order about 1 month ahead. A 50% deposit holds your date, with the balance due 2 weeks before the ceremony. Exceptions possible depending on the size of the order — just ask!",
   },
 
   // ——— Seasonal & Holiday ———
@@ -367,7 +359,7 @@ const PRODUCTS = [
     price: 55,
     desc: "Seasonal greens, candles, and fresh blooms for your table.",
     flowers: [],
-    image: "holiday-fall-centerpiece.webp",
+    image: "",
     order: "buy",
     buyLink: "",
   },
@@ -418,9 +410,11 @@ const PRODUCTS = [
     name: "Stuffed Animals",
     category: "extras",
     price: "From $15",
-    desc: "Stuffed bears from $15 and rabbits from $20 — adorable on their own or riding along with an arrangement.",
+    desc: "Stuffed animals from $15, with sizes, colors, and styles varying according to what is currently in stock — sweet on their own or added to an arrangement. Lisa will confirm the available selection.",
     flowers: [],
-    image: "",
+    image: "grey-brown-bears-2026.webp",
+    photos: ["stuffed-animals-full-shelf-2026.webp", "stuffed-bears-shelf-2026.webp", "valentine-bears-three-2026.webp"],
+    galleryKind: "inventory",
     order: "custom",
     buyLink: "",
   },
@@ -450,23 +444,26 @@ const PRODUCTS = [
    ADD-ONS — shown on every product's detail page and order popup.
      name         — what it is
      price        — what it costs
+     amount       — exact numeric cart price, or null when Lisa must confirm it
      customizable — true adds a small "can be customized" note
+     note         — optional inventory or selection guidance
    ------------------------------------------------------------ */
 const ADDONS = [
-  { name: "Hand-written card message", price: "Free", customizable: true },
-  { name: "Personalized ribbon (your colors & wording)", price: "$5 per ribbon", customizable: true },
-  { name: "Stuffed bear", price: "From $15", customizable: false },
-  { name: "Stuffed rabbit", price: "From $20", customizable: false },
-  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", customizable: true },
-  { name: "Latex balloon — shop supplied, helium included", price: "$2 each", customizable: false },
-  { name: "Mylar balloon — shop supplied, helium included", price: "$5 each", customizable: false },
-  { name: "Upgraded keepsake vase", price: "Ask us", customizable: true },
+  { name: "Hand-written card message", price: "Free", amount: 0, customizable: true },
+  { name: "Personalized ribbon (your colors & wording)", price: "$5 per ribbon", amount: 5, customizable: true },
+  { name: "Stuffed animal", price: "From $15", amount: null, customizable: false, note: "Selection varies with current shop inventory." },
+  { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", amount: null, customizable: true, note: "Lisa will confirm the available keepsake and final price." },
+  { name: "Latex balloon — shop supplied, helium included", price: "$2 each", amount: 2, customizable: false },
+  { name: "Latex balloon inflation — customer supplied", price: "$1 each", amount: 1, customizable: false },
+  { name: "Mylar balloon — shop supplied, helium included", price: "$5 each", amount: 5, customizable: false },
+  { name: "Mylar balloon inflation — customer supplied", price: "$2 each", amount: 2, customizable: false },
+  { name: "Upgraded keepsake vase", price: "Ask us", amount: null, customizable: true, note: "Style and price depend on current inventory." },
 ];
 
 // Shown wherever add-ons appear — the promise that a real person confirms
 // the details before anything gets made.
 const ADDON_PROMISE =
-  "Our selection of bears, keepsakes and ribbon colors changes with what's in the " +
+  "Our selection of stuffed animals, keepsakes, and ribbon colors changes with what's in the " +
   "shop, and most can be customized to what you have in mind. Any order with add-ons " +
   "gets a quick follow-up call from us to confirm every detail — colors, wording, " +
   "sizing — so what arrives is exactly what you pictured.";
@@ -549,6 +546,9 @@ const GALLERY = [
   { image: "peaceful-garden-basket.jpg", caption: "Yellow roses and blue delphinium gathered in a garden basket", tag: "Sympathy" },
   { image: "bridal-bouquet.jpg", caption: "Hand-tied bridal bouquet in blush, blue and soft greenery", tag: "Weddings" },
   { image: "full-wedding-package.jpg", caption: "Coordinated wedding flowers designed around the couple's colors", tag: "Weddings" },
+  { image: "wedding-floral-installation.webp", caption: "Ivory and blush reception flowers designed across the sweetheart table and floor arrangements", tag: "Weddings" },
+  { image: "wedding-table-centerpiece.webp", caption: "Candlelit reception table flowers with roses, baby's breath and fresh greenery", tag: "Weddings" },
+  { image: "wedding-ring-detail.webp", caption: "Wedding rings framed with ivory and peach roses for a thoughtful finishing detail", tag: "Weddings" },
   { image: "prom-homecoming.jpg", caption: "Blush tulip corsage finished with ribbon and pearl details", tag: "Prom & Seasonal" },
   { image: "plants-dish-gardens.jpg", caption: "Layered green dish garden with easy-care plants", tag: "Plants & Gifts" },
   { image: "plants-dish-gardens-2.jpg", caption: "A second garden of living greens for a lasting gift", tag: "Plants & Gifts" },
@@ -561,6 +561,10 @@ const GALLERY = [
   { image: "blush-garden-vase.webp", caption: "Blush roses and garden textures in soft color", tag: "Everyday" },
   { image: "jewel-tone-vase.webp", caption: "A jewel-tone vase arrangement designed from the workroom", tag: "Everyday" },
   { image: "white-lily-vase.webp", caption: "White lilies arranged with fresh green texture", tag: "Everyday" },
+  { image: "pink-rose-vase-2026.webp", caption: "Pink roses and waxflower in a classic glass vase", tag: "Everyday" },
+  { image: "vibrant-rose-cube-2026.webp", caption: "Coral and hot-pink roses with carnations in a modern cube vase", tag: "Everyday" },
+  { image: "yellow-pink-everyday-vase-2026.webp", caption: "Yellow roses and calla lilies with pink lilies, green hydrangea, and rich seasonal color", tag: "Everyday" },
+  { image: "pink-lily-casket-spray-2026.webp", caption: "A lavish pink casket spray with roses, lilies, carnations, stock, and garden textures", tag: "Sympathy" },
   { image: "sympathy-casket-pink.webp", caption: "A full pink casket spray designed with tenderness", tag: "Sympathy" },
   { image: "sympathy-casket-yellow.webp", caption: "Golden and white flowers arranged as a casket tribute", tag: "Sympathy" },
   { image: "sympathy-sunflower-tribute.webp", caption: "Sunflowers and vivid color in a personal memorial tribute", tag: "Sympathy" },
@@ -577,4 +581,5 @@ const GALLERY = [
   { image: "ladybug-dish-garden.webp", caption: "A playful dish garden with easy-care plants and a ladybug accent", tag: "Plants & Gifts" },
   { image: "peace-lily-memorial-garden.webp", caption: "A peaceful green plant garden made as a lasting remembrance", tag: "Plants & Gifts" },
   { image: "mixed-plant-basket.webp", caption: "A full basket of mixed living plants", tag: "Plants & Gifts" },
+  { image: "classic-bears-three-2026.webp", caption: "A rotating selection of stuffed bears available as gifts or arrangement add-ons", tag: "Plants & Gifts" },
 ];

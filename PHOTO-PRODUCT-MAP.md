@@ -1,16 +1,16 @@
 # Photo and product map
 
-The new source library contained 100 reviewable files representing 87 unique photos. Thirty-three were selected and converted to web-ready WebP files; the originals remain untouched. Duplicate downloads, repeated exports, weak angles, and lower-value snapshots were not added just to make the gallery larger.
+The source library now contains 115 reviewable files representing 102 unique photos. Forty-five were selected and converted to web-ready WebP files; the originals remain untouched. Duplicate downloads, repeated exports, weak angles, and lower-value snapshots were not added just to make the gallery larger.
 
 ## Photos now connected to products
 
-- **Rose Bouquet:** `red-rose-vase.webp` plus the primary bouquet.
+- **Rose Bouquet:** `pink-rose-vase-2026.webp` is the primary product image, with `rose-bouquet.jpg` and `red-rose-vase.webp` as additional examples.
 - **Sunshine Morning:** `sunny-yellow-rose-arrangement.webp` plus the primary arrangement.
 - **Garden Romance:** `peach-purple-garden.webp` plus the primary arrangement.
 - **Birthday Blooms:** `birthday-balloon-flowers.webp` plus the primary arrangement.
 - **Get Well Soon:** `white-lily-vase.webp` plus the primary arrangement.
-- **Designer’s Choice:** `jewel-tone-vase.webp` plus the primary design.
-- **Casket Spray:** `sympathy-casket-pink.webp`, `sympathy-casket-yellow.webp`, `white-blue-casket-spray.webp`, `cowboy-casket-spray.webp`.
+- **Custom Arrangement:** `vibrant-rose-cube-2026.webp` is the primary product image, with `yellow-pink-everyday-vase-2026.webp`, `designers-choice.jpg`, and `jewel-tone-vase.webp` as additional past-work examples under Everyday & Just Because.
+- **Casket Spray:** `pink-lily-casket-spray-2026.webp`, `holiday-fall-centerpiece.webp`, `sympathy-casket-pink.webp`, `sympathy-casket-yellow.webp`, `white-blue-casket-spray.webp`, and `cowboy-casket-spray.webp`. The image formerly assigned to Holiday Centerpiece is a casket spray and has been moved here.
 - **Standing Spray:** `sympathy-sunflower-standing-2024.webp`, `yellow-blue-standing-spray.webp`, and `sympathy-standing-yellow.webp`.
 - **Sympathy Wreaths & Hearts:** `sympathy-wreath-pink.webp` plus existing heart/wreath examples.
 - **Cemetery Flower Replacement:** `blue-yellow-silk-cemetery.webp` and `blue-yellow-silk-cemetery-2.webp` plus the primary silk arrangement.
@@ -18,8 +18,10 @@ The new source library contained 100 reviewable files representing 87 unique pho
 - **Memorial Lantern:** `memorial-lantern-flowers.webp` plus the primary lantern.
 - **Wall Crosses & Keepsakes:** `friendship-cross-keepsakes.webp` plus the primary keepsake display.
 - **Prom & Homecoming:** `dusty-rose-corsage.webp` and `white-lily-boutonniere.webp` plus existing corsage examples.
-- **Holiday Centerpiece:** `holiday-fall-centerpiece.webp`.
+- **Wedding Flowers & Floral Design:** one consolidated wedding listing now combines `bridal-bouquet.jpg`, `full-wedding-package.jpg`, `wedding-floral-installation.webp`, `wedding-table-centerpiece.webp`, and `wedding-ring-detail.webp` to show bouquets, reception-scale work, table styling, and a polished detail view.
+- **Holiday Centerpiece:** needs a correctly identified current product photo; the previous image was moved to Casket Spray.
 - **Plants & Dish Gardens:** `peace-lily-memorial-garden.webp` and `mixed-plant-basket.webp` plus the primary dish garden.
+- **Stuffed Animals:** `grey-brown-bears-2026.webp`, `stuffed-animals-full-shelf-2026.webp`, `stuffed-bears-shelf-2026.webp`, and `valentine-bears-three-2026.webp` as rotating inventory examples. The full-shelf view replaced a more repetitive close-up in the storefront gallery.
 
 ## Gallery-only proof added
 
@@ -28,6 +30,7 @@ The new source library contained 100 reviewable files representing 87 unique pho
 - Silk & Cemetery: two blue-and-yellow lasting arrangements.
 - Prom & Seasonal: one corsage and a boutonniere.
 - Plants & Gifts: three distinct living plant designs.
+- Weddings: a full sweetheart-table floral installation, candlelit reception-table flowers, and a ring-detail composition.
 
 ## Product names worth considering later
 

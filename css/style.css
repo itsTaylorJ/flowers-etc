@@ -1420,3 +1420,70 @@ nav.main-nav{margin-left:auto}
   .hg-moment-layout{gap:42px}
   .hg-moment-photo figcaption{right:0;bottom:0;max-width:100%}
 }
+
+/* Crisp, consistent interface icons replace platform-dependent emoji glyphs. */
+.ui-icon{display:inline-block;width:1.2em;height:1.2em;flex:0 0 auto;vertical-align:-.2em}
+.announce{display:flex;align-items:center;justify-content:center;gap:8px}
+.announce .ui-icon{width:18px;height:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.btn .ui-icon{width:17px;height:17px}
+.cart-btn,.nav-toggle{display:inline-flex;align-items:center;justify-content:center}
+.cart-btn .ui-icon{width:21px;height:21px}
+.nav-toggle .ui-icon{width:24px;height:24px}
+.nav-shop-toggle .ui-icon{width:15px;height:15px;transition:transform .2s ease}
+.nav-dropdown.open .nav-shop-toggle .ui-icon{transform:rotate(180deg)}
+.ph-icon .ui-icon{width:40px;height:40px}
+.info-card .i-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;color:var(--blush)}
+.info-card .i-icon .ui-icon{width:31px;height:31px}
+.rating-stars{display:inline-flex;gap:2px;color:var(--gold)}
+.rating-stars .ui-icon{width:15px;height:15px;fill:currentColor;stroke-width:1.2}
+.form-photos,.modal .m-photos,.m-customize,.pd-photos-note,.cart-reassure{display:flex;align-items:flex-start;gap:10px}
+.form-photos>.ui-icon,.form-photos>[data-icon] .ui-icon,.modal .m-photos>.ui-icon,.m-customize>.ui-icon,.pd-photos-note>.ui-icon,.cart-reassure>.ui-icon{width:20px;height:20px;margin-top:2px;flex:0 0 auto}
+.pd-notice,.m-notice{display:flex;align-items:flex-start;gap:9px}
+.pd-notice>.ui-icon,.m-notice>.ui-icon{width:19px;height:19px;margin-top:2px;flex:0 0 auto}
+.pd-gtk-item>.ui-icon{width:21px;height:21px;margin-top:2px;color:var(--blush);flex:0 0 auto}
+.pd-promise strong{display:flex;align-items:center;gap:7px}
+.pd-promise strong .ui-icon{width:18px;height:18px}
+.modal .m-close{display:flex;align-items:center;justify-content:center;width:44px;height:44px}
+.modal .m-close .ui-icon{width:22px;height:22px}
+
+/* The native dialog margin was cleared by the global reset; restore true centering. */
+.pd-lightbox{position:fixed;inset:0;margin:auto}
+.pd-lightbox-shell{display:flex;flex-direction:column;align-items:center;width:100%;max-height:94dvh;overflow:auto}
+.pd-lightbox img{align-self:center;margin-right:auto;margin-left:auto}
+.pd-lightbox-footer{width:100%}
+
+.pd-instructions{padding:18px;background:var(--blush-soft);border-left:3px solid var(--blush)}
+.pd-instructions label,.m-instructions label{margin-bottom:8px;color:var(--ink);font-size:.95rem}
+.pd-instructions label span,.m-instructions label span{color:#7c8981;font-weight:500}
+.pd-instructions textarea,.m-instructions textarea{min-height:105px;background:#fff}
+.pd-instructions small,.m-instructions small{display:block;margin-top:7px;color:#69756e;font-size:.79rem;line-height:1.5}
+.m-instructions{margin:0 0 16px;padding:14px;background:var(--blush-soft);border-left:3px solid var(--blush)}
+
+.pd-addon-list li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px}
+.pd-addon-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.pd-addon-copy small{margin-top:3px;color:#768179;font-size:.76rem;line-height:1.4}
+.pd-addon-add{min-height:38px;padding:8px 10px;border:1px solid var(--blush);background:transparent;color:var(--blush);font:700 .68rem/1.2 var(--font-body);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.2s ease}
+.pd-addon-add:hover{background:var(--blush);color:#fff}
+.pd-addon-add:active{transform:translateY(1px)}
+
+.cart-addon-thumb{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:var(--blush-soft);color:var(--blush)}
+.cart-addon-thumb .ui-icon{width:34px;height:34px}
+.cart-line-kind{margin-top:2px;color:var(--blush);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.cart-line-instructions{max-width:54ch;margin-top:7px;color:#5a665f;font-size:.8rem;line-height:1.45}
+.cart-line-instructions strong{color:var(--ink)}
+.cart-toast{display:flex;align-items:center;gap:7px}
+.cart-toast>.ui-icon{width:18px;height:18px}
+.empty-cart-icon,.order-success-icon{display:flex;align-items:center;justify-content:center;width:62px;height:62px;margin:0 auto 14px;border-radius:50%;background:var(--blush-soft);color:var(--blush)}
+.empty-cart-icon .ui-icon,.order-success-icon .ui-icon{width:31px;height:31px}
+.co-added-note{padding:12px 14px;background:#f2f7f1;border-left:3px solid var(--sage);color:#56625b;font-size:.84rem;line-height:1.55}
+
+@media(max-width:700px){
+  .pd-lightbox{width:calc(100vw - 20px);max-height:calc(100dvh - 20px)}
+  .pd-lightbox-shell{max-height:calc(100dvh - 20px)}
+  .pd-lightbox img{max-height:calc(100dvh - 190px)}
+  .pd-addon-list li{grid-template-columns:minmax(0,1fr) auto}
+  .pd-addon-add{grid-column:1/-1;width:100%}
+  .cart-line{align-items:flex-start;flex-wrap:wrap}
+  .cart-line-actions{width:100%;display:flex;justify-content:space-between;align-items:center;padding-left:100px}
+}

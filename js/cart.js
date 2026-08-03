@@ -12,14 +12,35 @@
 
 const ORDER_FORM_ACTION = "https://formspree.io/f/YOUR_FORM_ID";
 const CART_KEY = "flowersetc_cart";
+const escapeHTML = value => String(value || "")
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#039;");
 
 /* ---------- storage ---------- */
 function cartItems() {
   try {
     const items = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    return items.map(item => item.name === "Cemetery Flowers & Subscriptions"
-      ? { ...item, name: "Cemetery Flower Replacement" }
-      : item);
+    return items.map(item => {
+      let normalized = { ...item };
+      if (item.name === "Cemetery Flowers & Subscriptions") {
+        normalized.name = "Cemetery Flower Replacement";
+      }
+      if (item.name === "Designer's Choice") {
+        normalized.name = "Custom Arrangement";
+      }
+      if (item.name === "Stuffed bear" || item.name === "Stuffed rabbit") {
+        normalized.name = "Stuffed animal";
+        normalized.kind = "addon";
+      }
+      return {
+        ...normalized,
+        kind: normalized.kind === "addon" ? "addon" : "product",
+        instructions: typeof normalized.instructions === "string" ? normalized.instructions.slice(0, 500) : "",
+      };
+    });
   }
   catch (e) { return []; }
 }
@@ -32,10 +53,21 @@ function cartCount() {
 }
 
 /* ---------- price helpers ---------- */
+function cartCatalog(item) {
+  const product = PRODUCTS.find(x => x.name === item.name);
+  if (product) return { kind: "product", entry: product };
+  const addon = (typeof ADDONS !== "undefined" ? ADDONS : []).find(x => x.name === item.name);
+  return addon ? { kind: "addon", entry: addon } : null;
+}
+
 // Numeric price for a cart line, or null if it's quoted-by-phone
 function cartLinePrice(item) {
-  const p = PRODUCTS.find(x => x.name === item.name);
-  if (!p) return null;
+  const catalog = cartCatalog(item);
+  if (!catalog) return null;
+  if (catalog.kind === "addon") {
+    return typeof catalog.entry.amount === "number" ? catalog.entry.amount : null;
+  }
+  const p = catalog.entry;
   const r = resolvePrice(p);
   if (item.size && r.sizes) {
     const s = r.sizes.find(x => x.label === item.size);
@@ -48,13 +80,22 @@ function cartLinePrice(item) {
 }
 
 /* ---------- actions ---------- */
-function cartAdd(name, size) {
+function cartAdd(name, size, instructions = "", kind = "product") {
+  const product = PRODUCTS.find(x => x.name === name);
+  if (kind !== "addon" && (!product || product.order === "custom")) return false;
+  const cleanInstructions = String(instructions || "").trim().slice(0, 500);
   const items = cartItems();
-  const hit = items.find(i => i.name === name && i.size === (size || ""));
+  const hit = items.find(i =>
+    i.name === name &&
+    i.kind === kind &&
+    i.size === (size || "") &&
+    (i.instructions || "") === cleanInstructions
+  );
   if (hit) hit.qty += 1;
-  else items.push({ name, size: size || "", qty: 1 });
+  else items.push({ name, size: size || "", instructions: cleanInstructions, kind, qty: 1 });
   cartSave(items);
   cartToast(name);
+  return true;
 }
 function cartSetQty(index, qty) {
   const items = cartItems();
@@ -80,7 +121,7 @@ function cartToast(name) {
   if (t) t.remove();
   t = document.createElement("div");
   t.className = "cart-toast";
-  t.innerHTML = `✓ <strong></strong> added to your order &nbsp;·&nbsp; <a href="cart.html">Review &amp; Checkout →</a>`;
+  t.innerHTML = `${siteIcon("check")} <strong></strong> added to your order &nbsp;·&nbsp; <a href="cart.html">Review &amp; Checkout →</a>`;
   t.querySelector("strong").textContent = name;
   document.body.appendChild(t);
   setTimeout(() => t.classList.add("show"), 20);
@@ -89,16 +130,25 @@ function cartToast(name) {
 
 /* ---------- wire up any [data-cart-add] buttons ---------- */
 document.addEventListener("click", e => {
+  const addonBtn = e.target.closest("[data-addon-add]");
+  if (addonBtn) {
+    const addon = (typeof ADDONS !== "undefined" ? ADDONS : [])[Number(addonBtn.dataset.addonAdd)];
+    if (addon) cartAdd(addon.name, "", "", "addon");
+    return;
+  }
   const btn = e.target.closest("[data-cart-add]");
   if (!btn) return;
   const name = btn.getAttribute("data-cart-add");
   // if a size picker is on the page, honor the selected size
   const sizeInput = document.querySelector('input[name="pdsize"]:checked');
   const p = PRODUCTS.find(x => x.name === name);
+  if (!p || p.order === "custom") return;
   const size = p && p.sizes && p.sizes.length
     ? (sizeInput ? sizeInput.value : p.sizes[Math.min(1, p.sizes.length - 1)].label)
     : "";
-  cartAdd(name, size);
+  const instructionsSelector = btn.getAttribute("data-instructions");
+  const instructionsEl = instructionsSelector ? document.querySelector(instructionsSelector) : null;
+  cartAdd(name, size, instructionsEl ? instructionsEl.value : "", "product");
 });
 
 document.addEventListener("DOMContentLoaded", cartBadge);
@@ -110,18 +160,20 @@ cartBadge();
 function renderCartPage(rootEl) {
   // Only render items that match the real product catalog (drops stale
   // entries after renames, and never echoes untrusted localStorage text)
-  const items = cartItems().filter(i => {
-    const p = PRODUCTS.find(x => x.name === i.name);
-    if (!p) return false;
-    if (i.size && !(p.sizes || []).some(s => s.label === i.size)) i.size = "";
+  const storedItems = cartItems();
+  const items = storedItems.filter(i => {
+    const catalog = cartCatalog(i);
+    if (!catalog) return false;
+    if (catalog.kind === "product" && catalog.entry.order === "custom") return false;
+    if (catalog.kind === "product" && i.size && !(catalog.entry.sizes || []).some(s => s.label === i.size)) i.size = "";
     return true;
   });
-  if (items.length !== cartItems().length) cartSave(items);
+  if (items.length !== storedItems.length) cartSave(items);
 
   if (!items.length) {
     rootEl.innerHTML = `
       <div class="container" style="padding:70px 22px; text-align:center;">
-        <div style="font-size:2.6rem;">🌸</div>
+        <div class="empty-cart-icon">${siteIcon("flower")}</div>
         <h1>Your order is empty</h1>
         <p style="margin:12px 0 26px; color:#5A665F;">Let's fix that — every arrangement is made by hand, just for you.</p>
         <a class="btn btn-primary" href="shop.html">Browse Our Flowers</a>
@@ -134,20 +186,26 @@ function renderCartPage(rootEl) {
   }
 
   const lines = items.map((item, idx) => {
-    const p = PRODUCTS.find(x => x.name === item.name);
+    const catalog = cartCatalog(item);
+    const p = catalog && catalog.kind === "product" ? catalog.entry : null;
+    const isAddon = catalog && catalog.kind === "addon";
     const price = cartLinePrice(item);
     const img = p && p.image
       ? `<img src="images/${p.image}" alt="${item.name}">`
-      : `<div class="ph" style="width:100%;height:100%;"><span class="ph-icon">✿</span></div>`;
+      : `<div class="cart-addon-thumb" aria-hidden="true">${siteIcon(isAddon ? "gift" : "flower")}</div>`;
+    const itemHref = p ? productUrl(p) : "shop.html";
+    const priceCopy = price !== null
+      ? (price === 0 ? "Included" : "$" + price * item.qty)
+      : "Price confirmed with you";
     return `
       <div class="cart-line">
-        <a class="cart-thumb" href="${p ? productUrl(p) : "shop.html"}">${img}</a>
+        <a class="cart-thumb" href="${itemHref}">${img}</a>
         <div class="cart-line-info">
-          <a class="cart-line-name" href="${p ? productUrl(p) : "shop.html"}">${item.name}</a>
+          <a class="cart-line-name" href="${itemHref}">${item.name}</a>
+          ${isAddon ? `<div class="cart-line-kind">Make it special add-on</div>` : ""}
           ${item.size ? `<div class="cart-line-size">${item.size}</div>` : ""}
-          <div class="cart-line-price">${
-            price !== null ? "$" + price * item.qty : "Priced with you by phone"
-          }</div>
+          ${item.instructions ? `<div class="cart-line-instructions"><strong>Your request:</strong> ${escapeHTML(item.instructions)}</div>` : ""}
+          <div class="cart-line-price">${priceCopy}</div>
         </div>
         <div class="cart-line-actions">
           <div class="cart-qty" aria-label="Quantity for ${item.name}">
@@ -166,12 +224,6 @@ function renderCartPage(rootEl) {
   }, 0);
   const hasQuoted = items.some(i => cartLinePrice(i) === null);
 
-  const addonBoxes = (typeof ADDONS !== "undefined" ? ADDONS : []).map((a, i) => `
-    <label class="co-addon">
-      <input type="checkbox" name="addon" value="${a.name} (${a.price})">
-      <span>${a.name}</span><em>${a.price}</em>
-    </label>`).join("");
-
   rootEl.innerHTML = `
     <div class="container">
       <div class="section-head" style="margin-bottom:28px;">
@@ -188,10 +240,10 @@ function renderCartPage(rootEl) {
             <div id="cart-delivery-row" style="display:none;"><span>Delivery</span><strong id="cart-delivery-fee"></strong></div>
             <div class="cart-grand"><span>Estimated total</span><strong id="cart-grand">$${subtotal}</strong></div>
           </div>
-          <p class="cart-reassure">💐 <strong>Nothing is charged online.</strong> We'll call or text to
+          <p class="cart-reassure">${siteIcon("flower")}<span><strong>Nothing is charged online.</strong> We'll call or text to
           confirm every detail — and take payment — before we make a single stem. Cash, check,
           debit &amp; credit cards, and Zelle accepted. Tips for our delivery drivers are always
-          welcome, never expected.</p>
+          welcome, never expected.</span></p>
           <p class="cart-alt">Customer needs change — if you'd rather finish this order with a person,
             <a href="tel:${SHOP.phoneHref}">call</a> or <a href="sms:${SHOP.phoneHref}">text us</a>
             at ${SHOP.phone}, or <a href="contact.html">send an inquiry</a> instead. We're easy.</p>
@@ -264,10 +316,7 @@ function renderCartPage(rootEl) {
               <label for="co-card">Card message (free, hand-written)</label>
               <textarea id="co-card" placeholder="What should the card say?"></textarea>
             </div>
-            <div class="full">
-              <label>Add-ons (we'll confirm details &amp; pricing on the call)</label>
-              <div class="co-addons">${addonBoxes}</div>
-            </div>
+            <div class="full co-added-note">Add-ons selected from “Make it extra special” appear as individual items in the cart and are included in the order summary.</div>
             <div class="full">
               <label for="co-notes">Anything else? Colors, substitutions, special requests...</label>
               <textarea id="co-notes"></textarea>
@@ -404,11 +453,12 @@ function renderCartPage(rootEl) {
     }
     errBox.style.display = "none";
 
-    const addons = [...rootEl.querySelectorAll('input[name="addon"]:checked')].map(a => a.value);
     const tip = isDelivery() ? Math.max(0, +v("co-tip") || 0) : 0;
-    const orderLines = cartItems().map(i => {
+    const orderLines = items.map(i => {
       const pr = cartLinePrice(i);
-      return `• ${i.qty} × ${i.name}${i.size ? " (" + i.size + ")" : ""} — ${pr !== null ? "$" + pr * i.qty : "price TBD"}`;
+      const priceText = pr !== null ? (pr === 0 ? "included" : "$" + pr * i.qty) : "price TBD";
+      return `• ${i.qty} × ${i.name}${i.size ? " (" + i.size + ")" : ""} — ${priceText}` +
+        (i.instructions ? `\n  Customer request: ${i.instructions}` : "");
     });
     const summary = [
       "NEW ONLINE ORDER — Flowers Etc. website",
@@ -430,7 +480,6 @@ function renderCartPage(rootEl) {
       "Requested delivery time: " + (v("co-time") || "—"),
       "Occasion: " + (v("co-occasion") || "—"),
       "Card message: " + (v("co-card") || "—"),
-      "Add-ons: " + (addons.length ? addons.join("; ") : "none"),
       "Notes: " + (v("co-notes") || "—"),
     ].join("\n");
 
@@ -440,7 +489,7 @@ function renderCartPage(rootEl) {
         const res = await fetch(ORDER_FORM_ACTION, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ _subject: "🌸 New online order from " + v("co-name"), order: summary }),
+          body: JSON.stringify({ _subject: "New online order from " + v("co-name"), order: summary }),
         });
         sent = res.ok;
       } catch (err) { sent = false; }
@@ -479,7 +528,7 @@ function renderCartPage(rootEl) {
     cartClear();
     rootEl.innerHTML = `
       <div class="container" style="padding:70px 22px; text-align:center; max-width:640px;">
-        <div style="font-size:2.8rem;">💐</div>
+        <div class="order-success-icon">${siteIcon("check")}</div>
         <h1>Your order request is in</h1>
         <p style="margin:14px 0 8px; color:#5A665F; line-height:1.7;">
           Thank you. We'll call or text you shortly to confirm every detail and take payment — nothing has been charged online.

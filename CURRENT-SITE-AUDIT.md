@@ -15,6 +15,8 @@ The brand should feel “established hometown florist with excellent taste,” n
 - Heritage Garden balances rustic warmth with a restrained premium edge.
 - Phone, text, hours, same-day cutoffs, delivery radius, and delivery fees are unusually clear.
 - The substitution language sets honest expectations without making the work sound generic.
+- The ordering interface now carries product-specific requests into the cart, treats add-ons as real line items, and clearly separates standard online-order products from custom phone-first work.
+- Interface emoji have been replaced with consistent SVG icons, and the enlarged product viewer is centered responsively.
 - Sympathy and Cemetery Replacement can become a meaningful differentiator because the site explains the service and timing calmly.
 - The catalog already has multiple choices in every category. Seasonal and Gifts & Extras are thinner visually than Everyday and Sympathy, but they are not single-option categories.
 
