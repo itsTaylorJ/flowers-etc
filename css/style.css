@@ -1511,3 +1511,40 @@ nav.main-nav{margin-left:auto}
   .sympathy-guide-actions{justify-content:flex-start}
   .sympathy-guide-actions .btn{width:100%}
 }
+
+/* ---------- Catalog reconstruction: draft markers & sympathy sub-filters ---------- */
+.badge-draft {
+  display: inline-block;
+  background: #FBF3E1;
+  color: #8A6A1F;
+  border: 1px solid #EBDCB4;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+.pd-draft-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #FBF3E1;
+  border: 1px solid #EBDCB4;
+  color: #6B5518;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.pd-draft-note .ui-icon { flex: 0 0 auto; margin-top: 2px; width: 18px; height: 18px; }
+.sub-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 22px;
+}
+.sub-filter-bar .filter-btn { font-size: 0.83rem; padding: 7px 14px; }

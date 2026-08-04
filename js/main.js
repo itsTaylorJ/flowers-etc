@@ -51,11 +51,10 @@
             <button class="nav-shop-toggle" type="button" data-nav="shop" aria-expanded="false" aria-controls="shop-navigation">Shop ${siteIcon("chevronDown")}</button>
             <div class="nav-submenu" id="shop-navigation">
               <a href="shop.html">Shop all flowers</a>
-              <a href="shop.html?cat=everyday">Everyday &amp; Just Because</a>
-              <a href="shop.html?cat=sympathy">Sympathy &amp; Funeral</a>
-              <a href="shop.html?cat=wedding">Weddings</a>
-              <a href="shop.html?cat=seasonal">Seasonal &amp; Holiday</a>
-              <a href="shop.html?cat=extras">Gifts &amp; Extras</a>
+              <a href="shop.html?cat=sympathy">Sympathy &amp; funeral</a>
+              <a href="shop.html?cat=everyday">Everyday flowers</a>
+              <a href="shop.html?cat=gifts">Plants &amp; gifts</a>
+              <a href="shop.html?cat=wedding">Wedding, prom &amp; personal flowers</a>
             </div>
           </div>
           <a href="services.html" data-nav="services">Services</a>
@@ -207,6 +206,22 @@
       "designers-choice": "custom-arrangement",
       "bridal-bouquet": "wedding-flowers-and-floral-design",
       "full-wedding-package": "wedding-flowers-and-floral-design",
+      // Catalog reconstruction: retired listings point to their successors.
+      "rose-bouquet": "classic-red-rose-arrangement",
+      "sunshine-morning": "golden-morning",
+      "garden-romance": "blush-rose-vase",
+      "birthday-blooms": "purple-birthday-basket",
+      "get-well-soon": "coral-gerbera-garden",
+      "casket-spray": "gentle-pink-garden",
+      "standing-spray": "sunflower-farewell",
+      "sympathy-wreaths-and-hearts": "blush-remembrance-wreath",
+      "memory-cross": "cross-of-color",
+      "standing-wooden-cross": "standing-cross-keepsake",
+      "wall-crosses-and-keepsakes": "memorial-plaques",
+      "friendship-gifts": "friendship-keepsakes",
+      "plants-and-dish-gardens": "classic-dish-garden",
+      "prom-and-homecoming": "blush-tulip-corsage",
+      "peaceful-garden-basket": "garden-sympathy-basket",
     };
     const resolvedSlug = aliases[slug] || slug;
     return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
@@ -302,19 +317,62 @@
    ============================================================ */
 function renderShop(gridEl, filterEl) {
   const params = new URLSearchParams(location.search);
-  let current = params.get("cat") || "all";
+  // Older links used the retired "seasonal" and "extras" category ids.
+  const catAliases = { seasonal: "everyday", extras: "gifts" };
+  const rawCat = params.get("cat") || "all";
+  let current = catAliases[rawCat] || rawCat;
+  let currentSub = params.get("sub") || "all";
   const sympathyGuide = document.getElementById("sympathy-guide");
 
+  // Sub-filter bar (Sympathy & funeral only) lives right under the category bar.
+  let subFilterEl = document.getElementById("sub-filter-bar");
+  if (!subFilterEl) {
+    subFilterEl = document.createElement("div");
+    subFilterEl.id = "sub-filter-bar";
+    subFilterEl.className = "sub-filter-bar";
+    subFilterEl.setAttribute("aria-label", "Sympathy & funeral categories");
+    filterEl.insertAdjacentElement("afterend", subFilterEl);
+  }
+
+  function shopUrl() {
+    if (current === "all") return "shop.html";
+    let url = `shop.html?cat=${current}`;
+    if (current === "sympathy" && currentSub !== "all") url += `&sub=${currentSub}`;
+    return url;
+  }
+
   function drawFilters() {
-    const btns = [{ id: "all", name: "All Flowers" }, ...CATEGORIES];
+    const btns = [{ id: "all", name: "All Flowers & Gifts" }, ...CATEGORIES];
     filterEl.innerHTML = btns
       .map(c => `<button class="filter-btn ${c.id === current ? "active" : ""}" data-cat="${c.id}">${c.name}</button>`)
       .join("");
     filterEl.querySelectorAll(".filter-btn").forEach(b =>
       b.addEventListener("click", () => {
         current = b.dataset.cat;
-        history.replaceState(null, "", current === "all" ? "shop.html" : `shop.html?cat=${current}`);
+        currentSub = "all";
+        history.replaceState(null, "", shopUrl());
         drawFilters();
+        drawSubFilters();
+        drawGrid();
+      })
+    );
+  }
+
+  function drawSubFilters() {
+    if (current !== "sympathy" || typeof SYMPATHY_SUBCATS === "undefined") {
+      subFilterEl.hidden = true;
+      subFilterEl.innerHTML = "";
+      return;
+    }
+    subFilterEl.hidden = false;
+    subFilterEl.innerHTML = SYMPATHY_SUBCATS
+      .map(s => `<button class="filter-btn ${s.id === currentSub ? "active" : ""}" data-sub="${s.id}" aria-pressed="${s.id === currentSub}">${s.name}</button>`)
+      .join("");
+    subFilterEl.querySelectorAll(".filter-btn").forEach(b =>
+      b.addEventListener("click", () => {
+        currentSub = b.dataset.sub;
+        history.replaceState(null, "", shopUrl());
+        drawSubFilters();
         drawGrid();
       })
     );
@@ -322,7 +380,9 @@ function renderShop(gridEl, filterEl) {
 
   function drawGrid() {
     if (sympathyGuide) sympathyGuide.hidden = current !== "sympathy";
-    const filtered = PRODUCTS.filter(p => current === "all" || p.category === current);
+    const inCategory = p => current === "all" || p.category === current || (p.collections || []).includes(current);
+    const inSub = p => current !== "sympathy" || currentSub === "all" || p.subcat === currentSub;
+    const filtered = PRODUCTS.filter(p => inCategory(p) && inSub(p));
     // Products still waiting on photos sink to the bottom (they stay
     // orderable — a "coming soon" card gets people asking).
     const items = [...filtered.filter(p => p.image), ...filtered.filter(p => !p.image)];
@@ -337,6 +397,7 @@ function renderShop(gridEl, filterEl) {
             <div class="p-cat">${catName(p.category)}</div>
             <h3><a class="p-title-link" href="${productUrl(p)}">${p.name}</a></h3>
             <div class="p-price">${priceHTML(p)}</div>
+            ${p.draft ? `<span class="badge-draft">Draft listing — pending Lisa's approval</span>` : ""}
             ${p.order === "custom" ? `<span class="badge-custom">Custom — call to order</span>` : ""}
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
@@ -355,6 +416,7 @@ function renderShop(gridEl, filterEl) {
   }
 
   drawFilters();
+  drawSubFilters();
   drawGrid();
 }
 
@@ -595,6 +657,15 @@ function renderProductPage(rootEl) {
        </div>`
     : "";
 
+  /* --- design coverage / size guidance (catalog-reconstruction listings) --- */
+  const coverageHTML = p.coverageOptions && p.coverageOptions.length
+    ? `<div class="pd-block">
+         <h3>${p.coverageLabel || "Options"}</h3>
+         <ul class="pd-flowers">${p.coverageOptions.map(o => `<li>${o}</li>`).join("")}</ul>
+         <p class="pd-sub">Mention the direction you'd like in your requests below — a member of our team will confirm the exact ${(p.coverageLabel || "details").toLowerCase()} and final price with you before anything is made.</p>
+       </div>`
+    : "";
+
   /* --- flowers --- */
   const flowersHTML = p.flowers && p.flowers.length
     ? `<div class="pd-block">
@@ -682,11 +753,13 @@ function renderProductPage(rootEl) {
           <div class="p-cat">${cat.name || ""}</div>
           <h1>${p.name}</h1>
           <div class="pd-price">${priceHTML(p)}</div>
+          ${p.draft ? `<div class="pd-draft-note">${siteIcon("info")}<span>${p.draftNote || "This listing is being finalized: the name and starting price are drafts awaiting Lisa's approval. A member of our team confirms every detail and the final price with you before any order is completed."}</span></div>` : ""}
           ${p.order === "custom" ? `<span class="badge-custom">Custom — we design it with you</span>` : ""}
           <p class="pd-desc">${p.desc}</p>
           ${p.notice ? `<div class="pd-notice">${siteIcon("clock")}<span>${p.notice}</span></div>` : ""}
 
           ${sizesHTML}
+          ${coverageHTML}
           ${flowersHTML}
           ${colorsHTML}
           ${instructionsHTML}
