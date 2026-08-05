@@ -1372,9 +1372,7 @@ nav.main-nav{margin-left:auto}
 .service-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
 .service-actions-center{justify-content:center}
 .services-faq{background:#fff;border-top:1px solid var(--line)}
-.info-card-facebook{background:var(--forest);color:white}
-.info-card-facebook h3,.info-card-facebook a{color:white}
-.info-card-facebook .i-icon{font-family:Arial,sans-serif;font-weight:700;color:white}
+.info-card-facebook .i-icon{font-family:Arial,sans-serif;font-weight:700}
 .info-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 
 @media(max-width:1050px){
