@@ -1373,7 +1373,8 @@ nav.main-nav{margin-left:auto}
 .service-actions-center{justify-content:center}
 .services-faq{background:#fff;border-top:1px solid var(--line)}
 .info-card-facebook .i-icon{font-family:Arial,sans-serif;font-weight:700}
-.info-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.info-grid{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.info-card a[href^="mailto:"]{font-size:.82rem;letter-spacing:-.01em;white-space:nowrap}
 
 @media(max-width:1050px){
   .hg-review-list{grid-template-columns:1fr}
