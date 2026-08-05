@@ -397,7 +397,6 @@ function renderShop(gridEl, filterEl) {
             <div class="p-cat">${catName(p.category)}</div>
             <h3><a class="p-title-link" href="${productUrl(p)}">${p.name}</a></h3>
             <div class="p-price">${priceHTML(p)}</div>
-            ${p.draft ? `<span class="badge-draft">Draft listing — pending Lisa's approval</span>` : ""}
             ${p.order === "custom" ? `<span class="badge-custom">Custom — call to order</span>` : ""}
             <p class="p-desc">${p.desc}</p>
             <div class="p-actions">
@@ -753,7 +752,6 @@ function renderProductPage(rootEl) {
           <div class="p-cat">${cat.name || ""}</div>
           <h1>${p.name}</h1>
           <div class="pd-price">${priceHTML(p)}</div>
-          ${p.draft ? `<div class="pd-draft-note">${siteIcon("info")}<span>${p.draftNote || "This listing is being finalized: the name and starting price are drafts awaiting Lisa's approval. A member of our team confirms every detail and the final price with you before any order is completed."}</span></div>` : ""}
           ${p.order === "custom" ? `<span class="badge-custom">Custom — we design it with you</span>` : ""}
           <p class="pd-desc">${p.desc}</p>
           ${p.notice ? `<div class="pd-notice">${siteIcon("clock")}<span>${p.notice}</span></div>` : ""}
