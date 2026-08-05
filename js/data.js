@@ -1371,13 +1371,13 @@ const PRODUCTS = [
   },
   {
     name: "White Lily Bridal Bouquet",
-    category: "wedding",
+    category: "everyday",
     price: "From $125",  // DRAFT PRICE — Lisa approval required
-    desc: "A hand-tied bouquet of white lilies, roses and eucalyptus.",
+    desc: "White lilies, roses and eucalyptus gathered with fresh greenery — a clean, elegant design for any occasion.",
     image: "lisa-017.webp",
-    designType: "Wedding or personal flowers",
-    coverageLabel: "Design request",
-    coverageOptions: ["Use the photographed design as direction", "Coordinate with my colors"],
+    designType: "Fresh flower arrangement",
+    coverageLabel: "Design size",
+    coverageOptions: ["As photographed", "Smaller interpretation", "Fuller interpretation"],
     draft: true,
     order: "buy",
     buyLink: "",
