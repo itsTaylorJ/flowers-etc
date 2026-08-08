@@ -1370,10 +1370,10 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "White Lily Bridal Bouquet",
+    name: "Peaceful White Lily Vase",
     category: "everyday",
     price: "From $125",  // DRAFT PRICE — Lisa approval required
-    desc: "White lilies, roses and eucalyptus gathered with fresh greenery — a clean, elegant design for any occasion.",
+    desc: "White lilies and roses arranged with eucalyptus and delicate accents in a matte black vase.",
     image: "lisa-017.webp",
     designType: "Fresh flower arrangement",
     coverageLabel: "Design size",

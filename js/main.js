@@ -222,6 +222,7 @@
       "plants-and-dish-gardens": "classic-dish-garden",
       "prom-and-homecoming": "blush-tulip-corsage",
       "peaceful-garden-basket": "garden-sympathy-basket",
+      "white-lily-bridal-bouquet": "peaceful-white-lily-vase",
     };
     const resolvedSlug = aliases[slug] || slug;
     return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
