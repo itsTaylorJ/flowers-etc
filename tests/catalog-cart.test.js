@@ -97,6 +97,7 @@ assert.deepEqual(
   ]
 );
 const roses = product("Classic Rose Bouquet");
+assert.equal(roses.image, "classic-rose-bouquet.png");
 assert.deepEqual(
   JSON.parse(JSON.stringify(roses.photos || [])),
   ["rose-bouquet-example-2.webp", "rose-bouquet-example-1.webp"]

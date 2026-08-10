@@ -948,7 +948,7 @@ const PRODUCTS = [
       options: ["Red", "Pink", "Yellow", "White", "Special Request — 24 hours notice required"],
     },
     desc: "A classic rose bouquet with fresh greenery for a romantic, thoughtful, or sympathy message. Red, pink, yellow, and white roses are normally kept in stock. With at least 24 hours notice, other rose colors can be specially ordered.",
-    image: "lisa-043.webp",
+    image: "classic-rose-bouquet.png",
     photos: ["rose-bouquet-example-2.webp", "rose-bouquet-example-1.webp"],
     designType: "Fresh flower arrangement",
     coverageLabel: "Design size",

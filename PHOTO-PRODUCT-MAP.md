@@ -4,7 +4,7 @@ The source library now contains 115 reviewable files representing 102 unique pho
 
 ## Photos now connected to products
 
-- **Classic Rose Bouquet:** `lisa-043.webp` is the primary product image, followed by `rose-bouquet-example-2.webp` (red and pink) and `rose-bouquet-example-1.webp` (orange special-order example).
+- **Classic Rose Bouquet:** `classic-rose-bouquet.png` is the primary product image, followed by `rose-bouquet-example-2.webp` (red and pink) and `rose-bouquet-example-1.webp` (orange special-order example).
 - **Balloon Bouquet:** `balloon-bouquet.png` is the approved primary image for the customizable standalone bouquet. The photographed four-latex/two-Mylar arrangement is an example; customers choose quantities at the existing $2 latex and $5 Mylar rates.
 - **Sunshine Morning:** `sunny-yellow-rose-arrangement.webp` plus the primary arrangement.
 - **Garden Romance:** `peach-purple-garden.webp` plus the primary arrangement.
