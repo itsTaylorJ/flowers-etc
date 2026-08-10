@@ -82,6 +82,12 @@ function cartLinePrice(item) {
   }
   const p = catalog.entry;
   if (p.order === "custom") return null;
+  if (p.balloonOptions) {
+    return Object.entries(p.balloonOptions).reduce((sum, [key, option]) => {
+      const quantity = Number(item[`balloon${key[0].toUpperCase()}${key.slice(1)}`]) || 0;
+      return sum + quantity * option.amount;
+    }, 0);
+  }
   const r = resolvePrice(p);
   if (item.size && r.sizes) {
     const s = r.sizes.find(x => x.label === item.size);
@@ -94,25 +100,37 @@ function cartLinePrice(item) {
 }
 
 /* ---------- actions ---------- */
-function cartAdd(name, size, instructions = "", kind = "product") {
+function cartAdd(name, size, instructions = "", kind = "product", quantity = 1, configuration = {}) {
   const product = PRODUCTS.find(x => x.name === name);
   if (kind !== "addon" && (!product || product.order === "custom")) return false;
   const addon = kind === "addon"
     ? (typeof ADDONS !== "undefined" ? ADDONS : []).find(x => x.name === name)
     : null;
   if (kind === "addon" && !addon) return false;
+  const cleanQuantity = Math.max(1, Math.min(99, Math.floor(Number(quantity) || 1)));
   const cleanInstructions = String(instructions || "").trim().slice(0, 500);
+  const balloonConfiguration = product && product.balloonOptions
+    ? Object.fromEntries(Object.keys(product.balloonOptions).map(key => [key, Math.max(0, Math.min(99, Math.floor(Number(configuration[key]) || 0)))]))
+    : null;
+  if (balloonConfiguration && !Object.values(balloonConfiguration).some(Boolean)) return false;
   const items = cartItems();
   const hit = items.find(i =>
     i.name === name &&
     i.kind === kind &&
     i.size === (size || "") &&
-    (i.instructions || "") === cleanInstructions
+    (i.instructions || "") === cleanInstructions &&
+    (!balloonConfiguration || Object.entries(balloonConfiguration).every(([key, value]) => i[`balloon${key[0].toUpperCase()}${key.slice(1)}`] === value))
   );
-  if (hit) hit.qty += 1;
-  else items.push({ name, size: size || "", instructions: cleanInstructions, kind, qty: 1 });
+  if (hit) hit.qty += cleanQuantity;
+  else {
+    const item = { name, size: size || "", instructions: cleanInstructions, kind, qty: cleanQuantity };
+    if (balloonConfiguration) Object.entries(balloonConfiguration).forEach(([key, value]) => {
+      item[`balloon${key[0].toUpperCase()}${key.slice(1)}`] = value;
+    });
+    items.push(item);
+  }
   cartSave(items);
-  cartToast(name, Boolean(addon && addon.requestOnly));
+  cartToast(cleanQuantity > 1 ? `${cleanQuantity} × ${name}` : name, Boolean(addon && addon.requestOnly));
   return true;
 }
 function cartSetQty(index, qty) {
@@ -150,12 +168,20 @@ function cartToast(name, requestOnly = false) {
 
 /* ---------- wire up any [data-cart-add] buttons ---------- */
 document.addEventListener("click", e => {
+  const addonStep = e.target.closest("[data-addon-step]");
+  if (addonStep) {
+    const [addonIndex, delta] = addonStep.dataset.addonStep.split(":");
+    const input = document.querySelector(`[data-addon-qty="${addonIndex}"]`);
+    if (input) input.value = Math.max(1, Math.min(99, Number(input.value) + Number(delta)));
+    return;
+  }
   const addonBtn = e.target.closest("[data-addon-add]");
   if (addonBtn) {
     const addonIndex = Number(addonBtn.dataset.addonAdd);
     const addon = (typeof ADDONS !== "undefined" ? ADDONS : [])[addonIndex];
     const option = document.querySelector(`[data-addon-option="${addonIndex}"]`);
-    if (addon) cartAdd(addon.name, "", option ? option.value : "", "addon");
+    const quantity = document.querySelector(`[data-addon-qty="${addonIndex}"]`);
+    if (addon) cartAdd(addon.name, "", option ? option.value : "", "addon", quantity ? Number(quantity.value) : 1);
     return;
   }
   const btn = e.target.closest("[data-cart-add]");
@@ -175,7 +201,16 @@ document.addEventListener("click", e => {
     ? `${optionEl.dataset.optionLabel || "Selection"}: ${optionEl.value}`
     : "";
   const requestText = instructionsEl ? instructionsEl.value.trim() : "";
-  cartAdd(name, size, [optionText, requestText].filter(Boolean).join("\n"), "product");
+  const balloonConfiguration = p.balloonOptions
+    ? Object.fromEntries(Object.keys(p.balloonOptions).map(key => {
+        const input = document.querySelector(`[data-balloon-qty="${key}"]`);
+        return [key, Number(input && input.value) || 0];
+      }))
+    : null;
+  const balloonText = balloonConfiguration
+    ? Object.entries(p.balloonOptions).map(([key, option]) => `${option.label}: ${balloonConfiguration[key]}`).join("\n")
+    : "";
+  cartAdd(name, size, [balloonText, optionText, requestText].filter(Boolean).join("\n"), "product", 1, balloonConfiguration || {});
 });
 
 document.addEventListener("DOMContentLoaded", cartBadge);

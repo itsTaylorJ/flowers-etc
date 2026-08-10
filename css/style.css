@@ -1487,21 +1487,37 @@ nav.main-nav{margin-left:auto}
 .pd-instructions small,.m-instructions small{display:block;margin-top:7px;color:#69756e;font-size:.79rem;line-height:1.5}
 .m-instructions{margin:0 0 16px;padding:14px;background:var(--blush-soft);border-left:3px solid var(--blush)}
 
-.pd-addon-list li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px}
+.pd-addon-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
 .pd-addon-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .pd-addon-copy small{margin-top:3px;color:#768179;font-size:.76rem;line-height:1.4}
 .pd-addon-option-label{display:flex;align-items:center;gap:8px;margin-top:7px;color:#5a665f;font-size:.78rem;font-weight:700}
 .pd-addon-option-label select{min-height:34px;padding:5px 28px 5px 9px;background:#fff;font-size:.82rem}
+.pd-addon-purchase{display:grid;grid-template-columns:auto auto;align-items:center;justify-items:end;gap:7px 10px}
+.pd-addon-purchase .pd-addon-price{grid-column:1/-1}
+.pd-inline-qty{display:inline-grid;grid-template-columns:34px 42px 34px;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.pd-inline-qty button{width:34px;height:36px;border:0;background:var(--cream);color:var(--forest);font:800 1.05rem/1 var(--font-body);cursor:pointer}
+.pd-inline-qty button:hover{background:var(--sage-soft)}
+.pd-inline-qty input{width:42px;height:36px;min-height:0;padding:0;border:0;border-right:1px solid var(--line);border-left:1px solid var(--line);border-radius:0;text-align:center;font-weight:800;color:var(--ink);appearance:textfield;-moz-appearance:textfield}
+.pd-inline-qty input::-webkit-inner-spin-button,.pd-inline-qty input::-webkit-outer-spin-button{margin:0;appearance:none}
 .pd-addon-add{min-height:38px;padding:8px 10px;border:1px solid var(--blush);background:transparent;color:var(--blush);font:700 .68rem/1.2 var(--font-body);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.2s ease}
 .pd-addon-add:hover{background:var(--blush);color:#fff}
 .pd-addon-add:active{transform:translateY(1px)}
 .pd-addon-add.is-request{border-color:var(--forest);color:var(--forest)}
 .pd-addon-add.is-request:hover{background:var(--forest);color:#fff}
 
+.pd-balloon-builder{padding:20px 22px;border-radius:var(--radius);background:var(--cream)}
+.pd-balloon-options{display:grid;gap:10px;margin-top:15px}
+.pd-balloon-option{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.pd-balloon-option>div:first-child{display:flex;flex-direction:column;gap:2px}
+.pd-balloon-option span{color:#6d7972;font-size:.82rem}
+.pd-balloon-total{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;padding-top:4px;color:var(--forest);font-weight:700}
+.pd-balloon-total strong{font:600 1.65rem/1 var(--font-display)}
+.pd-balloon-builder>small{display:block;margin-top:10px;color:#69756e;line-height:1.5}
+
 .cart-addon-thumb{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:var(--blush-soft);color:var(--blush)}
 .cart-addon-thumb .ui-icon{width:34px;height:34px}
 .cart-line-kind{margin-top:2px;color:var(--blush);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.cart-line-instructions{max-width:54ch;margin-top:7px;color:#5a665f;font-size:.8rem;line-height:1.45}
+.cart-line-instructions{max-width:54ch;margin-top:7px;color:#5a665f;font-size:.8rem;line-height:1.45;white-space:pre-line}
 .cart-line-instructions strong{color:var(--ink)}
 .cart-toast{display:flex;align-items:center;gap:7px}
 .cart-toast>.ui-icon{width:18px;height:18px}
@@ -1514,7 +1530,9 @@ nav.main-nav{margin-left:auto}
   .pd-lightbox-shell{max-height:calc(100dvh - 20px)}
   .pd-lightbox img{max-height:calc(100dvh - 190px)}
   .pd-addon-list li{grid-template-columns:minmax(0,1fr) auto}
-  .pd-addon-add{grid-column:1/-1;width:100%}
+  .pd-addon-purchase{grid-column:1/-1;grid-template-columns:auto minmax(0,1fr);width:100%;justify-items:start}
+  .pd-addon-purchase .pd-addon-price{grid-column:1/-1}
+  .pd-addon-add{width:100%}
   .cart-line{align-items:flex-start;flex-wrap:wrap}
   .cart-line-actions{width:100%;display:flex;justify-content:space-between;align-items:center;padding-left:100px}
   .sympathy-guide{grid-template-columns:1fr;gap:20px;padding:24px 20px}

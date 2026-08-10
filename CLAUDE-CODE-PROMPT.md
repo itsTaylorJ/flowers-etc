@@ -6,7 +6,7 @@ Source handoff folder:
 `C:\Users\tjlan\Documents\Codex\2026-07-31\i-2\outputs\flowers-etc-claude-handoff`
 
 Target Git repository:
-`C:\Users\tjlan\Obsidian Vault\FlowerrsEtc\FlowersEtc`
+`C:\Users\tjlan\Projects\flowers-etc`
 
 Live site:
 `https://itstaylorj.github.io/flowers-etc/`

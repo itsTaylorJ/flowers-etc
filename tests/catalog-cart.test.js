@@ -68,6 +68,19 @@ assert.equal(product("Blush Garden Bouquet").order, "custom");
 assert.equal(product("Greenery Casket Spray").subcat, "casket");
 assert.equal(product("Greenery Casket Spray").price, 450);
 
+const balloonBouquet = product("Balloon Bouquet");
+assert.equal(balloonBouquet.category, "gifts");
+assert.equal(balloonBouquet.order, "buy");
+assert.equal(balloonBouquet.image, "balloon-bouquet.png");
+assert.equal(fs.existsSync(path.join(root, "images", balloonBouquet.image)), true);
+assert.deepEqual(
+  JSON.parse(JSON.stringify(balloonBouquet.balloonOptions)),
+  {
+    latex: { label: "Latex balloons", amount: 2, defaultQty: 4 },
+    mylar: { label: "Mylar balloons", amount: 5, defaultQty: 2 },
+  }
+);
+
 for (const [name, price] of [
   ["Coral Rose Cube", "From $65"],
   ["White Rose Cloud", "From $65"],
@@ -162,6 +175,24 @@ assert.deepEqual(
 );
 assert.equal(specialtyCards.reduce((sum, item) => sum + context.cartLinePrice(item) * item.qty, 0), 6);
 assert.equal(runtime.ADDONS.find(item => item.name === "Hand-written card message").amount, 0);
+
+storage.set("flowersetc_cart", "[]");
+assert.equal(context.cartAdd("Latex balloon — shop supplied, helium included", "", "", "addon", 6), true);
+assert.equal(context.cartItems()[0].qty, 6);
+
+storage.set("flowersetc_cart", "[]");
+assert.equal(context.cartAdd(
+  "Balloon Bouquet",
+  "",
+  "Latex balloons: 4\nMylar balloons: 2",
+  "product",
+  1,
+  { latex: 4, mylar: 2 }
+), true);
+const configuredBouquet = context.cartItems()[0];
+assert.equal(context.cartLinePrice(configuredBouquet), 18);
+assert.equal(configuredBouquet.balloonLatex, 4);
+assert.equal(configuredBouquet.balloonMylar, 2);
 
 const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
 assert.match(sitemap, /product\.html\?p=custom-cemetery-flowers/);

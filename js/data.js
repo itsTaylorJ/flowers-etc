@@ -1157,6 +1157,21 @@ const PRODUCTS = [
   },
   // ——— Plants & gifts (cross-listed under Sympathy · Plants & keepsakes) ———
   {
+    name: "Balloon Bouquet",
+    category: "gifts",
+    price: "Build yours from $2",
+    desc: "Create a cheerful helium balloon bouquet for birthdays, celebrations, or just because. Choose any combination of shop-supplied latex and Mylar balloons; colors and Mylar designs can be customized from current inventory.",
+    image: "balloon-bouquet.png",
+    designType: "Custom balloon bouquet",
+    balloonOptions: {
+      latex: { label: "Latex balloons", amount: 2, defaultQty: 4 },
+      mylar: { label: "Mylar balloons", amount: 5, defaultQty: 2 },
+    },
+    notice: "The pictured bouquet is an example. Balloon colors and Mylar designs vary with current inventory, and our team will confirm your selections.",
+    order: "buy",
+    buyLink: "",
+  },
+  {
     name: "Green Garden Basket",
     category: "gifts",
     collections: ["gifts", "sympathy"],

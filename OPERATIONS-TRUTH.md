@@ -52,6 +52,7 @@ Last updated: August 3, 2026. These answers were supplied by Taylor and should b
 - Inflation for a customer-provided latex balloon: $1 each.
 - Shop-provided Mylar balloon with helium: $5 each.
 - Inflation for a customer-provided Mylar balloon: $2 each.
+- Standalone balloon bouquets use the shop-provided rates above. Customers may combine latex and Mylar balloons, and the final colors and Mylar designs are confirmed from current inventory.
 
 ## Additional event services
 

@@ -6,7 +6,7 @@ This file is the repo-level source of truth for project context and engineering 
 
 Before significant planning, implementation, review, or handoff work, also read:
 
-`/home/taylorj/obsidian/FlowersEtc/Handoffs/Current Handoff.md`
+`C:\Users\tjlan\Obsidian Vault\FlowersEtc\Handoffs\Current Handoff.md`
 
 If Obsidian notes conflict with explicit repo behavior or a later approved repo decision, the repo wins.
 
@@ -45,15 +45,15 @@ All order sources should ultimately become the same canonical Order record:
 
 Active code repository:
 
-`/home/taylorj/development/flowers-etc`
+`C:\Users\tjlan\Projects\flowers-etc`
 
 Obsidian knowledge base:
 
-`/home/taylorj/obsidian/FlowersEtc`
+`C:\Users\tjlan\Obsidian Vault\FlowersEtc`
 
 Archived repository:
 
-`/home/taylorj/obsidian/FlowersEtc-ARCHIVE`
+`C:\Users\tjlan\Obsidian Vault\FlowersEtc-ARCHIVE`
 
 Never use the archived repository for implementation work.
 

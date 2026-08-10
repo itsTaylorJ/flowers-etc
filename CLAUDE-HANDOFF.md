@@ -2,7 +2,7 @@
 
 This folder is a complete deployable update to the Flowers Etc. static website with the approved Heritage Garden direction and the operating answers supplied through August 3, 2026.
 
-This repository is the active deployment source. Do not copy from an older handoff or archived repository. Inspect the current cache key in the HTML before updating assets; the catalog/contact batch uses `?v=22` across all eight asset-loading pages.
+This repository is the active deployment source. Do not copy from an older handoff or archived repository. Inspect the current cache key in the HTML before updating assets; the balloon-bouquet and product-page add-on quantity batch uses `?v=23` across all eight asset-loading pages.
 
 ## Important files
 
@@ -38,6 +38,8 @@ Both Formspree endpoints were configured August 3, 2026: Contact Inquiries uses 
 - Standard products collect optional flower, color, and inventory requests before entering the cart; those instructions stay attached to the exact cart line and order summary.
 - Custom products no longer expose Add to Cart and instead lead with “Call the Shop to Request This Design,” with text and inquiry alternatives.
 - Fixed-price “Make it extra special” add-ons enter the cart and contribute to the subtotal. Variable inventory items use “Request current options,” remain visible in the order summary, and are explicitly excluded from the subtotal until a team member confirms availability and price. Bears and rabbits are combined as “Stuffed animal,” with selection explicitly dependent on current stock.
+- Product-page add-ons now include inline minus/quantity/plus controls, allowing multiple balloons, cards, ribbons, and other add-ons to be added in one action. Existing cart quantity controls remain unchanged.
+- Balloon Bouquet is a standalone customizable product using the approved shop photo. Customers choose shop-supplied latex balloons at $2 each and Mylar balloons at $5 each; the page updates the estimated total and carries both counts into the cart and order summary.
 - Platform-dependent emoji icons were replaced with a consistent custom SVG set, and the enlarged product-image dialog is centered on desktop and mobile.
 - The header keeps the cart at the right edge, adds a Shop category menu, gives Services a primary position, and uses Contact Us instead of Visit.
 - `services.html` now covers delivery, funeral timing, Cemetery Replacement, weddings, events, custom work, plants, gifts, and balloon pricing.
@@ -51,7 +53,7 @@ Both Formspree endpoints were configured August 3, 2026: Contact Inquiries uses 
 ## Verified package inventory
 
 - The working tree includes the deployable static-site files plus local catalog/cart and browser validation scripts in `tests/`.
-- 93 products across four product categories.
+- 94 products across four product categories.
 - 60 curated Our Work images.
 - 16 unresolved owner questions, all contained in `ASK-LISA.md`; regular Classic Rose Bouquet pricing is confirmed.
 - Two configured Formspree endpoints, awaiting post-deployment live tests and final transfer to the shop inbox.

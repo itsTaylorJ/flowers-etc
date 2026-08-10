@@ -702,6 +702,26 @@ function renderProductPage(rootEl) {
        </div>`
     : "";
 
+  const balloonBuilderHTML = p.balloonOptions
+    ? `<div class="pd-block pd-balloon-builder">
+         <h3>Build your balloon bouquet</h3>
+         <p class="pd-sub">Choose any combination. The example shown uses four latex balloons and two Mylar balloons.</p>
+         <div class="pd-balloon-options">
+           ${Object.entries(p.balloonOptions).map(([key, option]) => `
+             <div class="pd-balloon-option">
+               <div><strong>${option.label}</strong><span>$${option.amount} each</span></div>
+               <div class="pd-inline-qty" aria-label="Quantity for ${option.label}">
+                 <button type="button" data-balloon-step="${key}:-1" aria-label="Decrease ${option.label}">−</button>
+                 <input type="number" min="0" max="99" readonly value="${option.defaultQty}" data-balloon-qty="${key}" aria-label="${option.label} quantity">
+                 <button type="button" data-balloon-step="${key}:1" aria-label="Increase ${option.label}">+</button>
+               </div>
+             </div>`).join("")}
+         </div>
+         <div class="pd-balloon-total"><span>Estimated bouquet total</span><strong data-balloon-total aria-live="polite"></strong></div>
+         <small>Ribbon and helium are included. Our team will confirm available colors and Mylar designs after checkout.</small>
+       </div>`
+    : "";
+
   const instructionsHTML = p.order !== "custom"
     ? `<div class="pd-block pd-instructions">
          <label for="pd-instructions">Flower, color, or item requests <span>(optional)</span></label>
@@ -722,8 +742,15 @@ function renderProductPage(rootEl) {
                  ${a.note ? `<small>${a.note}</small>` : ""}
                  ${a.options ? `<label class="pd-addon-option-label">${a.optionLabel || "Choose one"}<select data-addon-option="${index}">${a.options.map(option => `<option value="${option}">${option}</option>`).join("")}</select></label>` : ""}
                </div>
-               <span class="pd-addon-price">${a.price}</span>
-               <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
+               <div class="pd-addon-purchase">
+                 <span class="pd-addon-price">${a.price}</span>
+                 <div class="pd-inline-qty" aria-label="Quantity for ${a.name}">
+                   <button type="button" data-addon-step="${index}:-1" aria-label="Decrease ${a.name} quantity">−</button>
+                   <input type="number" min="1" max="99" readonly value="1" data-addon-qty="${index}" aria-label="${a.name} quantity">
+                   <button type="button" data-addon-step="${index}:1" aria-label="Increase ${a.name} quantity">+</button>
+                 </div>
+                 <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
+               </div>
              </li>`).join("")}
          </ul>
          ${typeof ADDON_PROMISE !== "undefined"
@@ -782,6 +809,7 @@ function renderProductPage(rootEl) {
           ${flowersHTML}
           ${colorsHTML}
           ${orderOptionsHTML}
+          ${balloonBuilderHTML}
           ${instructionsHTML}
 
           <div class="pd-actions">
@@ -818,6 +846,27 @@ function renderProductPage(rootEl) {
     </div>
     ${lightboxHTML}
     ${relatedHTML}`;
+
+  if (p.balloonOptions) {
+    const updateBalloonTotal = () => {
+      const total = Object.entries(p.balloonOptions).reduce((sum, [key, option]) => {
+        const input = rootEl.querySelector(`[data-balloon-qty="${key}"]`);
+        return sum + (Number(input && input.value) || 0) * option.amount;
+      }, 0);
+      const totalEl = rootEl.querySelector("[data-balloon-total]");
+      if (totalEl) totalEl.textContent = `$${total}`;
+    };
+    rootEl.querySelectorAll("[data-balloon-step]").forEach(button =>
+      button.addEventListener("click", () => {
+        const [key, delta] = button.dataset.balloonStep.split(":");
+        const input = rootEl.querySelector(`[data-balloon-qty="${key}"]`);
+        if (!input) return;
+        input.value = Math.max(0, Math.min(99, Number(input.value) + Number(delta)));
+        updateBalloonTotal();
+      })
+    );
+    updateBalloonTotal();
+  }
 
   // Product gallery: thumbnail, arrow, keyboard, lightbox and mobile swipe controls.
   const main = document.getElementById("pd-main");
