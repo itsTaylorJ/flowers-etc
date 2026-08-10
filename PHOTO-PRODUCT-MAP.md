@@ -4,7 +4,7 @@ The source library now contains 115 reviewable files representing 102 unique pho
 
 ## Photos now connected to products
 
-- **Rose Bouquet:** `pink-rose-vase-2026.webp` is the primary product image, with `rose-bouquet.jpg` and `red-rose-vase.webp` as additional examples.
+- **Classic Rose Bouquet:** `lisa-043.webp` is the primary product image, followed by `rose-bouquet-example-2.webp` (red and pink) and `rose-bouquet-example-1.webp` (orange special-order example).
 - **Sunshine Morning:** `sunny-yellow-rose-arrangement.webp` plus the primary arrangement.
 - **Garden Romance:** `peach-purple-garden.webp` plus the primary arrangement.
 - **Birthday Blooms:** `birthday-balloon-flowers.webp` plus the primary arrangement.
@@ -13,7 +13,10 @@ The source library now contains 115 reviewable files representing 102 unique pho
 - **Casket Spray:** `pink-lily-casket-spray-2026.webp`, `holiday-fall-centerpiece.webp`, `sympathy-casket-pink.webp`, `sympathy-casket-yellow.webp`, `white-blue-casket-spray.webp`, and `cowboy-casket-spray.webp`. The image formerly assigned to Holiday Centerpiece is a casket spray and has been moved here.
 - **Standing Spray:** `sympathy-sunflower-standing-2024.webp`, `yellow-blue-standing-spray.webp`, and `sympathy-standing-yellow.webp`.
 - **Sympathy Wreaths & Hearts:** `sympathy-wreath-pink.webp` plus existing heart/wreath examples.
-- **Cemetery Flower Replacement:** `blue-yellow-silk-cemetery.webp` and `blue-yellow-silk-cemetery-2.webp` plus the primary silk arrangement.
+- **Custom Cemetery Flowers:** `lisa-023.webp`, `lisa-024.webp`, `lisa-026.webp`, `lisa-042.webp`, `blue-yellow-silk-cemetery.webp`, `blue-yellow-silk-cemetery-2.webp`, `silk-cemetery-arrangement.jpg`, and `cemetery-headstone-saddle.webp` are examples within one $50 customizable listing. The headstone saddle remains an example within this consolidated product, not a standalone listing.
+- **Blush Garden Bouquet:** `lisa-029.webp` remains the primary example, with `blush-garden-bouquet-example.webp` as an additional gallery example.
+- **Serene White Urn Tribute:** `serene-white-urn-tribute.webp` is the primary image for the standalone service tribute starting at $400.
+- **Catalog corrections:** `lisa-059.webp`, `lisa-060.webp`, and `lisa-020.webp` are stored upright. `lisa-009.webp` uses a blank white memorial-photo insert for privacy. `lisa-087.webp` now uses the approved white-flower Orchid Urn Tribute replacement image.
 - **Memorial Wind Chimes:** `memorial-wind-chime-detail.webp` plus the primary full view.
 - **Memorial Lantern:** `memorial-lantern-flowers.webp` plus the primary lantern.
 - **Wall Crosses & Keepsakes:** `friendship-cross-keepsakes.webp` plus the primary keepsake display.

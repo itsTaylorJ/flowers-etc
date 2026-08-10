@@ -202,12 +202,13 @@
 
   window.productBySlug = slug => {
     const aliases = {
-      "cemetery-flowers-and-subscriptions": "cemetery-flower-replacement",
+      "cemetery-flowers-and-subscriptions": "custom-cemetery-flowers",
       "designers-choice": "custom-arrangement",
       "bridal-bouquet": "wedding-flowers-and-floral-design",
       "full-wedding-package": "wedding-flowers-and-floral-design",
       // Catalog reconstruction: retired listings point to their successors.
-      "rose-bouquet": "classic-red-rose-arrangement",
+      "rose-bouquet": "classic-rose-bouquet",
+      "classic-red-rose-arrangement": "classic-rose-bouquet",
       "sunshine-morning": "golden-morning",
       "garden-romance": "blush-rose-vase",
       "birthday-blooms": "purple-birthday-basket",
@@ -223,6 +224,15 @@
       "prom-and-homecoming": "blush-tulip-corsage",
       "peaceful-garden-basket": "garden-sympathy-basket",
       "white-lily-bridal-bouquet": "peaceful-white-lily-vase",
+      "meadow-gold-easel": "meadow-gold-sympathy-arrangement",
+      "soft-garden-vase": "soft-garden-basket",
+      "blush-garden-vase": "blush-garden-bouquet",
+      "greenery-planter": "greenery-casket-spray",
+      "blue-iris-remembrance": "custom-cemetery-flowers",
+      "sunflower-blue-cemetery-flowers": "custom-cemetery-flowers",
+      "bright-garden-cemetery-flowers": "custom-cemetery-flowers",
+      "golden-blue-cemetery-flowers": "custom-cemetery-flowers",
+      "cemetery-flower-replacement": "custom-cemetery-flowers",
     };
     const resolvedSlug = aliases[slug] || slug;
     return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
@@ -683,6 +693,15 @@ function renderProductPage(rootEl) {
        </div>`
     : "";
 
+  const orderOptionsHTML = p.orderOptions && p.orderOptions.options && p.orderOptions.options.length
+    ? `<div class="pd-block pd-order-option">
+         <label for="pd-order-option">${p.orderOptions.label || "Choose an option"}</label>
+         <select id="pd-order-option" data-option-label="${p.orderOptions.label || "Selection"}">
+           ${p.orderOptions.options.map(option => `<option value="${option}">${option}</option>`).join("")}
+         </select>
+       </div>`
+    : "";
+
   const instructionsHTML = p.order !== "custom"
     ? `<div class="pd-block pd-instructions">
          <label for="pd-instructions">Flower, color, or item requests <span>(optional)</span></label>
@@ -701,6 +720,7 @@ function renderProductPage(rootEl) {
                <div class="pd-addon-copy">
                  <span class="pd-addon-name">${a.name}${a.customizable ? ` <em>customizable</em>` : ""}</span>
                  ${a.note ? `<small>${a.note}</small>` : ""}
+                 ${a.options ? `<label class="pd-addon-option-label">${a.optionLabel || "Choose one"}<select data-addon-option="${index}">${a.options.map(option => `<option value="${option}">${option}</option>`).join("")}</select></label>` : ""}
                </div>
                <span class="pd-addon-price">${a.price}</span>
                <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
@@ -761,6 +781,7 @@ function renderProductPage(rootEl) {
           ${coverageHTML}
           ${flowersHTML}
           ${colorsHTML}
+          ${orderOptionsHTML}
           ${instructionsHTML}
 
           <div class="pd-actions">

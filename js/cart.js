@@ -26,8 +26,21 @@ function cartItems() {
     return items.map(item => {
       let normalized = { ...item };
       if (item.name === "Cemetery Flowers & Subscriptions") {
-        normalized.name = "Cemetery Flower Replacement";
+        normalized.name = "Custom Cemetery Flowers";
       }
+      const productRenames = {
+        "Meadow Gold Easel": "Meadow Gold Sympathy Arrangement",
+        "Soft Garden Vase": "Soft Garden Basket",
+        "Blush Garden Vase": "Blush Garden Bouquet",
+        "Greenery Planter": "Greenery Casket Spray",
+        "Classic Red Rose Arrangement": "Classic Rose Bouquet",
+        "Blue Iris Remembrance": "Custom Cemetery Flowers",
+        "Sunflower Blue Cemetery Flowers": "Custom Cemetery Flowers",
+        "Bright Garden Cemetery Flowers": "Custom Cemetery Flowers",
+        "Golden Blue Cemetery Flowers": "Custom Cemetery Flowers",
+        "Cemetery Flower Replacement": "Custom Cemetery Flowers",
+      };
+      if (productRenames[normalized.name]) normalized.name = productRenames[normalized.name];
       if (item.name === "Designer's Choice") {
         normalized.name = "Custom Arrangement";
       }
@@ -68,6 +81,7 @@ function cartLinePrice(item) {
     return typeof catalog.entry.amount === "number" ? catalog.entry.amount : null;
   }
   const p = catalog.entry;
+  if (p.order === "custom") return null;
   const r = resolvePrice(p);
   if (item.size && r.sizes) {
     const s = r.sizes.find(x => x.label === item.size);
@@ -138,8 +152,10 @@ function cartToast(name, requestOnly = false) {
 document.addEventListener("click", e => {
   const addonBtn = e.target.closest("[data-addon-add]");
   if (addonBtn) {
-    const addon = (typeof ADDONS !== "undefined" ? ADDONS : [])[Number(addonBtn.dataset.addonAdd)];
-    if (addon) cartAdd(addon.name, "", "", "addon");
+    const addonIndex = Number(addonBtn.dataset.addonAdd);
+    const addon = (typeof ADDONS !== "undefined" ? ADDONS : [])[addonIndex];
+    const option = document.querySelector(`[data-addon-option="${addonIndex}"]`);
+    if (addon) cartAdd(addon.name, "", option ? option.value : "", "addon");
     return;
   }
   const btn = e.target.closest("[data-cart-add]");
@@ -154,7 +170,12 @@ document.addEventListener("click", e => {
     : "";
   const instructionsSelector = btn.getAttribute("data-instructions");
   const instructionsEl = instructionsSelector ? document.querySelector(instructionsSelector) : null;
-  cartAdd(name, size, instructionsEl ? instructionsEl.value : "", "product");
+  const optionEl = document.querySelector("#pd-order-option");
+  const optionText = optionEl
+    ? `${optionEl.dataset.optionLabel || "Selection"}: ${optionEl.value}`
+    : "";
+  const requestText = instructionsEl ? instructionsEl.value.trim() : "";
+  cartAdd(name, size, [optionText, requestText].filter(Boolean).join("\n"), "product");
 });
 
 document.addEventListener("DOMContentLoaded", cartBadge);
@@ -165,12 +186,13 @@ cartBadge();
    ============================================================ */
 function renderCartPage(rootEl) {
   // Only render items that match the real product catalog (drops stale
-  // entries after renames, and never echoes untrusted localStorage text)
+  // entries after renames, and never echoes untrusted localStorage text).
+  // A product that became consultation-only remains visible if it was already
+  // saved, so a catalog rename never silently discards a customer's work.
   const storedItems = cartItems();
   const items = storedItems.filter(i => {
     const catalog = cartCatalog(i);
     if (!catalog) return false;
-    if (catalog.kind === "product" && catalog.entry.order === "custom") return false;
     if (catalog.kind === "product" && i.size && !(catalog.entry.sizes || []).some(s => s.label === i.size)) i.size = "";
     return true;
   });
@@ -196,12 +218,15 @@ function renderCartPage(rootEl) {
     const p = catalog && catalog.kind === "product" ? catalog.entry : null;
     const isAddon = catalog && catalog.kind === "addon";
     const isRequest = Boolean(isAddon && catalog.entry.requestOnly);
+    const isConsultation = Boolean(p && p.order === "custom");
     const price = cartLinePrice(item);
     const img = p && p.image
       ? `<img src="images/${p.image}" alt="${item.name}">`
       : `<div class="cart-addon-thumb" aria-hidden="true">${siteIcon(isAddon ? "gift" : "flower")}</div>`;
     const itemHref = p ? productUrl(p) : "shop.html";
-    const priceCopy = isRequest
+    const priceCopy = isConsultation
+      ? "Designed by consultation"
+      : isRequest
       ? "Not included in subtotal"
       : price !== null
         ? (price === 0 ? "Included" : "$" + price * item.qty)
@@ -211,10 +236,11 @@ function renderCartPage(rootEl) {
         <a class="cart-thumb" href="${itemHref}">${img}</a>
         <div class="cart-line-info">
           <a class="cart-line-name" href="${itemHref}">${item.name}</a>
-          ${isRequest ? `<div class="cart-line-kind">Option request · availability and price confirmed first</div>` :
+          ${isConsultation ? `<div class="cart-line-kind">Consultation only · we'll call to design this with you</div>` :
+            isRequest ? `<div class="cart-line-kind">Option request · availability and price confirmed first</div>` :
             isAddon ? `<div class="cart-line-kind">Make it special add-on</div>` : ""}
           ${item.size ? `<div class="cart-line-size">${item.size}</div>` : ""}
-          ${item.instructions ? `<div class="cart-line-instructions"><strong>Your request:</strong> ${escapeHTML(item.instructions)}</div>` : ""}
+          ${item.instructions ? `<div class="cart-line-instructions"><strong>${item.name === "Full Size Specialty Card" ? "Occasion:" : "Your request:"}</strong> ${escapeHTML(item.instructions)}</div>` : ""}
           <div class="cart-line-price">${priceCopy}</div>
         </div>
         <div class="cart-line-actions">
@@ -236,9 +262,15 @@ function renderCartPage(rootEl) {
     const catalog = cartCatalog(i);
     return Boolean(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
   });
+  const hasConsultation = items.some(i => {
+    const catalog = cartCatalog(i);
+    return Boolean(catalog && catalog.kind === "product" && catalog.entry.order === "custom");
+  });
   const hasQuoted = items.some(i => {
     const catalog = cartCatalog(i);
-    return cartLinePrice(i) === null && !(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
+    return cartLinePrice(i) === null &&
+      !(catalog && catalog.kind === "addon" && catalog.entry.requestOnly) &&
+      !(catalog && catalog.kind === "product" && catalog.entry.order === "custom");
   });
 
   rootEl.innerHTML = `
@@ -254,6 +286,7 @@ function renderCartPage(rootEl) {
           <div class="cart-totals">
             <div><span>Items subtotal</span><strong>$${subtotal}</strong></div>
             ${hasRequests ? `<div class="cart-quoted"><span>+ requested options</span><em>not included in subtotal</em></div>` : ""}
+            ${hasConsultation ? `<div class="cart-quoted"><span>+ consultation-only items</span><em>we'll call to design these with you</em></div>` : ""}
             ${hasQuoted ? `<div class="cart-quoted"><span>+ confirmation-priced items</span><em>confirmed before payment</em></div>` : ""}
             <div id="cart-delivery-row" style="display:none;"><span>Delivery</span><strong id="cart-delivery-fee"></strong></div>
             <div class="cart-grand"><span>Estimated total</span><strong id="cart-grand">$${subtotal}</strong></div>
@@ -477,11 +510,14 @@ function renderCartPage(rootEl) {
       const pr = cartLinePrice(i);
       const catalog = cartCatalog(i);
       const isRequest = Boolean(catalog && catalog.kind === "addon" && catalog.entry.requestOnly);
-      const priceText = isRequest
+      const isConsultation = Boolean(catalog && catalog.kind === "product" && catalog.entry.order === "custom");
+      const priceText = isConsultation
+        ? "CONSULTATION ONLY · we'll call to design this with you"
+        : isRequest
         ? "REQUEST ONLY — not included in subtotal"
         : pr !== null ? (pr === 0 ? "included" : "$" + pr * i.qty) : "price confirmed before payment";
       return `• ${i.qty} × ${i.name}${i.size ? " (" + i.size + ")" : ""} — ${priceText}` +
-        (i.instructions ? `\n  Customer request: ${i.instructions}` : "");
+        (i.instructions ? `\n  ${i.name === "Full Size Specialty Card" ? "Card occasion" : "Customer request"}: ${i.instructions}` : "");
     });
     const summary = [
       "NEW ONLINE ORDER — Flowers Etc. website",
@@ -489,7 +525,8 @@ function renderCartPage(rootEl) {
       "ITEMS:", ...orderLines,
       "Items subtotal: $" + subtotal +
         (hasQuoted ? " (plus confirmation-priced items)" : "") +
-        (hasRequests ? " (requested options excluded)" : ""),
+        (hasRequests ? " (requested options excluded)" : "") +
+        (hasConsultation ? " (consultation-only items excluded)" : ""),
       "Estimated delivery fee: " + (isDelivery() ? (currentFee ? "$" + currentFee : "TBD — confirm by ZIP/address") : "n/a (pickup)"),
       "Driver tip: " + (tip ? "$" + tip : "—"),
       "",
