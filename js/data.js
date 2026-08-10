@@ -602,14 +602,14 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Meadow Gold Easel",
+    name: "Meadow Gold Sympathy Arrangement",
     category: "sympathy",
-    subcat: "easels",
+    subcat: "service",
     price: "From $250",  // DRAFT PRICE — Lisa approval required
-    desc: "Golden roses, blue delphinium and airy white accents in a garden-inspired spray.",
+    desc: "Golden roses, blue delphinium and airy white accents in a garden-inspired sympathy arrangement.",
     image: "lisa-073.webp",
-    designType: "Easel",
-    coverageLabel: "Presentation",
+    designType: "Funeral service arrangement",
+    coverageLabel: "Design size",
     coverageOptions: ["As photographed", "Ask about a fuller version"],
     notice: SHOP.funeralOrderNote,
     draft: true,
@@ -889,11 +889,25 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
+    name: "Serene White Urn Tribute",
+    category: "sympathy",
+    subcat: "service",
+    price: "From $400",
+    desc: "A graceful all-white funeral tribute designed to surround and honor an urn with timeless elegance. Featuring soft white blooms and lush greenery, this arrangement creates a peaceful and comforting display for memorial services, celebrations of life, and funeral gatherings. Flower varieties may vary slightly based on seasonal availability while maintaining the overall look and feel.",
+    image: "serene-white-urn-tribute.webp",
+    designType: "Funeral urn tribute",
+    coverageLabel: "Design size",
+    coverageOptions: ["As photographed", "Ask about a smaller version", "Ask about a fuller version"],
+    notice: SHOP.funeralOrderNote,
+    order: "buy",
+    buyLink: "",
+  },
+  {
     name: "Orchid Urn Tribute",
     category: "sympathy",
     subcat: "service",
     price: "From $225",  // DRAFT PRICE — Lisa approval required
-    desc: "Pink and purple flowers designed to surround and honor a memorial urn.",
+    desc: "An elegant all-white urn tribute designed with soft white blooms and fresh greenery to create a peaceful, refined memorial display. Flower varieties may vary based on seasonal availability while maintaining the overall white-and-green design.",
     image: "lisa-087.webp",
     designType: "Funeral service arrangement",
     coverageLabel: "Design size",
@@ -905,82 +919,37 @@ const PRODUCTS = [
   },
   // ——— Sympathy & funeral · Cemetery flowers ———
   {
-    name: "Blue Iris Remembrance",
+    name: "Custom Cemetery Flowers",
     category: "sympathy",
     subcat: "cemetery",
     price: 50,
-    desc: "A bright silk cemetery-vase design in blue, purple, pink and yellow.",
+    desc: "Custom silk cemetery flowers made in the flower types, colors, and style you request. We create different styles, including standard cemetery arrangements and headstone saddles. The photographs are examples and variations; tell us what you would like and our team will confirm the dimensions and available materials.",
     image: "lisa-023.webp",
-    designType: "Cemetery arrangement",
+    photos: ["lisa-024.webp", "lisa-026.webp", "lisa-042.webp", "blue-yellow-silk-cemetery.webp", "blue-yellow-silk-cemetery-2.webp", "silk-cemetery-arrangement.jpg", "cemetery-headstone-saddle.webp"],
+    designType: "Custom cemetery flowers",
     coverageLabel: "Placement",
     coverageOptions: ["Cemetery vase arrangement — confirm dimensions"],
-    notice: "A member of our team will confirm the cemetery, vase measurements, colors, and requested placement date before the schedule begins.",
-    draftNote: "The $50 cemetery-arrangement price is already confirmed. The design name and exact details shown here are drafts awaiting Lisa's review.",
-    draft: true,
-    order: "buy",
-    buyLink: "",
-  },
-  {
-    name: "Sunflower Blue Cemetery Flowers",
-    category: "sympathy",
-    subcat: "cemetery",
-    price: 50,
-    desc: "Sunflowers and blue silk flowers prepared for a cemetery vase.",
-    image: "lisa-024.webp",
-    designType: "Cemetery arrangement",
-    coverageLabel: "Placement",
-    coverageOptions: ["Cemetery vase arrangement — confirm dimensions"],
-    notice: "A member of our team will confirm the cemetery, vase measurements, colors, and requested placement date before the schedule begins.",
-    draftNote: "The $50 cemetery-arrangement price is already confirmed. The design name and exact details shown here are drafts awaiting Lisa's review.",
-    draft: true,
-    order: "buy",
-    buyLink: "",
-  },
-  {
-    name: "Bright Garden Cemetery Flowers",
-    category: "sympathy",
-    subcat: "cemetery",
-    price: 50,
-    desc: "A cheerful silk mix of pink, purple, yellow and white flowers.",
-    image: "lisa-026.webp",
-    designType: "Cemetery arrangement",
-    coverageLabel: "Placement",
-    coverageOptions: ["Cemetery vase arrangement — confirm dimensions"],
-    notice: "A member of our team will confirm the cemetery, vase measurements, colors, and requested placement date before the schedule begins.",
-    draftNote: "The $50 cemetery-arrangement price is already confirmed. The design name and exact details shown here are drafts awaiting Lisa's review.",
-    draft: true,
-    order: "buy",
-    buyLink: "",
-  },
-  {
-    name: "Golden Blue Cemetery Flowers",
-    category: "sympathy",
-    subcat: "cemetery",
-    price: 50,
-    desc: "Yellow roses and blue silk flowers in a lasting cemetery arrangement.",
-    image: "lisa-042.webp",
-    designType: "Cemetery arrangement",
-    coverageLabel: "Placement",
-    coverageOptions: ["Cemetery vase arrangement — confirm dimensions"],
-    notice: "A member of our team will confirm the cemetery, vase measurements, colors, and requested placement date before the schedule begins.",
-    draftNote: "The $50 cemetery-arrangement price is already confirmed. The design name and exact details shown here are drafts awaiting Lisa's review.",
-    draft: true,
+    notice: "A member of our team will confirm the cemetery, vase measurements, flower and color requests, and requested placement date before the schedule begins.",
     order: "buy",
     buyLink: "",
   },
   // ——— Everyday flowers ———
   {
-    name: "Classic Red Rose Arrangement",
+    name: "Classic Rose Bouquet",
     category: "everyday",
-    price: 75,
+    price: 85,
     sizes: [
-      { label: "Half Dozen", price: 45 },   // PRICE PLACEHOLDER — confirm with Lisa
-      { label: "Dozen",      price: 75 },   // PRICE PLACEHOLDER
-      { label: "Two Dozen",  price: 135 },  // PRICE PLACEHOLDER
+      { label: "Half Dozen", price: 55 },
+      { label: "Dozen",      price: 85 },
+      { label: "Two Dozen",  price: 165 },
     ],
-    colors: ["Classic red", "Blush pink", "White & ivory", "Yellow", "Mixed colors"],
-    desc: "A red rose arrangement with fresh greenery—an individual rose design for a romantic, thoughtful or sympathy message.",
+    orderOptions: {
+      label: "Rose color",
+      options: ["Red", "Pink", "Yellow", "White", "Special Request — 24 hours notice required"],
+    },
+    desc: "A classic rose bouquet with fresh greenery for a romantic, thoughtful, or sympathy message. Red, pink, yellow, and white roses are normally kept in stock. With at least 24 hours notice, other rose colors can be specially ordered.",
     image: "lisa-043.webp",
+    photos: ["rose-bouquet-example-2.webp", "rose-bouquet-example-1.webp"],
     designType: "Fresh flower arrangement",
     coverageLabel: "Design size",
     coverageOptions: ["As photographed", "Smaller interpretation", "Fuller interpretation"],
@@ -989,12 +958,12 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Soft Garden Vase",
+    name: "Soft Garden Basket",
     category: "everyday",
     price: "From $75",  // DRAFT PRICE — Lisa approval required
-    desc: "Pink, white and lavender flowers in a soft garden-style vase for everyday sending or a gentle sympathy message.",
+    desc: "Pink, white and lavender flowers in a soft garden-style basket for everyday sending or a gentle sympathy message.",
     image: "lisa-044.webp",
-    designType: "Fresh flower arrangement",
+    designType: "Fresh flower basket",
     coverageLabel: "Design size",
     coverageOptions: ["As photographed", "Smaller interpretation", "Fuller interpretation"],
     draft: true,
@@ -1017,7 +986,7 @@ const PRODUCTS = [
   {
     name: "Coral Rose Cube",
     category: "everyday",
-    price: "From $85",  // DRAFT PRICE — Lisa approval required
+    price: "From $65",  // DRAFT PRICE — Lisa approval required
     desc: "Coral and hot-pink roses with carnations in a modern glass cube.",
     image: "lisa-013.webp",
     designType: "Fresh flower arrangement",
@@ -1069,7 +1038,7 @@ const PRODUCTS = [
   {
     name: "White Rose Cloud",
     category: "everyday",
-    price: "From $75",  // DRAFT PRICE — Lisa approval required
+    price: "From $65",  // DRAFT PRICE — Lisa approval required
     desc: "White roses and hydrangea with baby's breath in a compact vase.",
     image: "lisa-022.webp",
     designType: "Fresh flower arrangement",
@@ -1119,16 +1088,16 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Blush Garden Vase",
-    category: "everyday",
-    price: "From $95",  // DRAFT PRICE — Lisa approval required
-    desc: "Blush roses, lavender accents and branching greenery in a full garden-style vase.",
+    name: "Blush Garden Bouquet",
+    category: "wedding",
+    price: "From $145",
+    desc: "A romantic blush bouquet with lavender accents and branching greenery, designed by consultation for weddings and special events.",
     image: "lisa-029.webp",
-    designType: "Fresh flower arrangement",
-    coverageLabel: "Design size",
-    coverageOptions: ["As photographed", "Smaller interpretation", "Fuller interpretation"],
-    draft: true,
-    order: "buy",
+    photos: ["blush-garden-bouquet-example.webp"],
+    designType: "Wedding bouquet",
+    coverageLabel: "Design request",
+    coverageOptions: ["Use the photographed design as direction", "Coordinate with my wedding colors"],
+    order: "custom",
     buyLink: "",
   },
   {
@@ -1161,7 +1130,7 @@ const PRODUCTS = [
   {
     name: "Pink Rose Vase",
     category: "everyday",
-    price: "From $75",  // DRAFT PRICE — Lisa approval required
+    price: "From $55",  // DRAFT PRICE — Lisa approval required
     desc: "Pink roses and delicate accent flowers in a classic clear vase.",
     image: "lisa-070.webp",
     designType: "Fresh flower arrangement",
@@ -1192,7 +1161,7 @@ const PRODUCTS = [
     category: "gifts",
     collections: ["gifts", "sympathy"],
     subcat: "keepsakes",
-    price: "From $45",  // DRAFT PRICE — Lisa approval required
+    price: "From $60",  // DRAFT PRICE — Lisa approval required
     desc: "A mixed living plant basket prepared as a lasting gift.",
     image: "lisa-015.webp",
     designType: "Plant or keepsake",
@@ -1296,17 +1265,15 @@ const PRODUCTS = [
     buyLink: "",
   },
   {
-    name: "Greenery Planter",
-    category: "gifts",
-    collections: ["gifts", "sympathy"],
-    subcat: "keepsakes",
-    price: "From $55",  // DRAFT PRICE — Lisa approval required
-    desc: "A full planter of mixed green plants for home, office or sympathy.",
+    name: "Greenery Casket Spray",
+    category: "sympathy",
+    subcat: "casket",
+    price: 450,
+    desc: "A full casket spray of layered greenery with natural texture and movement.",
     image: "lisa-064.webp",
-    designType: "Plant or keepsake",
-    coverageLabel: "Selection",
-    coverageOptions: ["As photographed or closest current option"],
-    draft: true,
+    designType: "Casket spray",
+    coverageLabel: "Casket coverage",
+    coverageOptions: ["As photographed — confirm exact coverage"],
     order: "buy",
     buyLink: "",
   },
@@ -1425,18 +1392,6 @@ const PRODUCTS = [
 
   // ——— Retained existing listings ———
   {
-    name: "Cemetery Flower Replacement",
-    category: "sympathy",
-    subcat: "cemetery",
-    price: 50,
-    desc: "A lasting silk arrangement for $50, designed for a cemetery vase and sprayed with a weather protectant. Scheduled placement is available within our regular 35-mile delivery area at the frequency you request, with no added delivery or placement fee. Photo confirmation is available by request.",
-    flowers: ["Silk roses & rosebuds", "Silk sunflowers", "Silk hydrangea & delphinium", "Seasonal silk blooms in your colors"],
-    image: "",
-    order: "custom",
-    buyLink: "",
-    colors: ["Spring pastels", "Bright mixed", "Sunflowers & blue", "Red & white", "Fall tones", "Your choice"],
-  },
-  {
     name: "Custom Arrangement",
     category: "everyday",
     price: "From $50",
@@ -1534,6 +1489,7 @@ const PRODUCTS = [
    ------------------------------------------------------------ */
 const ADDONS = [
   { name: "Hand-written card message", price: "Free", amount: 0, customizable: true },
+  { name: "Full Size Specialty Card", price: "$3", amount: 3, customizable: false, optionLabel: "Occasion", options: ["Birthday", "Sympathy", "Other"] },
   { name: "Personalized ribbon (your colors & wording)", price: "$5 per ribbon", amount: 5, customizable: true },
   { name: "Stuffed animal", price: "From $15", amount: null, requestOnly: true, customizable: false, note: "Selection and price vary with current shop inventory." },
   { name: "Memorial keepsake (cross, plaque, lantern)", price: "From $8", amount: null, requestOnly: true, customizable: true, note: "Our team will confirm the available keepsake and final price." },
@@ -1570,9 +1526,7 @@ const SEASONS = [
     end: "02-15",
     enabled: true,
     banner: "Valentine's Day orders are open — roses go fast, so call early!",
-    prices: {
-      "Classic Red Rose Arrangement": { "Half Dozen": 60, "Dozen": 95, "Two Dozen": 175 },  // PRICE PLACEHOLDER — confirm with Lisa
-    },
+    prices: {},
   },
   {
     name: "Mother's Day",
@@ -1580,9 +1534,7 @@ const SEASONS = [
     end: "05-12",
     enabled: true,
     banner: "Mother's Day is coming — order early so we can get her the best blooms.",
-    prices: {
-      "Classic Red Rose Arrangement": { "Half Dozen": 55, "Dozen": 85, "Two Dozen": 155 },  // PRICE PLACEHOLDER — confirm with Lisa
-    },
+    prices: {},
   },
   {
     name: "Prom Season",

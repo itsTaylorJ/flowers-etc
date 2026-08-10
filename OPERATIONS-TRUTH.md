@@ -66,6 +66,10 @@ Last updated: August 3, 2026. These answers were supplied by Taylor and should b
 - Future intent: allow secure online payment for fixed-price standard orders while still having a member of the Flowers Etc. team personally confirm every order.
 - Custom work and inventory-dependent options remain confirm-first and are priced before payment.
 
+## Confirmed catalog pricing
+
+- Classic Rose Bouquet: Half Dozen $55, Dozen $85, Two Dozen $165. Red, pink, yellow, and white roses are normally stocked; other colors require at least 24 hours notice for special ordering.
+
 ## Missed recipient and weather
 
 - Try to contact the customer or recipient first.

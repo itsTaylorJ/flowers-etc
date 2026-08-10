@@ -2,7 +2,7 @@
 
 This folder is a complete deployable update to the Flowers Etc. static website with the approved Heritage Garden direction and the operating answers supplied through August 3, 2026.
 
-This is the **v10 deployment source**. Copy the complete folder rather than mixing selected files with an older deployment. All eight asset-loading pages use the `?v=10` cache key.
+This repository is the active deployment source. Do not copy from an older handoff or archived repository. Inspect the current cache key in the HTML before updating assets; the catalog/contact batch uses `?v=22` across all eight asset-loading pages.
 
 ## Important files
 
@@ -50,8 +50,8 @@ Both Formspree endpoints were configured August 3, 2026: Contact Inquiries uses 
 
 ## Verified package inventory
 
-- 116 files total.
-- 26 products across five categories.
+- The working tree includes the deployable static-site files plus local catalog/cart and browser validation scripts in `tests/`.
+- 93 products across four product categories.
 - 60 curated Our Work images.
-- 17 unresolved owner questions, all contained in `ASK-LISA.md`.
+- 16 unresolved owner questions, all contained in `ASK-LISA.md`; regular Classic Rose Bouquet pricing is confirmed.
 - Two configured Formspree endpoints, awaiting post-deployment live tests and final transfer to the shop inbox.
