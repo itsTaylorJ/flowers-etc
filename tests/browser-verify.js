@@ -165,7 +165,9 @@ const base = "http://127.0.0.1:8765";
   assert.equal(await page.locator(".cart-line-name").count(), 3, "different specialty occasions and the balloon add-on should remain distinct lines");
   assert.deepEqual(await page.locator(".cart-line-instructions").allTextContents(), ["Occasion: Birthday", "Occasion: Sympathy"]);
   assert.equal(await page.locator(".cart-line-name", { hasText: "Latex balloon — shop supplied, helium included" }).count(), 1);
-  assert.match(await page.locator(".cart-totals").innerText(), /Items subtotal\s*\$12/);
+  // 2 specialty cards at $3 + 2 latex balloons at $2. This expectation was left at
+  // $12 when add-on selections began starting at zero; $10 is the verified total.
+  assert.match(await page.locator(".cart-totals").innerText(), /Items subtotal\s*\$10/);
   assert.ok(await page.locator("#co-card").count(), "free checkout card-message textarea should remain");
   await page.locator("#co-name").fill("Verification Test");
   await page.locator("#co-phone").fill("9035550100");
@@ -188,6 +190,77 @@ const base = "http://127.0.0.1:8765";
     const dimensions = await page.locator("#pd-main").evaluate(img => ({ width: img.naturalWidth, height: img.naturalHeight }));
     assert.deepEqual(dimensions, { width: expectedWidth, height: expectedHeight }, `${slug} should retain full-resolution dimensions`);
   }
+
+  /* ---------- sitewide product search ---------- */
+  // The header search must work from a non-Shop page.
+  await page.goto(`${base}/contact.html`, { waitUntil: "domcontentloaded" });
+  await page.locator("#site-search-input").fill("balloons");
+  await page.locator("#site-search-results").waitFor();
+  const suggestions = await page.locator("#site-search-results").innerText();
+  assert.match(suggestions, /Balloon Bouquet/);
+  assert.match(suggestions, /View all results/);
+
+  // One character stays quiet; two characters open the list.
+  await page.locator("#site-search-input").fill("b");
+  assert.equal(await page.locator("#site-search-results").isHidden(), true);
+  await page.locator("#site-search-input").fill("balloons");
+  assert.equal(await page.locator("#site-search-results").isHidden(), false);
+
+  // A matching category is offered as a shortcut.
+  await page.locator("#site-search-input").fill("sympathy");
+  await page.locator("#site-search-results").waitFor();
+  assert.match(await page.locator("#site-search-results").innerText(), /Browse Sympathy/i);
+
+  // Escape closes the dropdown.
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("#site-search-results").isHidden(), true);
+
+  // Keyboard: ArrowDown moves into the results and Enter follows the option.
+  await page.locator("#site-search-input").fill("mylar");
+  await page.locator("#site-search-results").waitFor();
+  await page.keyboard.press("ArrowDown");
+  await Promise.all([page.waitForURL(/product\.html\?p=balloon-bouquet/), page.keyboard.press("Enter")]);
+
+  // An unmatched query explains itself and still offers a way to browse.
+  await page.goto(`${base}/contact.html`, { waitUntil: "domcontentloaded" });
+  await page.locator("#site-search-input").fill("zzzznotathing");
+  await page.locator("#site-search-results").waitFor();
+  assert.match(await page.locator("#site-search-results").innerText(), /No products match/i);
+
+  // Enter with no highlighted option submits to the Shop results.
+  await page.locator("#site-search-input").fill("balloons");
+  await Promise.all([page.waitForURL(/shop\.html\?q=balloons/), page.keyboard.press("Enter")]);
+  assert.match(await page.locator("#shop-search-summary").innerText(), /balloons/i);
+  assert.equal(await page.locator(".product-card").count(), 2);
+
+  // Shop results combine the query with the existing category filters.
+  await page.goto(`${base}/shop.html?q=mylar`, { waitUntil: "domcontentloaded" });
+  assert.equal(await page.locator(".product-card").count(), 1);
+  assert.match(await page.locator(".product-card").innerText(), /Balloon Bouquet/);
+  await page.goto(`${base}/shop.html?cat=sympathy&q=mylar`, { waitUntil: "domcontentloaded" });
+  assert.equal(await page.locator(".product-card").count(), 0);
+  assert.match(await page.locator("#shop-search-summary").innerText(), /No products match/i);
+  // Clearing the search keeps the shopper in the same category.
+  assert.match(await page.locator(".shop-search-clear").getAttribute("href"), /shop\.html\?cat=sympathy/);
+  // Category buttons keep the active query.
+  await page.goto(`${base}/shop.html?q=balloons`, { waitUntil: "domcontentloaded" });
+  await page.locator('#filter-bar .filter-btn:has-text("Plants & gifts")').click();
+  assert.match(page.url(), /q=balloons/);
+  // Pages without a query show no summary at all.
+  await page.goto(`${base}/shop.html`, { waitUntil: "domcontentloaded" });
+  assert.equal(await page.locator("#shop-search-summary").isHidden(), true);
+
+  // Mobile: the search occupies its own full-width row inside the header.
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${base}/index.html`, { waitUntil: "domcontentloaded" });
+  const searchBox = await page.locator("#site-search-form").boundingBox();
+  assert.ok(searchBox.width > 260, `mobile search should span the header row, got ${searchBox.width}`);
+  assert.equal(
+    await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
+    true,
+    "mobile header search must not cause horizontal overflow"
+  );
+  await page.setViewportSize({ width: 1280, height: 900 });
 
   const sitemap = await (await page.request.get(`${base}/sitemap.xml`)).text();
   assert.match(sitemap, /custom-cemetery-flowers/);

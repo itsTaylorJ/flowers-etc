@@ -195,6 +195,45 @@ assert.equal(context.cartLinePrice(configuredBouquet), 18);
 assert.equal(configuredBouquet.balloonLatex, 4);
 assert.equal(configuredBouquet.balloonMylar, 2);
 
+/* ---------- sitewide product search ---------- */
+// The search helpers run inside the VM context, so results are copied out with
+// a JSON round trip before comparison (same pattern as the checks above).
+const foundNames = query => JSON.parse(JSON.stringify(context.searchProducts(query).map(item => item.name)));
+const foundCategories = query => JSON.parse(JSON.stringify(context.searchCategories(query).map(item => item.id)));
+
+// Matching is case/punctuation-insensitive and accepts a simple singular form,
+// so "balloons" and "balloon" find the same products.
+assert.deepEqual(foundNames("balloons"), ["Birthday Flowers & Balloons", "Balloon Bouquet"]);
+assert.deepEqual(foundNames("balloon"), foundNames("balloons"));
+assert.deepEqual(foundNames("BALLOONS!"), foundNames("balloons"));
+// Customer-facing options are searchable: only the Balloon Bouquet offers Mylar.
+assert.deepEqual(foundNames("mylar"), ["Balloon Bouquet"]);
+// Multi-word queries require every word.
+assert.deepEqual(
+  foundNames("casket spray"),
+  ["Texas Honor Casket Spray", "Greenery Casket Spray", "Lavender Garden Farewell"]
+);
+// Category shortcuts come from category names only.
+assert.deepEqual(foundCategories("sympathy"), ["sympathy"]);
+assert.deepEqual(foundCategories("balloons"), []);
+// Blank/punctuation-only input finds nothing and never throws.
+assert.deepEqual(foundNames("!@#"), []);
+assert.deepEqual(foundNames(""), []);
+assert.deepEqual(foundNames(null), []);
+assert.deepEqual(foundCategories("!@#"), []);
+// Descriptions and flower lists are searchable, so "roses" reaches far beyond
+// the rose-named products; products whose NAME matches are ordered first.
+const roseHits = context.searchProducts("roses");
+assert.ok(roseHits.length > 20, "roses should match every product describing roses");
+assert.ok(roseHits.some(p => p.name === "Classic Rose Bouquet"));
+assert.ok(roseHits.some(p => p.name === "Red Rose Remembrance"));
+assert.equal(roseHits[0].name.toLowerCase().includes("rose"), true);
+const firstNonName = roseHits.findIndex(p => !p.name.toLowerCase().includes("rose"));
+const lastName = roseHits.reduce((last, p, i) => p.name.toLowerCase().includes("rose") ? i : last, -1);
+assert.ok(firstNonName === -1 || firstNonName > lastName, "name matches must precede description-only matches");
+// Search never invents products.
+assert.ok(context.searchProducts("roses").every(p => runtime.PRODUCTS.includes(p)));
+
 const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
 assert.match(sitemap, /product\.html\?p=custom-cemetery-flowers/);
 assert.match(sitemap, /product\.html\?p=classic-rose-bouquet/);

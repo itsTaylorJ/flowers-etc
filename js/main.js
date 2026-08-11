@@ -23,6 +23,7 @@
     shop: '<path d="M4 10v10h16V10M3 10l2-6h14l2 6"/><path d="M3 10c0 1.5 1 2.5 2.5 2.5S8 11.5 8 10c0 1.5 1 2.5 2.5 2.5S13 11.5 13 10c0 1.5 1 2.5 2.5 2.5S18 11.5 18 10c0 1.5 1 2.5 2.5 2.5S23 11.5 23 10M9 20v-5h6v5"/>',
     star: '<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/>',
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/>',
   };
   window.siteIcon = (name, className = "") =>
     `<svg class="ui-icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${iconPaths[name] || iconPaths.info}</svg>`;
@@ -62,6 +63,13 @@
           <a href="about.html" data-nav="about">Lisa's Story</a>
           <a href="contact.html" data-nav="contact">Contact Us</a>
         </nav>
+        <form class="site-search" id="site-search-form" action="shop.html" role="search">
+          <label class="sr-only" for="site-search-input">Search flowers and gifts</label>
+          <input id="site-search-input" name="q" type="search" autocomplete="off" placeholder="Search flowers and gifts"
+                 aria-controls="site-search-results" aria-expanded="false" aria-autocomplete="list">
+          <button type="submit" aria-label="Search flowers and gifts">${siteIcon("search")}</button>
+          <div id="site-search-results" class="site-search-results" role="listbox" aria-label="Product search results" hidden></div>
+        </form>
         <a class="cart-btn" href="cart.html" aria-label="Your order">${siteIcon("cart")}<span id="cart-count"></span></a>
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-navigation">${siteIcon("menu")}</button>
       </div>
@@ -157,6 +165,126 @@
     }
   });
 
+  /* ---------- Header product search ----------
+     Suggestions start at two characters and show matching category shortcuts
+     first, then up to five products, then a link to every result. The customer's
+     own text is only ever written with textContent, never as HTML.
+  ------------------------------------------------------------------- */
+  const searchForm = document.getElementById("site-search-form");
+  const searchInput = document.getElementById("site-search-input");
+  const searchResults = document.getElementById("site-search-results");
+  const SEARCH_MIN = 2;
+  const SEARCH_LIMIT = 5;
+
+  if (searchForm && searchInput && searchResults) {
+    const closeSearch = () => {
+      searchResults.hidden = true;
+      searchResults.innerHTML = "";
+      searchInput.setAttribute("aria-expanded", "false");
+    };
+
+    const searchOptions = () => [...searchResults.querySelectorAll("[role='option']")];
+
+    const addOption = (href, build, extraClass = "") => {
+      const link = document.createElement("a");
+      link.className = `site-search-item ${extraClass}`.trim();
+      link.setAttribute("role", "option");
+      link.href = href;
+      build(link);
+      searchResults.appendChild(link);
+      return link;
+    };
+
+    const drawSearch = () => {
+      const query = searchInput.value.trim();
+      searchResults.innerHTML = "";
+      if (query.length < SEARCH_MIN) return closeSearch();
+
+      const categories = searchCategories(query);
+      const products = searchProducts(query);
+      const allResultsHref = `shop.html?q=${encodeURIComponent(query)}`;
+
+      categories.forEach(category => addOption(`shop.html?cat=${category.id}`, link => {
+        link.textContent = `Browse ${category.name}`;
+      }, "site-search-category"));
+
+      products.slice(0, SEARCH_LIMIT).forEach(product => addOption(productUrl(product), link => {
+        const media = document.createElement("span");
+        media.className = "site-search-media";
+        media.innerHTML = productMedia(product);          // catalog-controlled markup
+        const copy = document.createElement("span");
+        copy.className = "site-search-copy";
+        const name = document.createElement("span");
+        name.className = "site-search-name";
+        name.textContent = product.name;
+        const price = document.createElement("span");
+        price.className = "site-search-price";
+        price.innerHTML = priceHTML(product);             // catalog-controlled markup
+        copy.append(name, price);
+        link.append(media, copy);
+      }));
+
+      if (!products.length) {
+        const empty = document.createElement("p");
+        empty.className = "site-search-empty";
+        empty.textContent = `No products match "${query}".`;   // customer text, escaped by textContent
+        searchResults.appendChild(empty);
+        addOption("shop.html", link => { link.textContent = "Browse all flowers and gifts"; }, "site-search-all");
+      } else {
+        addOption(allResultsHref, link => {
+          link.textContent = products.length > SEARCH_LIMIT
+            ? `View all results (${products.length})`
+            : "View all results";
+        }, "site-search-all");
+      }
+
+      searchResults.hidden = false;
+      searchInput.setAttribute("aria-expanded", "true");
+    };
+
+    const moveSearchFocus = step => {
+      const options = searchOptions();
+      if (!options.length) return;
+      const active = document.activeElement;
+      const index = options.indexOf(active);
+      const next = index === -1
+        ? (step > 0 ? 0 : options.length - 1)
+        : (index + step + options.length) % options.length;
+      options[next].focus();
+    };
+
+    // On shop.html?q=… show the active term in the field.
+    const activeQuery = new URLSearchParams(location.search).get("q");
+    if (activeQuery) searchInput.value = activeQuery;
+
+    searchInput.addEventListener("input", drawSearch);
+    searchInput.addEventListener("focus", () => { if (searchInput.value.trim().length >= SEARCH_MIN) drawSearch(); });
+
+    searchForm.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeSearch();
+        searchInput.focus();
+        return;
+      }
+      if (event.key === "ArrowDown") { event.preventDefault(); moveSearchFocus(1); }
+      else if (event.key === "ArrowUp") { event.preventDefault(); moveSearchFocus(-1); }
+    });
+
+    // Enter with nothing highlighted submits the form to shop.html?q=<query>.
+    searchForm.addEventListener("submit", event => {
+      if (!searchInput.value.trim()) event.preventDefault();
+      else closeSearch();
+    });
+
+    searchResults.addEventListener("click", event => {
+      if (event.target.closest("[role='option']")) closeSearch();
+    });
+
+    document.addEventListener("click", event => {
+      if (!searchForm.contains(event.target)) closeSearch();
+    });
+  }
+
   /* ---------- Fill any element marked with data-shop ---------- */
   // e.g. <span data-shop="phone"></span> becomes the phone number
   document.querySelectorAll("[data-shop]").forEach(el => {
@@ -238,6 +366,51 @@
     return PRODUCTS.find(p => slugify(p.name) === resolvedSlug);
   };
   window.productUrl = p => `product.html?p=${slugify(p.name)}`;
+
+  /* ---------- Product search ----------
+     One matcher shared by the header suggestions and the Shop results so both
+     always agree. Matching is case- and punctuation-insensitive, and each word
+     also accepts its simple singular form, so "roses" and "rose" both work.
+     Products whose NAME matches are listed first; everything else keeps
+     catalog order. Products only — never pages or gallery entries.
+  ------------------------------------------------------------------- */
+  function searchTermGroups(value) {
+    const normalized = String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    if (!normalized) return [];
+    // One group per word; a group matches when ANY of its forms is present.
+    return normalized.split(/\s+/).map(term =>
+      term.length > 3 && term.endsWith("s") ? [term, term.slice(0, -1)] : [term]
+    );
+  }
+
+  function productSearchText(p) {
+    return [
+      p.name,
+      p.desc,
+      p.category,
+      p.subcat,
+      ...(p.collections || []),
+      ...(p.flowers || []),
+      ...(p.colors || []),
+      ...((p.orderOptions && p.orderOptions.options) || []),
+    ].filter(Boolean).join(" ").toLowerCase();
+  }
+
+  const matchesGroups = (text, groups) => groups.every(forms => forms.some(form => text.includes(form)));
+
+  window.searchProducts = query => {
+    const groups = searchTermGroups(query);
+    if (!groups.length) return [];
+    const matches = PRODUCTS.filter(p => matchesGroups(productSearchText(p), groups));
+    const byName = p => matchesGroups(String(p.name).toLowerCase(), groups);
+    return [...matches.filter(byName), ...matches.filter(p => !byName(p))];
+  };
+
+  window.searchCategories = query => {
+    const groups = searchTermGroups(query);
+    if (!groups.length) return [];
+    return CATEGORIES.filter(c => matchesGroups(String(c.name).toLowerCase(), groups));
+  };
 
   /* ---------- Seasonal pricing engine ----------
      Seasons are date ranges in data.js that switch themselves on and off.
@@ -333,7 +506,9 @@ function renderShop(gridEl, filterEl) {
   const rawCat = params.get("cat") || "all";
   let current = catAliases[rawCat] || rawCat;
   let currentSub = params.get("sub") || "all";
+  const currentQuery = params.get("q") || "";
   const sympathyGuide = document.getElementById("sympathy-guide");
+  const searchSummary = document.getElementById("shop-search-summary");
 
   // Sub-filter bar (Sympathy & funeral only) lives right under the category bar.
   let subFilterEl = document.getElementById("sub-filter-bar");
@@ -346,10 +521,12 @@ function renderShop(gridEl, filterEl) {
   }
 
   function shopUrl() {
-    if (current === "all") return "shop.html";
-    let url = `shop.html?cat=${current}`;
-    if (current === "sympathy" && currentSub !== "all") url += `&sub=${currentSub}`;
-    return url;
+    const next = new URLSearchParams();
+    if (current !== "all") next.set("cat", current);
+    if (current === "sympathy" && currentSub !== "all") next.set("sub", currentSub);
+    if (currentQuery.trim()) next.set("q", currentQuery);
+    const qs = next.toString();
+    return qs ? `shop.html?${qs}` : "shop.html";
   }
 
   function drawFilters() {
@@ -389,11 +566,53 @@ function renderShop(gridEl, filterEl) {
     );
   }
 
+  // A search narrows whatever the category/subcategory filters already allow.
+  const queryMatches = currentQuery.trim() ? searchProducts(currentQuery) : null;
+
+  function drawSearchSummary(count) {
+    if (!searchSummary) return;
+    if (!currentQuery.trim()) {
+      searchSummary.hidden = true;
+      searchSummary.innerHTML = "";
+      return;
+    }
+    searchSummary.innerHTML = "";
+    const line = document.createElement("p");
+    const strong = document.createElement("strong");
+    strong.textContent = `"${currentQuery.trim()}"`;      // customer text — never HTML
+    if (count) {
+      line.append(`${count} ${count === 1 ? "product matches" : "products match"} `, strong);
+    } else {
+      line.append("No products match ", strong, " in this section.");
+    }
+    const clear = document.createElement("a");
+    clear.className = "shop-search-clear";
+    const clearParams = new URLSearchParams();
+    if (current !== "all") clearParams.set("cat", current);
+    if (current === "sympathy" && currentSub !== "all") clearParams.set("sub", currentSub);
+    clear.href = clearParams.toString() ? `shop.html?${clearParams}` : "shop.html";
+    clear.textContent = "Clear search";
+    searchSummary.append(line, clear);
+    if (!count) {
+      const help = document.createElement("p");
+      help.className = "shop-search-help";
+      help.append("Try a different word, browse every category, or ");
+      const call = document.createElement("a");
+      call.href = `tel:${SHOP.phoneHref}`;
+      call.textContent = `call the shop at ${SHOP.phone}`;
+      help.append(call, " and we can design something custom for you.");
+      searchSummary.appendChild(help);
+    }
+    searchSummary.hidden = false;
+  }
+
   function drawGrid() {
     if (sympathyGuide) sympathyGuide.hidden = current !== "sympathy";
     const inCategory = p => current === "all" || p.category === current || (p.collections || []).includes(current);
     const inSub = p => current !== "sympathy" || currentSub === "all" || p.subcat === currentSub;
-    const filtered = PRODUCTS.filter(p => inCategory(p) && inSub(p));
+    const matchesQuery = p => !queryMatches || queryMatches.includes(p);
+    const filtered = PRODUCTS.filter(p => inCategory(p) && inSub(p) && matchesQuery(p));
+    drawSearchSummary(filtered.length);
     // Products still waiting on photos sink to the bottom (they stay
     // orderable — a "coming soon" card gets people asking).
     const items = [...filtered.filter(p => p.image), ...filtered.filter(p => !p.image)];
