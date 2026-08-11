@@ -1164,8 +1164,8 @@ const PRODUCTS = [
     image: "balloon-bouquet.png",
     designType: "Custom balloon bouquet",
     balloonOptions: {
-      latex: { label: "Latex balloons", amount: 2, defaultQty: 4 },
-      mylar: { label: "Mylar balloons", amount: 5, defaultQty: 2 },
+      latex: { label: "Latex balloons", amount: 2, defaultQty: 0 },
+      mylar: { label: "Mylar balloons", amount: 5, defaultQty: 0 },
     },
     notice: "The pictured bouquet is an example. Balloon colors and Mylar designs vary with current inventory, and our team will confirm your selections.",
     order: "buy",

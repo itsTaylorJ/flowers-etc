@@ -172,7 +172,15 @@ document.addEventListener("click", e => {
   if (addonStep) {
     const [addonIndex, delta] = addonStep.dataset.addonStep.split(":");
     const input = document.querySelector(`[data-addon-qty="${addonIndex}"]`);
-    if (input) input.value = Math.max(1, Math.min(99, Number(input.value) + Number(delta)));
+    if (input) {
+      input.value = Math.max(0, Math.min(99, Number(input.value) + Number(delta)));
+      const addonButton = document.querySelector(`[data-addon-add="${addonIndex}"]`);
+      if (addonButton) {
+        const hasSelection = Number(input.value) > 0;
+        addonButton.disabled = !hasSelection;
+        addonButton.setAttribute("aria-disabled", String(!hasSelection));
+      }
+    }
     return;
   }
   const addonBtn = e.target.closest("[data-addon-add]");
@@ -181,7 +189,7 @@ document.addEventListener("click", e => {
     const addon = (typeof ADDONS !== "undefined" ? ADDONS : [])[addonIndex];
     const option = document.querySelector(`[data-addon-option="${addonIndex}"]`);
     const quantity = document.querySelector(`[data-addon-qty="${addonIndex}"]`);
-    if (addon) cartAdd(addon.name, "", option ? option.value : "", "addon", quantity ? Number(quantity.value) : 1);
+    if (addon && quantity && Number(quantity.value) > 0) cartAdd(addon.name, "", option ? option.value : "", "addon", Number(quantity.value));
     return;
   }
   const btn = e.target.closest("[data-cart-add]");

@@ -1502,6 +1502,8 @@ nav.main-nav{margin-left:auto}
 .pd-addon-add{min-height:38px;padding:8px 10px;border:1px solid var(--blush);background:transparent;color:var(--blush);font:700 .68rem/1.2 var(--font-body);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.2s ease}
 .pd-addon-add:hover{background:var(--blush);color:#fff}
 .pd-addon-add:active{transform:translateY(1px)}
+.pd-addon-add:disabled{border-color:var(--line);background:var(--cream);color:#8b9690;cursor:not-allowed}
+.pd-addon-add:disabled:hover{background:var(--cream);color:#8b9690}
 .pd-addon-add.is-request{border-color:var(--forest);color:var(--forest)}
 .pd-addon-add.is-request:hover{background:var(--forest);color:#fff}
 

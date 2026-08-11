@@ -746,10 +746,10 @@ function renderProductPage(rootEl) {
                  <span class="pd-addon-price">${a.price}</span>
                  <div class="pd-inline-qty" aria-label="Quantity for ${a.name}">
                    <button type="button" data-addon-step="${index}:-1" aria-label="Decrease ${a.name} quantity">−</button>
-                   <input type="number" min="1" max="99" readonly value="1" data-addon-qty="${index}" aria-label="${a.name} quantity">
+                   <input type="number" min="0" max="99" readonly value="0" data-addon-qty="${index}" aria-label="${a.name} quantity">
                    <button type="button" data-addon-step="${index}:1" aria-label="Increase ${a.name} quantity">+</button>
                  </div>
-                 <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
+                 <button type="button" class="pd-addon-add${a.requestOnly ? " is-request" : ""}" data-addon-add="${index}" disabled aria-disabled="true">${a.requestOnly ? "Request current options" : a.amount === 0 ? "Add free" : `Add $${a.amount}`}</button>
                </div>
              </li>`).join("")}
          </ul>
@@ -817,7 +817,7 @@ function renderProductPage(rootEl) {
               ? `<a class="btn btn-primary" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call the Shop to Request This Design</a>
                  <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Us About This Design</a>
                  <a class="btn btn-outline" href="contact.html?arrangement=${encodeURIComponent(p.name)}">Send a Custom-Order Inquiry</a>`
-              : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#pd-instructions">${siteIcon("cart")} Add to Cart — Order Online</button>
+              : `<button class="btn btn-primary" data-cart-add="${p.name}" data-instructions="#pd-instructions"${p.balloonOptions ? " disabled aria-disabled=\"true\"" : ""}>${siteIcon("cart")} Add to Cart — Order Online</button>
                  ${canBuyOnline ? `<a class="btn btn-outline" href="${p.buyLink}" target="_blank" rel="noopener">Buy Now — Secure Checkout</a>` : ""}
                  <a class="btn btn-blush" href="tel:${SHOP.phoneHref}">${siteIcon("phone")} Call ${SHOP.phone}</a>
                  <a class="btn btn-outline" href="sms:${SHOP.phoneHref}">${siteIcon("message")} Text Us Your Order</a>
@@ -855,6 +855,15 @@ function renderProductPage(rootEl) {
       }, 0);
       const totalEl = rootEl.querySelector("[data-balloon-total]");
       if (totalEl) totalEl.textContent = `$${total}`;
+      const addButton = rootEl.querySelector(`[data-cart-add="${p.name}"]`);
+      if (addButton) {
+        const hasSelection = Object.keys(p.balloonOptions).some(key => {
+          const input = rootEl.querySelector(`[data-balloon-qty="${key}"]`);
+          return Number(input && input.value) > 0;
+        });
+        addButton.disabled = !hasSelection;
+        addButton.setAttribute("aria-disabled", String(!hasSelection));
+      }
     };
     rootEl.querySelectorAll("[data-balloon-step]").forEach(button =>
       button.addEventListener("click", () => {

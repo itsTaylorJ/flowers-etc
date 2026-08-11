@@ -76,8 +76,8 @@ assert.equal(fs.existsSync(path.join(root, "images", balloonBouquet.image)), tru
 assert.deepEqual(
   JSON.parse(JSON.stringify(balloonBouquet.balloonOptions)),
   {
-    latex: { label: "Latex balloons", amount: 2, defaultQty: 4 },
-    mylar: { label: "Mylar balloons", amount: 5, defaultQty: 2 },
+    latex: { label: "Latex balloons", amount: 2, defaultQty: 0 },
+    mylar: { label: "Mylar balloons", amount: 5, defaultQty: 0 },
   }
 );
 
