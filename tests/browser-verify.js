@@ -51,6 +51,24 @@ const base = "http://127.0.0.1:8765";
   assert.equal(await page.locator(".info-card:last-child").evaluate(node => getComputedStyle(node).justifySelf), "stretch", "mobile final contact card should stretch normally");
 
   await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(`${base}/index.html`, { waitUntil: "domcontentloaded" });
+  assert.equal(
+    (await page.locator(".hg-occasion-list a").nth(4).locator("span").innerText()).codePointAt(0),
+    0x2192,
+    "the custom-flowers occasion tile should use the same right arrow as the other occasion tiles"
+  );
+  // Every occasion tile shares one arrow, so the row reads consistently.
+  assert.deepEqual(
+    await page.locator(".hg-occasion-list a span").evaluateAll(nodes => nodes.map(node => node.textContent.trim().codePointAt(0))),
+    Array(5).fill(0x2192),
+    "all occasion tiles should use the right-facing arrow"
+  );
+  // Links that leave the site keep their diagonal arrow on purpose.
+  assert.equal(
+    (await page.locator('.hg-facebook-actions a[href*="facebook.com"] span').innerText()).codePointAt(0),
+    0x2197,
+    "the external Facebook link should keep its diagonal arrow"
+  );
   const aliases = {
     "meadow-gold-easel": "Meadow Gold Sympathy Arrangement",
     "soft-garden-vase": "Soft Garden Basket",
